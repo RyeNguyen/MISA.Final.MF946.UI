@@ -53,14 +53,14 @@ export default {
 
 <style lang="scss">
 .misa-menu {
-  width: 178px;
+  width: 100%;
   height: calc(100vh);
   background-color: var(--color-tertiary);
-  overflow: auto;
   transition: var(--transition-value);
 
   &__header {
     width: 100%;
+    height: 48px;
     padding: 14px 14px 14px 24px;
     display: flex;
     align-items: center;
@@ -86,7 +86,21 @@ export default {
   }
 
   &__item-container {
-    margin-top: 14px;
+    height: calc(100vh - 48px);
+    padding-top: 14px;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: var(--color-scroll);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--color-scroll-thumb);
+    }
   }
 
   &--shrink {

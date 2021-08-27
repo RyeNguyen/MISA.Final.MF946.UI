@@ -90,6 +90,7 @@ export default {
 
   &-text {
     color: var(--color-white);
+    white-space: nowrap;
   }
 }
 </style>

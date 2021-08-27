@@ -1,16 +1,23 @@
 <template>
-  <div id="app">
-    <Menu/>
+  <div id="app" class="misa-app">
+    <div class="misa-app--left">
+      <Menu/>
+    </div>
+    <div class="misa-app--right">
+      <Header/>
+    </div>
   </div>
 </template>
 
 <script>
+import Header from "@/components/layout/TheHeader";
 import Menu from "@/components/layout/TheMenu";
 
 export default {
   name: 'App',
 
   components: {
+    Header,
     Menu
   }
 }
@@ -20,4 +27,17 @@ export default {
 @import './assets/css/Fonts.css';
 @import './assets/css/Variables.css';
 @import './assets/css/Main';
+
+.misa-app {
+  display: flex;
+  background-color: var(--color-background);
+
+  &--left {
+    width: 178px;
+  }
+
+  &--right {
+    width: calc(100vw - 178px);
+  }
+}
 </style>
