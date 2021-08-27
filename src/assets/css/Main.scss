@@ -1,0 +1,18 @@
+* {
+  box-sizing: border-box;
+  outline: none;
+  text-decoration: none;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-content-text);
+  font-size: 13px;
+  font-family: "NotoSans-Regular", sans-serif;
+}
+
