@@ -5,11 +5,13 @@
     </div>
     <div class="misa-app--right">
       <Header/>
+      <Content></Content>
     </div>
   </div>
 </template>
 
 <script>
+import Content from "@/components/layout/content/TheContent";
 import Header from "@/components/layout/TheHeader";
 import Menu from "@/components/layout/TheMenu";
 
@@ -17,6 +19,7 @@ export default {
   name: 'App',
 
   components: {
+    Content,
     Header,
     Menu
   }

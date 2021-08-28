@@ -2,6 +2,7 @@
   <div class="misa-input">
     <input
       :placeholder="inputPlaceholder"
+      :type="inputType"
     >
     <span v-if="this.isSearchable === true" class="misa-input__icon"/>
   </div>
@@ -16,6 +17,11 @@ export default {
       type: String
     },
 
+    inputType: {
+      type: String,
+      default: "text"
+    },
+
     isSearchable: {
       type: Boolean
     }
@@ -28,7 +34,7 @@ export default {
   position: relative;
 
   input {
-    width: 200px;
+    width: 240px;
     height: 32px;
     padding: 6px 28px 6px 10px;
     border-radius: 2px;
@@ -42,6 +48,7 @@ export default {
 
     &::placeholder {
       font-style: italic;
+      font-size: 12px;
     }
   }
 

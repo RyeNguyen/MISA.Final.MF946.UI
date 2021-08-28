@@ -2,22 +2,10 @@
   <div class="misa-header">
     <div class="misa-header--left">
       <div class="misa-header__toggle"></div>
-      <div class="misa-header__branch">công ty cổ phần misa</div>
-      <div class="misa-header__current-db">
-        <div class="misa-header__current-db-icon"></div>
-        <div>DC-01</div>
-      </div>
+      <div class="misa-header__branch">công ty tnhh sản xuất - thương mại - dịch vụ quy phúc</div>
     </div>
     <div class="misa-header--right">
-      <MisaInput
-          inputPlaceholder="Nhập từ khóa tìm kiếm"
-          :isSearchable="true"
-      />
       <div
-          v-for="icon in headerIcons"
-          :key="icon['headerIconId']"
-          :id="icon['headerIconName']"
-          :style="{backgroundImage: 'url(' + require(`@/assets/icon/${icon['headerIcon']}`) + ')'}"
           class="misa-header__icon"
       />
       <div class="misa-header__user">
@@ -29,20 +17,8 @@
 </template>
 
 <script>
-import HeaderIconModel from '@/models/HeaderIconModel';
-
 export default {
-  name: "TheHeader",
-
-  mounted() {
-    this.headerIcons = HeaderIconModel.initData();
-  },
-
-  data() {
-    return {
-      headerIcons: []
-    }
-  }
+  name: "TheHeader"
 }
 </script>
 
@@ -86,34 +62,14 @@ export default {
     text-overflow: ellipsis;
   }
 
-  &__current-db {
-    height: 30px;
-    margin: 0 10px 0 5px;
-    padding: 0 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    border: 1px solid var(--color-border);
-    border-radius: 40px;
-    cursor: pointer;
-
-    &-icon {
-      width: 8px;
-      height: 8px;
-      background-color: var(--color-primary);
-      border-radius: 50%;
-      border: 1px solid var(--color-white);
-      margin-right: 7px;
-    }
-  }
-
   &__icon {
     width: 24px;
     height: 24px;
     margin: 0 10px;
+    background-image: url('../../assets/icon/misa-notify.svg');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
+    background-size: contain;
     cursor: pointer;
   }
 
@@ -127,7 +83,7 @@ export default {
       width: 32px;
       height: 32px;
       margin-right: 6px;
-      background-color: tomato;
+      background-image: url('../../assets/icon/misa-avatar.svg');
       border-radius: 50%;
     }
 
@@ -138,10 +94,6 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
     }
-  }
-
-  .misa-input {
-    margin-right: 20px;
   }
 }
 </style>
