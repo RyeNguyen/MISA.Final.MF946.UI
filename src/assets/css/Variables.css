@@ -8,6 +8,7 @@
     --color-tertiary-hover: rgba(235, 237, 240, 0.2);
 
     --color-hightlight: #BABEC5;
+    --color-hightlight-hover: #E2E2E2;
 
     --color-table: #ECEEF1;
     --color-table-border: #C7C7C7;
@@ -25,4 +26,5 @@
     --color-scroll-thumb: #B8BCC3;
 
     --transition-value: 0.2s ease-in-out;
+    --box-shadow-default: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
 }

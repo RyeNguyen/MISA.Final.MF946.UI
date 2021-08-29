@@ -1,8 +1,19 @@
 <template>
-  <div class="misa-input">
+  <div
+      :style="{width: inputWidth}"
+      class="misa-input"
+  >
+    <div :class="{'misa-input__label': labelName !== null}">
+      <label :for="inputId">
+        {{ labelName }}
+      </label>
+    </div>
     <input
-      :placeholder="inputPlaceholder"
-      :type="inputType"
+        :id="inputId"
+        :class="{'misa-input-icon': isSearchable === true}"
+        :placeholder="inputPlaceholder"
+        :type="inputType"
+        :max="currentDate"
     >
     <span v-if="this.isSearchable === true" class="misa-input__icon"/>
   </div>
@@ -12,7 +23,28 @@
 export default {
   name: "MisaInput",
 
+  data () {
+    return {
+      currentDate: Date.now()
+    }
+  },
+
   props: {
+    inputId: {
+      type: String,
+      required: true
+    },
+
+    labelName: {
+      type: String,
+      default: null
+    },
+
+    inputWidth: {
+      type: String,
+      default: '240px'
+    },
+
     inputPlaceholder: {
       type: String
     },
@@ -33,14 +65,22 @@ export default {
 .misa-input {
   position: relative;
 
+  &__label {
+    height: 20px;
+    font-family: 'NotoSans-Semibold', sans-serif;
+  }
+
   input {
-    width: 240px;
     height: 32px;
-    padding: 6px 28px 6px 10px;
+    width: 100%;
+    padding: 6px 10px;
     border-radius: 2px;
     border: 1px solid var(--color-hightlight);
     display: inline-block;
-    transition: var(--transition-value);
+
+    &:hover {
+      outline: 1px solid var(--color-hightlight-hover);
+    }
 
     &:focus {
       border-color: var(--color-primary);
@@ -48,8 +88,11 @@ export default {
 
     &::placeholder {
       font-style: italic;
-      font-size: 12px;
     }
+  }
+
+  &-icon {
+    padding: 6px 28px 6px 10px !important;
   }
 
   &__icon {

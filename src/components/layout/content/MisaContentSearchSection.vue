@@ -1,6 +1,7 @@
 <template>
 <div class="misa-content__search">
   <MisaInput
+      inputId="input-search"
     inputPlaceholder="Tìm theo mã, tên nhân viên"
     :isSearchable="true"
   />

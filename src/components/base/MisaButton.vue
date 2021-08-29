@@ -1,5 +1,6 @@
 <template>
   <div
+      :tabindex="tabIndex"
       :class=
       "[
           'misa-button',
@@ -18,6 +19,7 @@ export default {
   props: {
     buttonId: {
       type: String,
+      required: true
     },
 
     buttonText: {
@@ -27,6 +29,10 @@ export default {
     buttonType: {
       type: String,
       default: 'primary'
+    },
+
+    tabIndex: {
+      type: String
     }
   }
 }
@@ -34,10 +40,16 @@ export default {
 
 <style lang="scss">
 .misa-button {
+  width: auto;
   border-radius: 3px;
   padding: 8px 20px;
   cursor: pointer;
   transition: var(--transition-value);
+
+  &__group {
+    display: flex;
+    gap: 10px;
+  }
 
   &--primary {
     color: var(--color-white);
@@ -51,6 +63,10 @@ export default {
   &--secondary {
     background-color: transparent;
     border: 1px solid var(--color-hightlight);
+  }
+
+  &__text {
+    font-family: 'NotoSans-Semibold', sans-serif;
   }
 }
 </style>

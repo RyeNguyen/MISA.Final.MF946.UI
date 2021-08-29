@@ -20,7 +20,7 @@ export default {
 
   &__main {
     background-color: var(--color-white);
-    padding: 16px 16px 0;
+    padding: 16px 30px 0 20px;
   }
 }
 </style>
