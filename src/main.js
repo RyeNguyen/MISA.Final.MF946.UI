@@ -8,11 +8,13 @@ import GenderModel from "@/models/GenderModel";
 import MisaButton from "@/components/base/MisaButton";
 import MisaInput from "@/components/base/MisaInput";
 import MisaDateBox from "@/components/base/MisaDateBox";
-import MisaTable from "@/components/base/MisaTable";
+import MisaDropdown from "@/components/base/dropdown/MisaDropdown";
+import MisaTable from "@/components/base/table/MisaTable";
 
 Vue.component('MisaButton', MisaButton);
 Vue.component('MisaInput', MisaInput);
 Vue.component('MisaDateBox', MisaDateBox);
+Vue.component('MisaDropdown', MisaDropdown);
 Vue.component('MisaTable', MisaTable);
 
 Vue.prototype.$genderData = GenderModel.initData();

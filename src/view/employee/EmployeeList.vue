@@ -27,6 +27,7 @@
 import MisaPopup from "@/components/base/MisaPopup";
 
 import EmployeeColsModel from "@/models/EmployeeColsModel";
+import EmployeeModel from "@/models/EmployeeModel";
 import DateFormatter from "@/utils/DateFormatter";
 
 import EmployeeDetail from "@/view/employee/EmployeeDetail";
@@ -54,7 +55,7 @@ export default {
       isPopupVisible: false,
 
       //Biến chứa dữ liệu cá nhân nhân viên cần sửa
-      employeeData: null
+      employeeData: EmployeeModel.initData()
     };
   },
 
@@ -125,6 +126,7 @@ export default {
      * Author: NQMinh (29/08/2021)
      */
     hidePopup() {
+      this.employeeData = EmployeeModel.initData();
       this.isPopupVisible = false;
     }
   }

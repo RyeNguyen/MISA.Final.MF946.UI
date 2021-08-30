@@ -7,7 +7,7 @@
     shading-color="rgba(0, 0, 0, 0.4)"
     :drag-enabled="true"
     :show-title="true"
-    :visible="isPopupVisible"
+    :visible="popupVisible"
     @hidden="hidePopup"
 >
   <template #popup-content>
@@ -22,6 +22,12 @@ import { DxPopup } from 'devextreme-vue/popup';
 export default {
   name: "MisaPopup",
 
+  data () {
+    return {
+      popupVisible: false
+    }
+  },
+
   components: {
     DxPopup
   },
@@ -33,6 +39,14 @@ export default {
     }
   },
 
+  watch: {
+    isPopupVisible: function() {
+      if (this.isPopupVisible === true) {
+        this.popupVisible = true;
+      }
+    }
+  },
+
   emits: ['hidePopup'],
 
   methods: {
@@ -41,7 +55,7 @@ export default {
      * Author: NQMinh (29/08/2021)
      */
     hidePopup: function () {
-      this.isPopupVisible = false;
+      this.popupVisible = false;
       this.$emit('hidePopup');
     }
   }
@@ -65,6 +79,7 @@ export default {
 
 .dx-popup-draggable .dx-popup-title {
   cursor: grab !important;
+  //height: 100%;
 }
 
 .dx-popup-title {
@@ -74,6 +89,25 @@ export default {
     padding: 0 !important;
     position: absolute !important;
     top: 0 !important;
+
+    & .dx-toolbar-items-container {
+      height: 48px !important;
+    }
+  }
+
+  & .dx-closebutton {
+    width: 24px;
+    height: 24px;
+    background-image: url('../../assets/icon/misa-close.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    left: -12px !important;
+    border: none !important;
+
+    & .dx-icon {
+      display: none;
+    }
   }
 }
 </style>

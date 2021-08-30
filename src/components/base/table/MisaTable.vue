@@ -40,7 +40,13 @@
           cell-template="functionCell"
       ></DxColumn>
       <template #functionCell="{data}">
-        <button @click="editData(data)">Sửa</button>
+        <div class="misa-table__functional-cell">
+          <div
+              class="misa-table__functional-cell--text"
+              @click="editData(data)"
+          >Sửa</div>
+          <MisaTableDropdown/>
+        </div>
       </template>
       <DxScrolling mode="virtual"/>
     </DxDataGrid>
@@ -58,6 +64,8 @@ import {
   DxSelection,
   DxSorting
 } from 'devextreme-vue/data-grid';
+
+import MisaTableDropdown from "@/components/base/table/MisaTableDropdown";
 
 export default {
   name: "MisaTable",
@@ -88,6 +96,7 @@ export default {
     DxPaging,
     DxSelection,
     DxSorting,
+    MisaTableDropdown
   },
 
   emits: ['onEditMode'],
@@ -116,6 +125,10 @@ export default {
 
   .dx-datagrid-headers {
     border-bottom: none;
+
+    .dx-datagrid-content {
+      margin-bottom: 0;
+    }
 
     .dx-header-row {
       background-color: var(--color-table);
@@ -175,6 +188,19 @@ export default {
   .dx-pointer-events-none {
     border-left: none !important;
     border-right: none !important;
+  }
+
+  &__functional-cell {
+    width: auto;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+
+    &--text {
+      color: var(--color-secondary);
+      cursor: pointer;
+    }
   }
 }
 </style>

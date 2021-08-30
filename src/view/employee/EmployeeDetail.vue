@@ -21,6 +21,7 @@
                 labelName="Mã"
                 inputWidth="40%"
                 inputPlaceholder="NV-1234"
+                :inputValue="employeeData['EmployeeCode']"
             />
 
             <MisaInput
@@ -28,6 +29,7 @@
                 labelName="Tên"
                 inputWidth="60%"
                 inputPlaceholder="Nguyễn Quang Minh"
+                :inputValue="employeeData['FullName']"
             />
           </div>
 
@@ -35,6 +37,7 @@
               inputId="input-department"
               labelName="Đơn vị"
               inputWidth="100%"
+              :inputValue="employeeData['DepartmentName']"
           />
 
           <MisaInput
@@ -42,6 +45,7 @@
               labelName="Chức danh"
               inputWidth="100%"
               inputPlaceholder="Kỹ sư phần mềm"
+              :inputValue="employeeData['PositionName']"
           />
         </div>
 
@@ -52,10 +56,19 @@
 <!--              inputWidth="40%"-->
 <!--              inputType="date"-->
 <!--          />-->
-          <MisaDateBox
-            dateboxId="input-dob"
-            labelName="Ngày sinh"
-          />
+          <div class="misa-modal__body-part" style="gap: 16px">
+            <MisaDateBox
+                dateboxId="input-dob"
+                labelName="Ngày sinh"
+                dateboxWidth="40%"
+                :inputValue="employeeData['DateOfBirth']"
+            />
+            <MisaRadioGroup
+              :radioItems="['Nam', 'Nữ', 'Khác']"
+              groupWidth="60%"
+              labelName="Giới tính"
+            />
+          </div>
 
           <div class="misa-modal__body-part">
             <MisaInput
@@ -63,13 +76,21 @@
                 labelName="Số CMND"
                 inputWidth="60%"
                 inputPlaceholder="01320008866"
+                :inputValue="employeeData['IdentityNumber']"
             />
 
-            <MisaInput
-                inputId="input-identity-date"
+<!--            <MisaInput-->
+<!--                inputId="input-identity-date"-->
+<!--                labelName="Ngày cấp"-->
+<!--                inputWidth="40%"-->
+<!--                inputType="date"-->
+<!--            />-->
+
+            <MisaDateBox
+                dateboxId="input-identity-date"
                 labelName="Ngày cấp"
-                inputWidth="40%"
-                inputType="date"
+                dateboxWidth="40%"
+                :inputValue="employeeData['IdentityDate']"
             />
           </div>
 
@@ -78,6 +99,7 @@
               labelName="Nơi cấp"
               inputWidth="100%"
               inputPlaceholder="Bộ Công an Hà Nội"
+              :inputValue="employeeData['IdentityPlace']"
           />
         </div>
       </div>
@@ -88,6 +110,7 @@
             labelName="Địa chỉ"
             inputWidth="100%"
             inputPlaceholder="146 Phạm Văn Chiêu"
+            :inputValue="employeeData['Address']"
         />
 
         <div class="misa-modal__body-part">
@@ -97,6 +120,7 @@
               inputWidth="24%"
               inputType="tel"
               inputPlaceholder="0963579744"
+              :inputValue="employeeData['MobilePhoneNumber']"
           />
 
           <MisaInput
@@ -105,6 +129,7 @@
               inputWidth="24%"
               inputType="tel"
               inputPlaceholder="(764) 749-6748"
+              :inputValue="employeeData['TelephoneNumber']"
           />
 
           <MisaInput
@@ -113,6 +138,7 @@
               inputWidth="24%"
               inputType="email"
               inputPlaceholder="procuon856@example.com"
+              :inputValue="employeeData['Email']"
           />
         </div>
 
@@ -122,6 +148,7 @@
               labelName="Tài khoản ngân hàng"
               inputWidth="24%"
               inputPlaceholder="944147"
+              :inputValue="employeeData['BankAccount']"
           />
 
           <MisaInput
@@ -129,6 +156,7 @@
               labelName="Tên ngân hàng"
               inputWidth="24%"
               inputPlaceholder="Ngân hàng Vietcombank"
+              :inputValue="employeeData['BankName']"
           />
 
           <MisaInput
@@ -136,6 +164,7 @@
               labelName="Chi nhánh"
               inputWidth="24%"
               inputPlaceholder="Chi nhánh 6"
+              :inputValue="employeeData['BankBranch']"
           />
         </div>
       </div>
@@ -170,13 +199,25 @@
 </template>
 
 <script>
+import MisaRadioGroup from "@/components/base/MisaRadioGroup";
+
 export default {
   name: "EmployeeDetail",
+
+  data() {
+    return {
+      employee: this.employeeData
+    }
+  },
 
   props: {
     employeeData: {
       type: Object
     }
+  },
+
+  components: {
+    MisaRadioGroup
   }
 }
 </script>
@@ -187,7 +228,8 @@ export default {
   min-width: 900px;
   padding: 20px 32px;
 
-  .misa-input {
+  .misa-input,
+  .misa-datebox {
     margin-bottom: 12px;
 
     input::placeholder {

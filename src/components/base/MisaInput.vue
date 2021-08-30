@@ -14,6 +14,7 @@
         :placeholder="inputPlaceholder"
         :type="inputType"
         :max="currentDate"
+        v-model="inputValue"
     >
     <span v-if="this.isSearchable === true" class="misa-input__icon"/>
   </div>
@@ -56,18 +57,22 @@ export default {
 
     isSearchable: {
       type: Boolean
+    },
+
+    inputValue: {
+      default: null
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .misa-input {
   position: relative;
+  font-family: 'NotoSans-Semibold', sans-serif !important;
 
   &__label {
     height: 20px;
-    font-family: 'NotoSans-Semibold', sans-serif;
   }
 
   input {
@@ -77,6 +82,7 @@ export default {
     border-radius: 2px;
     border: 1px solid var(--color-hightlight);
     display: inline-block;
+    font-family: 'NotoSans-Regular', sans-serif !important;
 
     &:hover {
       outline: 1px solid var(--color-hightlight-hover);
