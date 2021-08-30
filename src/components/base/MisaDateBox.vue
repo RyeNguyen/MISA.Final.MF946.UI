@@ -9,9 +9,8 @@
       </label>
     </div>
     <DxDateBox
-        :show-clear-button="true"
         :use-mask-behavior="true"
-        :value="dateValue"
+        :value="inputValue"
         type="date"
         :max="currentDate"
     >
@@ -59,7 +58,7 @@ export default {
       type: String
     },
 
-    dateValue: {
+    inputValue: {
 
     }
   }
@@ -198,120 +197,120 @@ export default {
 .dx-calendar-navigator-next-view.dx-button .dx-icon {
   color: var(--color-primary) !important;
 }
-
-.dx-calendar-cell.dx-calendar-selected-date.dx-calendar-contoured-date {
-  box-shadow: inset 0 0 0 1px var(--date-picker-active-bg),
-  inset 0 0 0 1000px var(--date-picker-active-bg) !important;
-}
-
-.dx-calendar-cell.dx-calendar-selected-date {
-  box-shadow: inset 0 0 0 1px var(--date-picker-active-bg),
-  inset 0 0 0 1000px var(--date-picker-active-bg) !important;
-}
-
-.dx-calendar-cell.dx-state-hover {
-  box-shadow: inset 0 0 0 1px var(--date-picker-hover-bg),
-  inset 0 0 0 1000px var(--date-picker-hover-bg) !important;
-}
-
-.dx-calendar-cell.dx-calendar-today {
-  color: var(--date-picker-color-today);
-}
-
-// Style calendar datetime
-@media screen and (max-height: 800px) {
-  .dx-datebox-wrapper-datetime {
-    .dx-popup-content {
-      height: auto !important;
-      padding: 16px !important;
-      margin: 0 !important;
-
-      .dx-timeview-clock{
-        min-height: 150px;
-        min-width: 150px;
-        background-size: 150px;
-      }
-
-      .dx-box-flex {
-        align-items: center !important;
-        .dx-calendar-body {
-          height: 175px !important;
-          max-height: 175px !important;
-          overflow-y: auto;
-        }
-      }
-
-      .dx-calendar-view-month {
-        margin: 0 !important;
-        margin-right: 8px !important;
-        height: 235px !important;
-        min-height: 235px !important;
-      }
-
-      .dx-timeview {
-        margin: 0 !important;
-        margin-left: 8px !important;
-      }
-    }
-
-    .dx-popup-bottom.dx-toolbar {
-      padding: 0 16px 16px;
-    }
-  }
-}
-
-.dx-datebox-wrapper-datetime {
-  .dx-popup-content {
-    height: auto !important;
-    padding: 16px !important;
-    margin: 0 !important;
-
-    .dx-box-flex {
-      align-items: center !important;
-    }
-
-    .dx-calendar-view-month {
-      margin: 0 !important;
-      margin-right: 8px !important;
-    }
-
-    .dx-timeview {
-      margin: 0 !important;
-      margin-left: 8px !important;
-    }
-  }
-
-  .dx-popup-bottom.dx-toolbar {
-    padding: 0 16px 16px;
-  }
-
-  .dx-toolbar-items-container {
-    .dx-toolbar-after {
-      display: flex;
-      flex-direction: row-reverse;
-
-      .dx-toolbar-button {
-        &:first-child {
-          padding: 0;
-        }
-        &:last-child {
-          padding-right: 8px;
-        }
-      }
-    }
-  }
-}
-// Style list time
-.dx-datebox-wrapper-time{
-  .dx-popup-content{
-    padding: 0 !important;
-  }
-}
-.dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item.dx-list-item-selected{
-  background: var(--date-picker-hover-bg) !important;
-}
-.dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item.dx-state-active{
-  background: var(--date-picker-hover-bg) !important;
-  color: #212121;
-}
+//
+//.dx-calendar-cell.dx-calendar-selected-date.dx-calendar-contoured-date {
+//  box-shadow: inset 0 0 0 1px var(--date-picker-active-bg),
+//  inset 0 0 0 1000px var(--date-picker-active-bg) !important;
+//}
+//
+//.dx-calendar-cell.dx-calendar-selected-date {
+//  box-shadow: inset 0 0 0 1px var(--date-picker-active-bg),
+//  inset 0 0 0 1000px var(--date-picker-active-bg) !important;
+//}
+//
+//.dx-calendar-cell.dx-state-hover {
+//  box-shadow: inset 0 0 0 1px var(--date-picker-hover-bg),
+//  inset 0 0 0 1000px var(--date-picker-hover-bg) !important;
+//}
+//
+//.dx-calendar-cell.dx-calendar-today {
+//  color: var(--date-picker-color-today);
+//}
+//
+//// Style calendar datetime
+//@media screen and (max-height: 800px) {
+//  .dx-datebox-wrapper-datetime {
+//    .dx-popup-content {
+//      height: auto !important;
+//      padding: 16px !important;
+//      margin: 0 !important;
+//
+//      .dx-timeview-clock{
+//        min-height: 150px;
+//        min-width: 150px;
+//        background-size: 150px;
+//      }
+//
+//      .dx-box-flex {
+//        align-items: center !important;
+//        .dx-calendar-body {
+//          height: 175px !important;
+//          max-height: 175px !important;
+//          overflow-y: auto;
+//        }
+//      }
+//
+//      .dx-calendar-view-month {
+//        margin: 0 !important;
+//        margin-right: 8px !important;
+//        height: 235px !important;
+//        min-height: 235px !important;
+//      }
+//
+//      .dx-timeview {
+//        margin: 0 !important;
+//        margin-left: 8px !important;
+//      }
+//    }
+//
+//    .dx-popup-bottom.dx-toolbar {
+//      padding: 0 16px 16px;
+//    }
+//  }
+//}
+//
+//.dx-datebox-wrapper-datetime {
+//  .dx-popup-content {
+//    height: auto !important;
+//    padding: 16px !important;
+//    margin: 0 !important;
+//
+//    .dx-box-flex {
+//      align-items: center !important;
+//    }
+//
+//    .dx-calendar-view-month {
+//      margin: 0 !important;
+//      margin-right: 8px !important;
+//    }
+//
+//    .dx-timeview {
+//      margin: 0 !important;
+//      margin-left: 8px !important;
+//    }
+//  }
+//
+//  .dx-popup-bottom.dx-toolbar {
+//    padding: 0 16px 16px;
+//  }
+//
+//  .dx-toolbar-items-container {
+//    .dx-toolbar-after {
+//      display: flex;
+//      flex-direction: row-reverse;
+//
+//      .dx-toolbar-button {
+//        &:first-child {
+//          padding: 0;
+//        }
+//        &:last-child {
+//          padding-right: 8px;
+//        }
+//      }
+//    }
+//  }
+//}
+//// Style list time
+//.dx-datebox-wrapper-time{
+//  .dx-popup-content{
+//    padding: 0 !important;
+//  }
+//}
+//.dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item.dx-list-item-selected{
+//  background: var(--date-picker-hover-bg) !important;
+//}
+//.dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item.dx-state-active{
+//  background: var(--date-picker-hover-bg) !important;
+//  color: #212121;
+//}
 </style>

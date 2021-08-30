@@ -13,14 +13,17 @@
     >
       <DxSorting mode="none"/>
       <DxColumnFixing :enabled="true"/>
-      <DxPaging :page-size="100"/>
+      <DxPaging :page-size="20"/>
       <DxPager
           :visible="true"
       />
-      <DxSelection
-          mode="multiple"
-          show-check-boxes-mode="always"
-      />
+      <DxColumn
+          caption=""
+          :fixed="true"
+          width="40"
+          alignment="center"
+          cell-template="checkboxCell"
+      ></DxColumn>
       <DxColumn
           v-for="column in tableColumns"
           :key="column['ColId']"
@@ -36,7 +39,6 @@
           fixedPosition="right"
           width="120"
           alignment="center"
-          data-field="EmployeeId"
           cell-template="functionCell"
       ></DxColumn>
       <template #functionCell="{data}">
@@ -48,7 +50,9 @@
           <MisaTableDropdown/>
         </div>
       </template>
-      <DxScrolling mode="virtual"/>
+      <template #checkboxCell>
+        <MisaCheckbox/>
+      </template>
     </DxDataGrid>
   </div>
 </template>
@@ -60,8 +64,6 @@ import {
   DxDataGrid,
   DxPager,
   DxPaging,
-  DxScrolling,
-  DxSelection,
   DxSorting
 } from 'devextreme-vue/data-grid';
 
@@ -90,11 +92,9 @@ export default {
   components: {
     DxDataGrid,
     DxColumn,
-    DxScrolling,
     DxColumnFixing,
     DxPager,
     DxPaging,
-    DxSelection,
     DxSorting,
     MisaTableDropdown
   },
@@ -108,7 +108,7 @@ export default {
      * Author: NQMinh (29/08/2021)
      */
     editData(data) {
-      this.$emit('onEditMode', data.data);
+      this.$emit('onEditMode', data.rowIndex);
     }
   }
 }

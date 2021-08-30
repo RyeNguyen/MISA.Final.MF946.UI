@@ -10,7 +10,7 @@
     </div>
     <DxRadioGroup
         :items="radioItems"
-        :value="selectedItem"
+        :value="inputValue"
         layout="horizontal"
         @valueChanged="changeItem"
     />
@@ -25,7 +25,7 @@ export default {
 
   data() {
     return {
-      selectedItem: null
+      selectedItem: this.inputValue ? this.inputValue : null
     }
   },
 
@@ -41,6 +41,10 @@ export default {
     },
 
     labelName: {
+      type: String
+    },
+
+    inputValue: {
       type: String
     }
   },
@@ -76,5 +80,9 @@ export default {
     height: 12px;
     border-radius: 50%;
   }
+}
+
+.dx-radiobutton.dx-state-focused:not(.dx-state-active) .dx-radiobutton-icon::before {
+  border: 1px solid var(--color-primary) !important;
 }
 </style>

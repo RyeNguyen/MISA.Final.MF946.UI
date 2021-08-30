@@ -1,5 +1,5 @@
 <template>
-  <DxSelectBox :items="['Nhân bản', 'Xóa', 'Ngừng sử dụng']"/>
+  <DxSelectBox class="misa-table__dropdown" :items="['Nhân bản', 'Xóa', 'Ngừng sử dụng']"/>
 </template>
 
 <script>
@@ -15,7 +15,7 @@ export default {
 </script>
 
 <style lang="scss">
-.misa-table__functional-cell {
+.misa-table {
   .dx-texteditor-input-container {
     display: none;
   }
@@ -51,7 +51,7 @@ export default {
   }
 }
 
-.dx-dropdownlist-popup-wrapper.dx-popup-wrapper .dx-overlay-content {
-  width: 120px !important;
-}
+//.dx-dropdownlist-popup-wrapper.dx-popup-wrapper .dx-overlay-content {
+//  width: 120px !important;
+//}
 </style>

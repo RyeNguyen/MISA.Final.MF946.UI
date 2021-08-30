@@ -63,6 +63,10 @@ export default {
   &--secondary {
     background-color: transparent;
     border: 1px solid var(--color-hightlight);
+
+    &:hover {
+      background-color: var(--color-button-hover);
+    }
   }
 
   &__text {

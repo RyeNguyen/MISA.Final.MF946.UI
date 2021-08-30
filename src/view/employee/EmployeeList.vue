@@ -4,7 +4,7 @@
     <div class="misa-content__main">
       <MisaContentSearch></MisaContentSearch>
       <MisaTable
-          :dataSource="employees"
+          :dataSource="formatedEmployees"
           :tableColumns="columns"
           @onEditMode="showPopup"
       />
@@ -48,6 +48,9 @@ export default {
       //Danh sách nhân viên trả về từ server
       employees: [],
 
+      //Danh sách nhân viên đã được định dạng giới tính và ngày tháng để render trên table
+      formatedEmployees: [],
+
       //Định nghĩa các cột để render table
       columns: EmployeeColsModel.initData(),
 
@@ -75,9 +78,10 @@ export default {
     loadData() {
       EmployeesAPI.getAll().then(res => {
         this.employees = res.data;
-        for(let i = 0; i < this.employees.length; i++) {
-          this.identifyGender(this.employees[i]);
-          this.formatDate(this.employees[i]);
+        this.formatedEmployees = this.employees.slice();
+        for(let i = 0; i < this.formatedEmployees.length; i++) {
+          this.identifyGender(this.formatedEmployees[i]);
+          // this.formatDate(this.formatedEmployees[i]);
         }
       }).catch(error => {
         console.log(error)
@@ -116,8 +120,8 @@ export default {
      * Phương thức thay đổi trạng thái popup thành mở
      * Author: NQMinh (29/08/2021)
      */
-    showPopup(employeeData) {
-      this.employeeData = employeeData;
+    showPopup(employeeIndex) {
+      this.employeeData = this.employees[employeeIndex];
       this.isPopupVisible = true;
     },
 

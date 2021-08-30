@@ -3,11 +3,11 @@
     <div class="misa-modal__header">
       <h1>Thông tin nhân viên</h1>
       <div class="misa-modal__checkbox">
-        <input type="checkbox">
+        <MisaCheckbox/>
         <div>Là khách hàng</div>
       </div>
       <div class="misa-modal__checkbox">
-        <input type="checkbox">
+        <MisaCheckbox/>
         <div>Là nhà cung cấp</div>
       </div>
     </div>
@@ -32,12 +32,12 @@
                 :inputValue="employeeData['FullName']"
             />
           </div>
-
-          <MisaInput
+          <MisaCombobox
               inputId="input-department"
               labelName="Đơn vị"
               inputWidth="100%"
               :inputValue="employeeData['DepartmentName']"
+              comboboxType="Department"
           />
 
           <MisaInput
@@ -50,12 +50,6 @@
         </div>
 
         <div class="misa-modal__body--half">
-<!--          <MisaInput-->
-<!--              inputId="input-dob"-->
-<!--              labelName="Ngày sinh"-->
-<!--              inputWidth="40%"-->
-<!--              inputType="date"-->
-<!--          />-->
           <div class="misa-modal__body-part" style="gap: 16px">
             <MisaDateBox
                 dateboxId="input-dob"
@@ -67,6 +61,7 @@
               :radioItems="['Nam', 'Nữ', 'Khác']"
               groupWidth="60%"
               labelName="Giới tính"
+              :inputValue="employeeData['Gender']"
             />
           </div>
 
@@ -78,14 +73,6 @@
                 inputPlaceholder="01320008866"
                 :inputValue="employeeData['IdentityNumber']"
             />
-
-<!--            <MisaInput-->
-<!--                inputId="input-identity-date"-->
-<!--                labelName="Ngày cấp"-->
-<!--                inputWidth="40%"-->
-<!--                inputType="date"-->
-<!--            />-->
-
             <MisaDateBox
                 dateboxId="input-identity-date"
                 labelName="Ngày cấp"
@@ -224,7 +211,7 @@ export default {
 
 <style lang="scss">
 .misa-modal {
-  width: 900px;
+  width: 900px !important;
   min-width: 900px;
   padding: 20px 32px;
 

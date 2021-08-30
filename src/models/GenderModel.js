@@ -11,7 +11,7 @@ export default class GenderModel {
             },
             {
                 GenderId: 2,
-                GenderName: "Không xác định"
+                GenderName: "Khác"
             },
         ]
     }
