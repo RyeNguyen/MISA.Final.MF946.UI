@@ -5,7 +5,9 @@
     />
 
     <div class="misa-content__main">
-      <MisaContentSearch/>
+      <MisaContentSearch
+        @onSearched="searchEmployee"
+      />
 
       <MisaTable
           :dataSource="formatedEmployees"
@@ -16,6 +18,7 @@
       <MisaContentFooter
         :totalRecords="totalRecords"
         :totalPages="totalPages"
+        @onPageChanged="changePageData"
       />
 
       <MisaPopup
@@ -49,10 +52,6 @@ import EmployeesAPI from "@/api/components/EmployeesAPI";
 
 export default {
   name: "EmployeeList",
-
-  created() {
-    this.loadData();
-  },
 
   data() {
     return {
@@ -105,19 +104,24 @@ export default {
      * Author: NQMinh (28/08/2021)
      */
     loadData() {
-      EmployeesAPI.getAll().then(res => {
-        // this.totalRecords = res.data['totalRecord'];
-        // this.totalPages = res.data['totalPage'];
+      EmployeesAPI.paging(this.searchKeyword, this.currentPage, this.pageSize).then(res => {
+        if (res !== null) {
+          this.totalRecords = res.data['totalRecords'];
+          this.totalPages = res.data['totalPages'];
 
-        //Dữ liệu dùng để render lên modal
-        this.employees = res.data;
+          //Dữ liệu dùng để render lên modal
+          this.employees = res.data['data'];
 
-        //Dữ liệu dùng để render lên table
-        this.formatedEmployees = JSON.parse(JSON.stringify(res.data));
+          //Dữ liệu dùng để render lên table
+          this.formatedEmployees = JSON.parse(JSON.stringify(res.data['data']));
 
-        for(let i = 0; i < this.formatedEmployees.length; i++) {
-          this.identifyGender(this.formatedEmployees[i]);
-          this.formatDate(this.formatedEmployees[i], false);
+          for(let i = 0; i < this.formatedEmployees.length; i++) {
+            this.identifyGender(this.formatedEmployees[i]);
+            this.formatDate(this.formatedEmployees[i], false);
+          }
+        } else {
+          this.totalRecords = 0;
+          this.totalPages = 0;
         }
       }).catch(error => {
         console.log(error)
@@ -191,6 +195,26 @@ export default {
      */
     reloadData() {
       this.hidePopup();
+      this.loadData();
+    },
+
+    /**
+     * Phương thức xử lý sự kiện khi có hành động phân trang
+     * @param pageIndex
+     * Author: NQMinh (31/08/2021)
+     */
+    changePageData(pageIndex) {
+      this.currentPage = pageIndex;
+      this.loadData();
+    },
+
+    /**
+     * Phương thức tìm kiếm thông tin nhân viên
+     * @param keyword
+     * Author: NQMinh (31/08/2021)
+     */
+    searchEmployee(keyword) {
+      this.searchKeyword = keyword;
       this.loadData();
     }
   }

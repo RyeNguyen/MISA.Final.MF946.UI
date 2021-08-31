@@ -29,7 +29,7 @@
         <span class="misa-content__pagination-expand" v-show="expandLeft">...</span>
 
         <button
-            v-for="(page, index) in arrPageNumDisplay"
+            v-for="(page, index) in footerPageNumbers"
             :key="index"
             class="misa-content__pagination-button paging-number"
             :class="{ 'misa-content__pagination-button--active': currentPage === page }"
@@ -66,29 +66,43 @@
 export default {
   name: "MisaContentFooter",
 
+  created() {
+    this.$emit('onPageChanged', 1);
+    this.calculateFooterPages();
+  },
+
   data() {
     return {
       currentPage: 1,
-      pageSize: 0,
-      totalPages: 10,
-      totalRecords: 500,
-      maxVisibleButtons: 4,
+
+      pageSize: 30,
+
+      maxVisibleButtons: 5,
+
       expandLeft: false,
+
       expandRight: false,
-      arrPageNumDisplay: []
+
+      footerPageNumbers: []
     }
   },
 
   props: {
-    // totalPages: {
-    //   type: Number,
-    //   required: true
-    // },
-    //
-    // totalRecords: {
-    //   type: Number,
-    //   required: true
-    // }
+    totalPages: {
+      type: Number,
+      required: true
+    },
+
+    totalRecords: {
+      type: Number,
+      required: true
+    }
+  },
+
+  watch: {
+    totalPages: function() {
+      this.calculateFooterPages();
+    }
   },
 
   computed: {
@@ -106,133 +120,66 @@ export default {
      */
     isInLastPage: function () {
       return this.currentPage === this.totalPages;
-    },
-
-    /**
-     * Phương thức tính trang đầu tiên trên tổng số trang
-     * Author: NQMinh (31/08/2021)
-     */
-    startPage: function () {
-      if (this.currentPage === 1) {
-        return 1;
-      }
-
-      if (this.currentPage === this.totalPages) {
-        if (this.maxVisibleButtons <= this.totalPages) {
-          return this.totalPages - this.maxVisibleButtons + 1;
-        } else {
-          return this.totalPages + 1;
-        }
-      }
-
-      return this.currentPage - 1;
-    },
-
-    /**
-     * Phương thức tính trang cuối cùng trên tổng số trang
-     * Author: NQMinh (31/08/2021)
-     */
-    endPage: function () {
-      return Math.min(
-          this.startPage + this.maxVisibleButtons - 1,
-          this.totalPages
-      )
-    },
-
-    /**
-     * Phương thức tính các trang để hiển thị lên button footer
-     * Author: NQMinh (31/08/2021)
-     */
-    footerPages: function () {
-      const range = [];
-      for (let i = this.startPage; i <= this.endPage; i += 1) {
-        range.push({
-          name: i,
-          isDisabled: i === this.currentPage
-        })
-      }
-      return range;
-    },
-
-    pageInformation: function() {
-      if (this.currentPage < this.totalPages) {
-        return `${(this.currentPage - 1) * this.pageSize + 1}-${this
-            .currentPage * this.pageSize}`;
-      }
-      return `${this.totalRecords}`;
     }
   },
 
+  emits: ['onPageChanged'],
+
   methods: {
     /**
-     * Hàm lấy ra mảng phần tử hiển thị ở giữa của page-num
-     * NVTOAN 09/07/2021
+     * Phương thức tính số lượng các trang ở giữa trang đầu và trang cuối
+     * Author: NQMinh (31/08/2021)
      */
-    getArrPageNumDisplay() {
-      //Nếu tổng số trang > số trang hiển thị thì tạo mảng ở giữa
+    calculateFooterPages() {
+      //Tổng số trang lớn hơn số nút hiển thị thì tạo mảng nằm giữa
       if (this.totalPages > this.maxVisibleButtons) {
-        //Tạo mảng hiển thị page-num trong trường hợp tổng số trang > 5
-        this.getArrPageNumDisplayMultiple();
+        this.calculateFooterMiddlePages();
       }
-      //Không thì tạo mảng từ 1-max
+
+      //Tổng số trang nhỏ hơn hoặc bằng số nút hiển thị thì tạo mảng 1 -> cuối
       else {
-        //Nếu tổng page >= 3 thì mới cần list ở giữa
+        //Tổng trang >= 3 => tạo list giữa
         if(this.totalPages >= 3) {
-          //Tạo mảng ở giữa
-          this.arrPageNumDisplay = Array.from(
-              { length: this.totalPages - 2 },
-              (_, i) => i + 2
-          );
-        }
-        else {
-          this.arrPageNumDisplay = [];
+          this.footerPageNumbers = Array.from({ length: this.totalPages - 2 }, (_, i) => i + 2);
+        } else {
+          this.footerPageNumbers = [];
         }
       }
-      //Hiển thị dấu '...' tương ứng
-      this.displayExpand();
+      //Hiển thị 3 chấm
+      this.displayExpandDots();
     },
 
     /**
-     * Hàm tạo mảng hiển thị page-num trong trường hợp tổng số trang > 5
-     * NVTOAN 09/07/2021
+     * Phương thức tính toán số lượng trang cần hiển thị ngoại trừ đầu và cuối
+     * Author: NQMinh (31/08/2021)
      */
-    getArrPageNumDisplayMultiple() {
-      //Nếu hiện tại đang chọn page 1
+    calculateFooterMiddlePages() {
       if (this.currentPage === 1) {
-        this.arrPageNumDisplay = [2, 3];
-      }
-      //Nếu hiện tại đang chọn page cuối
-      else if (this.currentPage === this.totalPages) {
-        this.arrPageNumDisplay = [
+        this.footerPageNumbers = [2, 3];
+      } else if (this.currentPage === this.totalPages) {
+        this.footerPageNumbers = [
           this.totalPages - 2,
           this.totalPages - 1,
         ];
-      }
-      //Nếu đang chọn page ở giữa
-      else {
-        this.getArrPageNumMiddle();
+      } else {
+        this.getMiddleNumbers();
       }
     },
 
     /**
-     * Hàm lấy page num ở giữa
-     * NVTOAN 09/07/2021
+     * Phương thức tính toán số lượng trang nằm giữa trong trường hợp tổng số trang lớn hơn số nút hiển thị
+     * Author: NQMinh (31/08/2021)
      */
-    getArrPageNumMiddle() {
-      //Nếu đang là trang 2 thì chỉ hiển thị 2,3
+    getMiddleNumbers() {
       if (this.currentPage === 2) {
-        this.arrPageNumDisplay = [2, 3];
-      }
-      //Nếu đang là trang gần cuối thì chỉ hiển thị 3 trang cuối
-      else if (this.currentPage === this.totalPages - 1) {
-        this.arrPageNumDisplay = [
+        this.footerPageNumbers = [2, 3];
+      } else if (this.currentPage === this.totalPages - 1) {
+        this.footerPageNumbers = [
           this.totalPages - 2,
           this.totalPages - 1,
         ];
-      }
-      //Nếu đang là trang ở giữa
-      else {
-        this.arrPageNumDisplay = [
+      } else {
+        this.footerPageNumbers = [
           this.currentPage - 1,
           this.currentPage,
           this.currentPage + 1,
@@ -241,77 +188,75 @@ export default {
     },
 
     /**
-     * Hàm hiển thị dấu còn nữa '...'
-     * NVTOAN 09/07/2021
+     * Phương thức hiển thị dấu 3 chấm
+     * Author: NQMinh (31/08/2021)
      */
-    displayExpand() {
-      //Dấu còn nữa bên trái
-      this.arrPageNumDisplay[0] - 1 > 1 ? this.expandLeft = true : this.expandLeft = false;
-      //Dấu còn nữa bên phải
-      this.arrPageNumDisplay[this.arrPageNumDisplay.length - 1] + 1 < this.totalPages ? (this.expandRight = true) : (this.expandRight = false);
+    displayExpandDots() {
+      this.footerPageNumbers[0] - 1 > 1 ? this.expandLeft = true : this.expandLeft = false;
+      this.footerPageNumbers[this.footerPageNumbers.length - 1] + 1 < this.totalPages ? (this.expandRight = true) : (this.expandRight = false);
     },
 
     /**
-     * Hàm khi click page num
-     * NVTOAN 06/07/2021
+     * Phương thức xử lý sự kiện khi click các nút số phân trang
+     * Author: NQMinh (31/08/2021)
      */
     onClickPage(pageIndex) {
       this.currentPage = pageIndex;
-      this.getArrPageNumDisplay();
-      this.$emit("clickPageNum", pageIndex);
+      this.calculateFooterPages();
+      this.$emit("onPageChanged", pageIndex);
     },
 
     /**
-     * Hàm xử lý khi ấn first page
-     * NVTOAN 06/07/2021
+     * Phương thức xử lý sự kiện khi click trang đầu tiên
+     * Author: NQMinh (31/08/2021)
      */
     onClickFirstPage() {
       if (this.currentPage !== 1) {
         this.currentPage = 1;
-        this.getArrPageNumDisplay();
-        this.$emit("clickPageNum", 1);
+        this.calculateFooterPages();
+        this.$emit("onPageChanged", 1);
       }
     },
 
     /**
-     * Hàm xử lý khi ấn previous page
-     * NVTOAN 06/07/2021
+     * Phương thức xử lý sự kiện khi click nút trở về trước
+     * Author: NQMinh (31/08/2021)
      */
     onClickPreviousPage() {
       if (this.currentPage > 1) {
         this.currentPage--;
-        this.getArrPageNumDisplay();
-        this.$emit("clickPageNum", this.currentPage);
+        this.calculateFooterPages();
+        this.$emit("onPageChanged", this.currentPage);
       }
     },
 
     /**
-     * Hàm xử lý khi ấn next page
-     * NVTOAN 06/07/2021
+     * Phương thức xử lý sự kiện khi click nút tiếp theo
+     * Author: NQMinh (31/08/2021)
      */
     onClickNextPage() {
       if (this.currentPage < this.totalPages) {
         this.currentPage++;
-        this.getArrPageNumDisplay();
-        this.$emit("clickPageNum", this.currentPage);
+        this.calculateFooterPages();
+        this.$emit("onPageChanged", this.currentPage);
       }
     },
 
     /**
-     * Hàm xử lý khi ấn last page
-     * NVTOAN 06/07/2021
+     * Phương thức xử lý sự kiện khi click trang cuối cùng
+     * Author: NQMinh (31/08/2021)
      */
     onClickLastPage() {
       if (this.currentPage !== this.totalPages) {
         this.currentPage = this.totalPages;
-        this.getArrPageNumDisplay();
-        this.$emit("clickPageNum", this.currentPage);
+        this.calculateFooterPages();
+        this.$emit("onPageChanged", this.currentPage);
       }
     },
 
     /**
-     * Hàm thay đổi page size
-     * NVTOAN 09/07/2021
+     * Phương thức xử lý sự kiện khi số bản ghi/trang thay đổi
+     * Author: NQMinh (31/08/2021)
      */
     changePageSize(pageSize) {
       this.$emit('changePageSize', pageSize);

@@ -3,9 +3,10 @@
     <MisaInput
         ref="inputSearch"
         :isSearchable="true"
-        inputName="SearchAndFilter"
         inputId="input-search"
+        inputName="SearchAndFilter"
         inputPlaceholder="Tìm theo mã, tên nhân viên"
+        @onInputTyping="changeKeyword"
     />
     <div class="misa-content__reload"></div>
   </div>
@@ -19,6 +20,40 @@ export default {
     this.$nextTick(() => {
       this.$refs.inputSearch.$el.children[1].focus();
     })
+  },
+
+  data() {
+    return {
+      searchKeyword: "",
+      timeoutValue: null
+    }
+  },
+
+  watch: {
+    /**
+     * Phương thức theo dõi sự thay đổi của từ khóa tìm kiếm để thông báo lên component cha
+     * Author: NQMinh (31/08/2021)
+     */
+    searchKeyword: function () {
+      clearTimeout(this.timeoutValue);
+      this.timeoutValue = setTimeout(() => {
+        this.$emit('onSearched', this.searchKeyword);
+      }, 300);
+    }
+  },
+
+  emits: ['onSearched'],
+
+  methods: {
+    /**
+     * Phương thức thay đổi giá trị tìm kiếm khi nhập trong ô tìm kiếm
+     * @param inputName
+     * @param inputValue
+     * Author: NQMinh (31/08/2021)
+     */
+    changeKeyword: function (inputName, inputValue) {
+      this.searchKeyword = inputValue;
+    }
   }
 }
 </script>

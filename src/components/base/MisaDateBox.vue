@@ -97,106 +97,106 @@ export default {
   color: var(--color-text-content);
 }
 
-.dx-calendar-cell.dx-calendar-other-view:not(.dx-calendar-selected-date) {
-  color: var(--text-disable-color);
-}
-
-.dx-calendar-body thead tr th {
-  color: var(--text-disable-color);
-}
-
-.dx-datebox-wrapper-time .dx-list-item-content {
-  padding: 10px !important;
-}
-
-.dx-datebox-wrapper-calendar .dx-calendar {
-  margin: 10px 0 !important;
-}
-
-.dx-datebox-wrapper-time .dx-state-hover .dx-list-item-content {
-  background: var(--date-picker-hover-bg);
-}
-
-.dx-calendar-caption-button {
-  .dx-button-text {
-    text-transform: capitalize;
-  }
-}
-
-// In màu cho ngày cuối tuần và ngày hiện tại
-.dx-calendar-cell:not(.dx-calendar-other-month) .weekend {
-  text-shadow: none;
-  font-weight: bold;
-}
-
-//.dx-calendar-cell:not(.dx-calendar-other-month) .weekend {
-//  color: #ff3030;
+//.dx-calendar-cell.dx-calendar-other-view:not(.dx-calendar-selected-date) {
+//  color: var(--text-disable-color);
 //}
 //
-//.dx-state-disabled.dx-calendar,
-//.dx-calendar-cell:not(.dx-calendar-other-month),
-//.weekend {
-//  color: #ff8080;
+//.dx-calendar-body thead tr th {
+//  color: var(--text-disable-color);
 //}
-
-.ms-datebox.disabled {
-  .datebox-input {
-    //background-color: $input-disable-bg-color;
-    //border-color: $input-disable-border;
-    //cursor: auto;
-    //pointer-events: none;
-    //input {
-    //  color: $input-disable-color !important;
-    //}
-  }
-}
-
-.ms-datebox {
-  height: max-content;
-  width: 100%;
-
-  .dx-texteditor.dx-state-focused.dx-editor-outlined {
-    border-color: var(--input-hover-border-color);
-  }
-
-  .dx-texteditor.dx-editor-outlined {
-    border-radius: 4px;
-    &:hover {
-      border-color: var(--input-hover-border-color);
-    }
-  }
-}
-
-// Style input khi validate error
-.is-valid-datebox {
-  .dx-dropdowneditor-icon {
-    display: none;
-  }
-  .dx-texteditor.dx-state-focused.dx-editor-outlined {
-    border-color: var(--input-error-border-color);
-  }
-  .dx-texteditor.dx-editor-outlined {
-    border-radius: 4px;
-    border-color: var(--input-error-border-color);
-    &:hover {
-      border-color: var(--input-error-border-color);
-    }
-  }
-}
-
-// Style màu cho calendar
-.dx-calendar-navigator,
-.dx-calendar-caption-button.dx-button,
-.dx-button-content {
-  color: var(--color-primary) !important;
-}
-
-.dx-calendar-navigator-previous-month.dx-button .dx-icon,
-.dx-calendar-navigator-previous-view.dx-button .dx-icon,
-.dx-calendar-navigator-next-month.dx-button .dx-icon,
-.dx-calendar-navigator-next-view.dx-button .dx-icon {
-  color: var(--color-primary) !important;
-}
+//
+//.dx-datebox-wrapper-time .dx-list-item-content {
+//  padding: 10px !important;
+//}
+//
+//.dx-datebox-wrapper-calendar .dx-calendar {
+//  margin: 10px 0 !important;
+//}
+//
+//.dx-datebox-wrapper-time .dx-state-hover .dx-list-item-content {
+//  background: var(--date-picker-hover-bg);
+//}
+//
+//.dx-calendar-caption-button {
+//  .dx-button-text {
+//    text-transform: capitalize;
+//  }
+//}
+//
+//// In màu cho ngày cuối tuần và ngày hiện tại
+//.dx-calendar-cell:not(.dx-calendar-other-month) .weekend {
+//  text-shadow: none;
+//  font-weight: bold;
+//}
+//
+////.dx-calendar-cell:not(.dx-calendar-other-month) .weekend {
+////  color: #ff3030;
+////}
+////
+////.dx-state-disabled.dx-calendar,
+////.dx-calendar-cell:not(.dx-calendar-other-month),
+////.weekend {
+////  color: #ff8080;
+////}
+//
+//.ms-datebox.disabled {
+//  .datebox-input {
+//    //background-color: $input-disable-bg-color;
+//    //border-color: $input-disable-border;
+//    //cursor: auto;
+//    //pointer-events: none;
+//    //input {
+//    //  color: $input-disable-color !important;
+//    //}
+//  }
+//}
+//
+//.ms-datebox {
+//  height: max-content;
+//  width: 100%;
+//
+//  .dx-texteditor.dx-state-focused.dx-editor-outlined {
+//    border-color: var(--input-hover-border-color);
+//  }
+//
+//  .dx-texteditor.dx-editor-outlined {
+//    border-radius: 4px;
+//    &:hover {
+//      border-color: var(--input-hover-border-color);
+//    }
+//  }
+//}
+//
+//// Style input khi validate error
+//.is-valid-datebox {
+//  .dx-dropdowneditor-icon {
+//    display: none;
+//  }
+//  .dx-texteditor.dx-state-focused.dx-editor-outlined {
+//    border-color: var(--input-error-border-color);
+//  }
+//  .dx-texteditor.dx-editor-outlined {
+//    border-radius: 4px;
+//    border-color: var(--input-error-border-color);
+//    &:hover {
+//      border-color: var(--input-error-border-color);
+//    }
+//  }
+//}
+//
+//// Style màu cho calendar
+//.dx-calendar-navigator,
+//.dx-calendar-caption-button.dx-button,
+//.dx-button-content {
+//  color: var(--color-primary) !important;
+//}
+//
+//.dx-calendar-navigator-previous-month.dx-button .dx-icon,
+//.dx-calendar-navigator-previous-view.dx-button .dx-icon,
+//.dx-calendar-navigator-next-month.dx-button .dx-icon,
+//.dx-calendar-navigator-next-view.dx-button .dx-icon {
+//  color: var(--color-primary) !important;
+//}
 //
 //.dx-calendar-cell.dx-calendar-selected-date.dx-calendar-contoured-date {
 //  box-shadow: inset 0 0 0 1px var(--date-picker-active-bg),
