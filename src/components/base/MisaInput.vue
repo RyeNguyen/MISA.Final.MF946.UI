@@ -13,8 +13,7 @@
         :class="{'misa-input-icon': isSearchable === true}"
         :placeholder="inputPlaceholder"
         :type="inputType"
-        :max="currentDate"
-        v-model="inputValue"
+        v-model="inputData"
     >
     <span v-if="this.isSearchable === true" class="misa-input__icon"/>
   </div>
@@ -24,13 +23,22 @@
 export default {
   name: "MisaInput",
 
+  mounted () {
+    this.inputData = this.inputValue;
+  },
+
   data () {
     return {
-      currentDate: Date.now()
+      inputData: this.inputValue
     }
   },
 
   props: {
+    inputName: {
+      type: String,
+      required: true
+    },
+
     inputId: {
       type: String,
       required: true
@@ -61,6 +69,12 @@ export default {
 
     inputValue: {
       default: null
+    }
+  },
+
+  watch: {
+    inputData: function() {
+      this.$emit('onInputTyping', this.inputName, this.inputData);
     }
   }
 }
@@ -93,6 +107,7 @@ export default {
     }
 
     &::placeholder {
+      font-size: 12px;
       font-style: italic;
     }
   }

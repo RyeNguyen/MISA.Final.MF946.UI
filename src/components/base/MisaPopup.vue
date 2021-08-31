@@ -8,6 +8,7 @@
     :drag-enabled="true"
     :show-title="true"
     :visible="popupVisible"
+    :deferRendering="true"
     @hidden="hidePopup"
 >
   <template #popup-content>
@@ -57,7 +58,15 @@ export default {
     hidePopup: function () {
       this.popupVisible = false;
       this.$emit('hidePopup');
-    }
+    },
+
+    /**
+     * Phương thức thông báo component cha là popup đã mở
+     * Author: NQMinh (30/08/2021)
+     */
+    // showPopup() {
+    //   this.$emit('onPopupShown');
+    // }
   }
 }
 </script>

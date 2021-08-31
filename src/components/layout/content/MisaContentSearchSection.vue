@@ -1,17 +1,25 @@
 <template>
-<div class="misa-content__search">
-  <MisaInput
-      inputId="input-search"
-    inputPlaceholder="Tìm theo mã, tên nhân viên"
-    :isSearchable="true"
-  />
-  <div class="misa-content__reload"></div>
-</div>
+  <div class="misa-content__search">
+    <MisaInput
+        ref="inputSearch"
+        :isSearchable="true"
+        inputName="SearchAndFilter"
+        inputId="input-search"
+        inputPlaceholder="Tìm theo mã, tên nhân viên"
+    />
+    <div class="misa-content__reload"></div>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "MisaContentSearchSection"
+  name: "MisaContentSearchSection",
+
+  created() {
+    this.$nextTick(() => {
+      this.$refs.inputSearch.$el.children[1].focus();
+    })
+  }
 }
 </script>
 

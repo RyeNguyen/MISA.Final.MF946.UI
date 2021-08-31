@@ -1,14 +1,17 @@
 <template>
   <div class="misa-content">
-    <MisaContentHeader></MisaContentHeader>
+    <MisaContentHeader
+      @onInsertMode="showPopupToInsert"
+    />
+
     <div class="misa-content__main">
-      <MisaContentSearch></MisaContentSearch>
+      <MisaContentSearch/>
       <MisaTable
           :dataSource="formatedEmployees"
           :tableColumns="columns"
-          @onEditMode="showPopup"
+          @onEditMode="showPopupToEdit"
       />
-      <MisaContentFooter></MisaContentFooter>
+<!--      <MisaContentFooter></MisaContentFooter>-->
 
       <MisaPopup
           :isPopupVisible="isPopupVisible"
@@ -16,7 +19,10 @@
       >
         <EmployeeDetail
             slot="popup-content"
+            :isPopupVisible="isPopupVisible"
             :employeeData="employeeData"
+            :wantToCreateNewEmployee="wantToCreateNewEmployee"
+            @dataChanged="reloadData"
         />
       </MisaPopup>
     </div>
@@ -33,7 +39,7 @@ import DateFormatter from "@/utils/DateFormatter";
 import EmployeeDetail from "@/view/employee/EmployeeDetail";
 import MisaContentHeader from '@/components/layout/content/MisaContentHeader';
 import MisaContentSearch from "@/components/layout/content/MisaContentSearchSection";
-import MisaContentFooter from "@/components/layout/content/MisaContentFooter";
+//import MisaContentFooter from "@/components/layout/content/MisaContentFooter";
 import EmployeesAPI from "@/api/components/EmployeesAPI";
 
 export default {
@@ -58,7 +64,10 @@ export default {
       isPopupVisible: false,
 
       //Biến chứa dữ liệu cá nhân nhân viên cần sửa
-      employeeData: EmployeeModel.initData()
+      employeeData: EmployeeModel.initData(),
+
+      //Biến kiểm tra người dùng muốn sửa hay thêm thông tin nhân viên
+      wantToCreateNewEmployee: false
     };
   },
 
@@ -66,7 +75,6 @@ export default {
     EmployeeDetail,
     MisaContentHeader,
     MisaContentSearch,
-    MisaContentFooter,
     MisaPopup
   },
 
@@ -78,10 +86,10 @@ export default {
     loadData() {
       EmployeesAPI.getAll().then(res => {
         this.employees = res.data;
-        this.formatedEmployees = this.employees.slice();
+        this.formatedEmployees = JSON.parse(JSON.stringify(res.data));
         for(let i = 0; i < this.formatedEmployees.length; i++) {
           this.identifyGender(this.formatedEmployees[i]);
-          // this.formatDate(this.formatedEmployees[i]);
+          this.formatDate(this.formatedEmployees[i], false);
         }
       }).catch(error => {
         console.log(error)
@@ -107,21 +115,36 @@ export default {
     /**
      * Phương thức định dạng lại dữ liệu ngày tháng trước khi render table
      * @param employee
+     * @param onModal
      * Author: NQMinh (28/08/2021)
      */
-    formatDate(employee) {
-      employee['DateOfBirth'] = DateFormatter.format(employee['DateOfBirth'], false);
-      employee['IdentityDate'] = DateFormatter.format(employee['IdentityDate'], false);
-      employee['CreatedDate'] = DateFormatter.format(employee['CreatedDate'], false);
-      employee['ModifiedDate'] = DateFormatter.format(employee['ModifiedDate'], false);
+    formatDate(employee, onModal) {
+      employee['DateOfBirth'] = DateFormatter.format(employee['DateOfBirth'], onModal);
+      employee['IdentityDate'] = DateFormatter.format(employee['IdentityDate'], onModal);
+      employee['CreatedDate'] = DateFormatter.format(employee['CreatedDate'], onModal);
+      employee['ModifiedDate'] = DateFormatter.format(employee['ModifiedDate'], onModal);
     },
 
     /**
-     * Phương thức thay đổi trạng thái popup thành mở
-     * Author: NQMinh (29/08/2021)
+     * Phương thức thay đổi trạng thái popup thành mở khi thêm thông tin nhân viên
+     * Author: NQMinh (30/08/2021)
      */
-    showPopup(employeeIndex) {
+    showPopupToInsert(newCode) {
+      this.wantToCreateNewEmployee = true;
+      this.employeeData = EmployeeModel.initData();
+      this.employeeData['EmployeeCode'] = newCode;
+      this.isPopupVisible = true;
+    },
+
+    /**
+     * Phương thức thay đổi trạng thái popup thành mở khi sửa thông tin nhân viên
+     * Author: NQMinh (29/08/2021)
+     * Modified: NQMinh (30/08/2021)
+     */
+    showPopupToEdit(employeeIndex) {
+      this.wantToCreateNewEmployee = false;
       this.employeeData = this.employees[employeeIndex];
+      //this.formatDate(this.employeeData, true);
       this.isPopupVisible = true;
     },
 
@@ -132,6 +155,17 @@ export default {
     hidePopup() {
       this.employeeData = EmployeeModel.initData();
       this.isPopupVisible = false;
+    },
+
+    /**
+     * Phương thức xử lý các sự kiện sau khi thêm mới thông tin nhân viên thành công
+     * Author: NQMinh (31/08/2021)
+     */
+    reloadData() {
+      this.$nextTick(() => {
+        this.hidePopup();
+      });
+      this.loadData();
     }
   }
 }

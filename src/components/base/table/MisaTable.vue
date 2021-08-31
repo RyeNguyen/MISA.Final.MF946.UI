@@ -7,6 +7,7 @@
         :show-borders="false"
         :show-column-lines="true"
         :show-row-lines="true"
+        :hover-state-enabled="true"
         class="misa-table"
         column-resizing-mode="widget"
         key-expr="EmployeeId"
@@ -15,7 +16,7 @@
       <DxColumnFixing :enabled="true"/>
       <DxPaging :page-size="20"/>
       <DxPager
-          :visible="true"
+          :visible="false"
       />
       <DxColumn
           caption=""
@@ -47,7 +48,7 @@
               class="misa-table__functional-cell--text"
               @click="editData(data)"
           >Sửa</div>
-          <MisaTableDropdown/>
+          <MisaTableDropdown id="table-dropdown"/>
         </div>
       </template>
       <template #checkboxCell>
@@ -117,7 +118,8 @@ export default {
 <style lang="scss">
 .misa-table {
   font-family: "NotoSans-Regular", sans-serif !important;
-  height: calc(100vh - 187px);
+  font-size: 13px !important;
+  height: calc(100vh - 240px);
 
   .dx-datagrid-table {
     border: none;
@@ -160,6 +162,15 @@ export default {
     border-top: none;
   }
 
+  .dx-datagrid-rowsview .dx-row {
+    border-top: none;
+    border-bottom: none;
+
+    &.dx-data-row.dx-row-lines.dx-column-lines.dx-state-hover {
+      background-color: var(--color-table-hover) !important;
+    }
+  }
+
   .dx-datagrid-content {
     table {
       background: transparent;
@@ -199,6 +210,7 @@ export default {
 
     &--text {
       color: var(--color-secondary);
+      font-family: "NotoSans-Semibold", sans-serif !important;
       cursor: pointer;
     }
   }

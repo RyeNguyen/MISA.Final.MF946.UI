@@ -13,9 +13,13 @@
         :data-source="comboboxOptions"
         :search-timeout="300"
         search-mode="contains"
+        :placeholder="comboboxPlaceholder"
+        :spellcheck="true"
+        :value="defaultValue"
         item-template="comboboxItem"
         :display-expr="`${comboboxType}Name`"
         :value-expr="`${comboboxType}Id`"
+        @value-changed="onValueChanged"
     >
       <template #comboboxItem="{ data: comboboxData }">
         <div class="misa-combobox__item">
@@ -35,28 +39,29 @@
 import DepartmentAPI from "@/api/components/DepartmentAPI";
 
 import { DxSelectBox } from 'devextreme-vue/select-box';
-//import DataSource from "devextreme/data/data_source";
+import { locale } from 'devextreme/localization';
 
 export default {
   name: "MisaCombobox",
 
-  data() {
-    return {
-      comboboxOptions: []
-    }
-  },
-
   created () {
+    locale("vi-VN");
+
     DepartmentAPI.getAll().then(res => {
-      // this.comboboxOptions = new DataSource({
-      //   store: res.data,
-      //   key: `${this.comboboxType}Code`,
-      //   group: `${this.comboboxType}Name`
-      // });
       this.comboboxOptions = res.data;
     }).catch(error => {
       console.log(error)
     })
+  },
+
+  data() {
+    return {
+      comboboxOptions: [],
+
+      defaultValue: this.comboboxValue,
+
+      locale: null
+    }
   },
 
   props: {
@@ -71,11 +76,36 @@ export default {
     comboboxType: {
       type: String,
       required: true
+    },
+
+    comboboxName: {
+      type: String,
+      required: true
+    },
+
+    comboboxPlaceholder: {
+      type: String
+    },
+
+    comboboxValue: {
+      type: String,
+      default: null
     }
   },
 
   components: {
     DxSelectBox
+  },
+
+  methods: {
+    /**
+     * Truyền lên component cha có sự thay đổi giá trị combobox
+     * @param e
+     * Author: NQMinh (31/08/2021)
+     */
+    onValueChanged(e) {
+      this.$emit('onComboboxChanged', this.comboboxName, e.value);
+    }
   }
 }
 </script>

@@ -25,7 +25,7 @@ export default {
 
   data() {
     return {
-      selectedItem: this.inputValue ? this.inputValue : null
+      selectedItem: this.inputValue ? this.inputValue.toString() : null
     }
   },
 
@@ -45,7 +45,7 @@ export default {
     },
 
     inputValue: {
-      type: String
+      type: Number
     }
   },
 
@@ -79,6 +79,22 @@ export default {
     width: 12px;
     height: 12px;
     border-radius: 50%;
+  }
+}
+
+.dx-item.dx-radiobutton.dx-state-hover {
+  & .dx-radiobutton-icon::before {
+    border: 1px solid var(--color-primary) !important;
+  }
+}
+
+.dx-radiobutton-icon {
+  transition: var(--transition-value);
+
+  &::before {
+    border: 1px solid var(--color-hightlight) !important;
+    border-radius: 50% !important;
+    transition: var(--transition-value);
   }
 }
 

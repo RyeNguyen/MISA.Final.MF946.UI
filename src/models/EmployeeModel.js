@@ -1,14 +1,11 @@
 export default class EmployeeModel {
     static initData() {
         return {
-            "EmployeeId": "",
-            "EmployeeCode": "",
-            "FullName": "",
+            "EmployeeCode": null,
+            "FullName": null,
             "DateOfBirth": null,
             "Gender": null,
-            "DepartmentId": "",
-            "DepartmentCode": null,
-            "DepartmentName": null,
+            "DepartmentId": null,
             "PositionName": null,
             "IdentityNumber": null,
             "IdentityDate": null,
@@ -19,11 +16,7 @@ export default class EmployeeModel {
             "Email": null,
             "BankAccount": null,
             "BankName": null,
-            "BankBranch": null,
-            "CreatedDate": null,
-            "CreatedBy": null,
-            "ModifiedDate": null,
-            "ModifiedBy": null
+            "BankBranch": null
         }
     }
 }

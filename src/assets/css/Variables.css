@@ -14,6 +14,8 @@
 
     --color-table: #ECEEF1;
     --color-table-border: #C7C7C7;
+    --color-table-hover: rgba(172, 229, 229, 0.1);
+    --color-table-active: #F8F8F8;
 
     --color-border: #EBEDF0;
 
