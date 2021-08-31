@@ -1,5 +1,7 @@
 <template>
-  <DxSelectBox class="misa-table__dropdown" :items="['Nhân bản', 'Xóa', 'Ngừng sử dụng']"/>
+  <DxSelectBox class="misa-table__dropdown" :items="['Nhân bản', 'Xóa', 'Ngừng sử dụng']">
+    <template class="hello"></template>
+  </DxSelectBox>
 </template>
 
 <script>

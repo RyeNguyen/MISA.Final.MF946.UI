@@ -9,9 +9,10 @@ import MisaCheckbox from "@/components/base/MisaCheckbox";
 import MisaButton from "@/components/base/MisaButton";
 import MisaInput from "@/components/base/MisaInput";
 import MisaDateBox from "@/components/base/MisaDateBox";
-import MisaCombobox from "@/components/base/MisaCombobox";
+import MisaCombobox from "@/components/base/combobox/MisaCombobox";
 import MisaDropdown from "@/components/base/dropdown/MisaDropdown";
 import MisaTable from "@/components/base/table/MisaTable";
+import DepartmentAPI from "@/api/components/DepartmentAPI";
 
 Vue.component('MisaCheckbox', MisaCheckbox);
 Vue.component('MisaButton', MisaButton);
@@ -22,6 +23,12 @@ Vue.component('MisaDropdown', MisaDropdown);
 Vue.component('MisaTable', MisaTable);
 
 Vue.prototype.$genderData = GenderModel.initData();
+
+DepartmentAPI.getAll().then(res => {
+  Vue.prototype.$departmentData = res.data;
+}).catch(error => {
+  console.log(error);
+})
 
 Vue.config.productionTip = false
 

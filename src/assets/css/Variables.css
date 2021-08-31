@@ -31,4 +31,5 @@
 
     --transition-value: 0.2s ease-in-out;
     --box-shadow-default: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
+    --box-shadow-secondary: 0 -8px 34px 0 rgba(0, 0, 0, 0.5);
 }

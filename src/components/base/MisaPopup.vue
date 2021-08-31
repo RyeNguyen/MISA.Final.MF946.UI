@@ -6,6 +6,7 @@
     height="auto"
     shading-color="rgba(0, 0, 0, 0.4)"
     :drag-enabled="true"
+    :focusStateEnabled="true"
     :show-title="true"
     :visible="popupVisible"
     :deferRendering="true"
@@ -42,9 +43,7 @@ export default {
 
   watch: {
     isPopupVisible: function() {
-      if (this.isPopupVisible === true) {
-        this.popupVisible = true;
-      }
+      this.popupVisible = this.isPopupVisible === true;
     }
   },
 
@@ -118,5 +117,10 @@ export default {
       display: none;
     }
   }
+}
+
+.dx-closebutton.dx-button.dx-button-normal.dx-button-mode-text.dx-widget.dx-button-has-icon.dx-state-hover {
+  background-color: transparent !important;
+  border-radius: 0 !important;
 }
 </style>

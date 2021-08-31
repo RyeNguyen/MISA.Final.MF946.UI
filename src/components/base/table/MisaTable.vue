@@ -193,7 +193,7 @@ export default {
   }
 
   .dx-datagrid .dx-row-lines > td {
-    border-bottom: 1px solid var(--color-table-border);
+    border-bottom: 0.5px solid var(--color-table-border);
   }
 
   .dx-pointer-events-none {

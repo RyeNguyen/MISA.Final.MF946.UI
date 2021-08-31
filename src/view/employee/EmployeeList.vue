@@ -6,12 +6,17 @@
 
     <div class="misa-content__main">
       <MisaContentSearch/>
+
       <MisaTable
           :dataSource="formatedEmployees"
           :tableColumns="columns"
           @onEditMode="showPopupToEdit"
       />
-<!--      <MisaContentFooter></MisaContentFooter>-->
+
+      <MisaContentFooter
+        :totalRecords="totalRecords"
+        :totalPages="totalPages"
+      />
 
       <MisaPopup
           :isPopupVisible="isPopupVisible"
@@ -39,7 +44,7 @@ import DateFormatter from "@/utils/DateFormatter";
 import EmployeeDetail from "@/view/employee/EmployeeDetail";
 import MisaContentHeader from '@/components/layout/content/MisaContentHeader';
 import MisaContentSearch from "@/components/layout/content/MisaContentSearchSection";
-//import MisaContentFooter from "@/components/layout/content/MisaContentFooter";
+import MisaContentFooter from "@/components/layout/content/MisaContentFooter";
 import EmployeesAPI from "@/api/components/EmployeesAPI";
 
 export default {
@@ -67,7 +72,22 @@ export default {
       employeeData: EmployeeModel.initData(),
 
       //Biến kiểm tra người dùng muốn sửa hay thêm thông tin nhân viên
-      wantToCreateNewEmployee: false
+      wantToCreateNewEmployee: false,
+
+      //Từ khóa tìm kiếm nv của người dùng
+      searchKeyword: "",
+
+      //Trang hiện tại
+      currentPage: 1,
+
+      //Số bản ghi/trang
+      pageSize: 30,
+
+      //Tổng số bản ghi
+      totalRecords: 0,
+
+      //Tổng số trang
+      totalPages: 0
     };
   },
 
@@ -75,6 +95,7 @@ export default {
     EmployeeDetail,
     MisaContentHeader,
     MisaContentSearch,
+    MisaContentFooter,
     MisaPopup
   },
 
@@ -84,9 +105,16 @@ export default {
      * Author: NQMinh (28/08/2021)
      */
     loadData() {
-      EmployeesAPI.getAll().then(res => {
-        this.employees = res.data;
-        this.formatedEmployees = JSON.parse(JSON.stringify(res.data));
+      EmployeesAPI.paging(this.searchKeyword, this.currentPage, this.pageSize).then(res => {
+        this.totalRecords = res.data['totalRecord'];
+        this.totalPages = res.data['totalPage'];
+
+        //Dữ liệu dùng để render lên modal
+        this.employees = res.data['data'];
+
+        //Dữ liệu dùng để render lên table
+        this.formatedEmployees = JSON.parse(JSON.stringify(res.data['data']));
+
         for(let i = 0; i < this.formatedEmployees.length; i++) {
           this.identifyGender(this.formatedEmployees[i]);
           this.formatDate(this.formatedEmployees[i], false);
@@ -162,9 +190,7 @@ export default {
      * Author: NQMinh (31/08/2021)
      */
     reloadData() {
-      this.$nextTick(() => {
-        this.hidePopup();
-      });
+      this.hidePopup();
       this.loadData();
     }
   }

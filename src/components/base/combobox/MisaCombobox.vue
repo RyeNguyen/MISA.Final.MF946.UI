@@ -5,29 +5,34 @@
   >
     <div :class="{'misa-input__label': labelName !== null}">
       <label>
-        {{ labelName }}
+        {{ labelName }} <span v-if="isRequired" class="misa-asterisk">*</span>
       </label>
     </div>
     <DxSelectBox
         :search-enabled="true"
-        :data-source="comboboxOptions"
-        :search-timeout="300"
+        :data-source="comboboxGroup"
+        :grouped="true"
+        :search-timeout="0"
         search-mode="contains"
         :placeholder="comboboxPlaceholder"
-        :spellcheck="true"
         :value="defaultValue"
+        :openOnFieldClick="false"
+        noDataText="Dữ liệu không có trong danh mục"
         item-template="comboboxItem"
         :display-expr="`${comboboxType}Name`"
         :value-expr="`${comboboxType}Id`"
         @value-changed="onValueChanged"
     >
-      <template #comboboxItem="{ data: comboboxData }">
+      <template #group="{}">
+        <MisaComboboxGroup/>
+      </template>
+      <template #comboboxItem="{ data: comboboxGroup }">
         <div class="misa-combobox__item">
           <div class="misa-combobox__item-code">
-            {{ comboboxData['DepartmentCode'] }}
+            {{ comboboxGroup['DepartmentCode'] }}
           </div>
           <div class="misa-combobox__item-name">
-            {{ comboboxData['DepartmentName'] }}
+            {{ comboboxGroup['DepartmentName'] }}
           </div>
         </div>
       </template>
@@ -36,27 +41,38 @@
 </template>
 
 <script>
-import DepartmentAPI from "@/api/components/DepartmentAPI";
-
 import { DxSelectBox } from 'devextreme-vue/select-box';
 import { locale } from 'devextreme/localization';
+import DataSource from 'devextreme/data/data_source';
+import MisaComboboxGroup from "@/components/base/combobox/MisaComboboxGroup";
 
 export default {
   name: "MisaCombobox",
 
   created () {
     locale("vi-VN");
+    if (this.comboboxType === 'Department') {
+      this.comboboxOptions = [{
+        'Category': '',
+        'Items': this.$departmentData
+      }];
 
-    DepartmentAPI.getAll().then(res => {
-      this.comboboxOptions = res.data;
-    }).catch(error => {
-      console.log(error)
-    })
+      this.comboboxGroup = new DataSource({
+        store: this.comboboxOptions,
+        map: function(option) {
+          option.key = option.Category;
+          option.items = option.Items;
+          return option;
+        }
+      })
+    }
   },
 
   data() {
     return {
       comboboxOptions: [],
+
+      comboboxGroup: null,
 
       defaultValue: this.comboboxValue,
 
@@ -90,11 +106,17 @@ export default {
     comboboxValue: {
       type: String,
       default: null
+    },
+
+    isRequired: {
+      type: Boolean,
+      default: false
     }
   },
 
   components: {
-    DxSelectBox
+    DxSelectBox,
+    MisaComboboxGroup
   },
 
   methods: {
@@ -175,5 +197,46 @@ export default {
       color: var(--color-primary);
     }
   }
+}
+
+.dx-selectbox .dx-texteditor-input {
+  &::placeholder {
+    font-size: 12px;
+    font-family: "NotoSans-Regular", sans-serif;
+    color: #A9A9A9 !important;
+  }
+}
+
+.dx-item.dx-list-item.dx-state-active {
+  background-color: var(--color-border) !important;
+  color: var(--color-primary) !important;
+}
+
+.dx-dropdownlist-popup-wrapper.dx-popup-wrapper .dx-overlay-content {
+  top: 3px !important;
+  border-radius: 2px !important;
+  border: 1px solid var(--color-hightlight) !important;
+  box-shadow: var(--box-shadow-default) !important;
+
+  & .dx-popup-content {
+    height: 158px;
+  }
+}
+
+.dx-list-group-header {
+  height: 32px;
+  padding: 0 10px;
+  background-color: var(--color-background);
+  border-bottom: none;
+  font-family: 'NotoSans-Semibold', sans-serif;
+  color: var(--color-content-text);
+}
+
+.dx-list-group-body {
+  padding: 2px 1px;
+}
+
+.dx-dropdownlist-popup-wrapper .dx-empty-message, .dx-dropdownlist-popup-wrapper .dx-list-item {
+  height: 32px;
 }
 </style>

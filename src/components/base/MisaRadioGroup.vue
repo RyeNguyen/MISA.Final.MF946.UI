@@ -74,10 +74,10 @@ export default {
 
   & .dx-radiobutton-icon-dot {
     background-color: var(--color-primary);
-    margin-top: -17px;
-    margin-left: 5px;
-    width: 12px;
-    height: 12px;
+    margin-top: -14px;
+    margin-left: 4px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
   }
 }
@@ -100,5 +100,15 @@ export default {
 
 .dx-radiobutton.dx-state-focused:not(.dx-state-active) .dx-radiobutton-icon::before {
   border: 1px solid var(--color-primary) !important;
+}
+
+.dx-radiobutton-icon {
+  width: 16px !important;
+  height: 16px !important;
+
+  &::before {
+    width: 16px !important;
+    height: 16px !important;
+  }
 }
 </style>

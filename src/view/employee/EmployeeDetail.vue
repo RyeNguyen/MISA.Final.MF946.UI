@@ -23,6 +23,7 @@
                 inputName="EmployeeCode"
                 inputWidth="40%"
                 inputPlaceholder="NV-1234"
+                :isRequired="true"
                 :inputValue="employee['EmployeeCode']"
                 @onInputTyping="bindingDataToModal"
             />
@@ -33,6 +34,7 @@
                 inputName="FullName"
                 inputWidth="60%"
                 inputPlaceholder="Nguyễn Quang Minh"
+                :isRequired="true"
                 :inputValue="employee['FullName']"
                 @onInputTyping="bindingDataToModal"
             />
@@ -42,6 +44,7 @@
               labelName="Đơn vị"
               inputWidth="100%"
               :comboboxValue="employee['DepartmentId']"
+              :isRequired="true"
               comboboxType="Department"
               comboboxName="DepartmentId"
               comboboxPlaceholder="Chọn đơn vị..."

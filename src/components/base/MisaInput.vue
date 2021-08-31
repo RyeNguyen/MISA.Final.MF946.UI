@@ -5,7 +5,7 @@
   >
     <div :class="{'misa-input__label': labelName !== null}">
       <label :for="inputId">
-        {{ labelName }}
+        {{ labelName }} <span v-if="isRequired" class="misa-asterisk">*</span>
       </label>
     </div>
     <input
@@ -69,6 +69,11 @@ export default {
 
     inputValue: {
       default: null
+    },
+
+    isRequired: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -81,6 +86,10 @@ export default {
 </script>
 
 <style lang="scss">
+.misa-asterisk {
+  color: red;
+}
+
 .misa-input {
   position: relative;
   font-family: 'NotoSans-Semibold', sans-serif !important;
