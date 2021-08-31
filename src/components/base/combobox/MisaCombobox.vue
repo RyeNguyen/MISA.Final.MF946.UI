@@ -14,6 +14,7 @@
         :grouped="true"
         :search-timeout="0"
         search-mode="contains"
+        height="32px"
         :placeholder="comboboxPlaceholder"
         :value="defaultValue"
         :openOnFieldClick="false"
@@ -142,7 +143,7 @@ export default {
   .dx-texteditor-buttons-container {
     position: absolute !important;
     right: 2px !important;
-    height: 34px !important;
+    height: 32px !important;
     width: 32px !important;
   }
 

@@ -26,7 +26,7 @@
           1
         </button>
 
-        <div class="misa-content__pagination-expand" v-show="expandLeft">...</div>
+        <span class="misa-content__pagination-expand" v-show="expandLeft">...</span>
 
         <button
             v-for="(page, index) in arrPageNumDisplay"
@@ -38,7 +38,7 @@
           {{ page }}
         </button>
 
-        <div class="misa-content__pagination-expand" v-show="expandRight">...</div>
+        <span class="misa-content__pagination-expand" v-show="expandRight">...</span>
 
         <button
             v-show="totalPages >= 2"
@@ -246,9 +246,9 @@ export default {
      */
     displayExpand() {
       //Dấu còn nữa bên trái
-      this.arrPageNumDisplay[0] - 1 > 1 ? this.extantLeft = true : this.extantLeft = false;
+      this.arrPageNumDisplay[0] - 1 > 1 ? this.expandLeft = true : this.expandLeft = false;
       //Dấu còn nữa bên phải
-      this.arrPageNumDisplay[this.arrPageNumDisplay.length - 1] + 1 < this.totalPages ? (this.extantRight = true) : (this.extantRight = false);
+      this.arrPageNumDisplay[this.arrPageNumDisplay.length - 1] + 1 < this.totalPages ? (this.expandRight = true) : (this.expandRight = false);
     },
 
     /**
@@ -327,5 +327,40 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.misa-content__pagination-button {
+  cursor: pointer;
+  font-family: 'NotoSans-Regular', sans-serif;
+  color: var(--color-content-text);
+  font-size: 13px;
+
+  &.paging {
+    &-previous,
+    &-next,
+    &-number {
+      outline: none;
+      border: none;
+      background-color: transparent;
+    }
+  }
+
+  &.paging-previous {
+    margin-right: 13px;
+  }
+
+  &.paging-next {
+    margin-left: 13px;
+  }
+
+  &.paging-number {
+    height: 20px;
+    padding: 0 6.5px;
+  }
+
+  &--active {
+    border: 1px solid #E0E0E0 !important;
+    font-weight: bold;
+  }
 }
 </style>

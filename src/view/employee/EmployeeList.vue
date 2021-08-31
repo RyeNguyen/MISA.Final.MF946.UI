@@ -105,15 +105,15 @@ export default {
      * Author: NQMinh (28/08/2021)
      */
     loadData() {
-      EmployeesAPI.paging(this.searchKeyword, this.currentPage, this.pageSize).then(res => {
-        this.totalRecords = res.data['totalRecord'];
-        this.totalPages = res.data['totalPage'];
+      EmployeesAPI.getAll().then(res => {
+        // this.totalRecords = res.data['totalRecord'];
+        // this.totalPages = res.data['totalPage'];
 
         //Dữ liệu dùng để render lên modal
-        this.employees = res.data['data'];
+        this.employees = res.data;
 
         //Dữ liệu dùng để render lên table
-        this.formatedEmployees = JSON.parse(JSON.stringify(res.data['data']));
+        this.formatedEmployees = JSON.parse(JSON.stringify(res.data));
 
         for(let i = 0; i < this.formatedEmployees.length; i++) {
           this.identifyGender(this.formatedEmployees[i]);

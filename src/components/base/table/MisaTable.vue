@@ -14,7 +14,7 @@
     >
       <DxSorting mode="none"/>
       <DxColumnFixing :enabled="true"/>
-      <DxPaging :page-size="20"/>
+      <DxPaging :page-size="30"/>
       <DxPager
           :visible="false"
       />
@@ -139,7 +139,7 @@ export default {
         height: 34px !important;
         border-left: none;
         border-right: 1px solid var(--color-table-border) !important;
-        border-bottom: 1px solid var(--color-table-border) !important;
+        border-bottom: 0.5px solid var(--color-table-border) !important;
         padding: 2px 10px 0 !important;
         text-transform: uppercase;
         font-family: "NotoSans-Bold", sans-serif;

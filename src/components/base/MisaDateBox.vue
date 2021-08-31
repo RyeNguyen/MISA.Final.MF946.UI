@@ -129,15 +129,15 @@ export default {
   font-weight: bold;
 }
 
-.dx-calendar-cell:not(.dx-calendar-other-month) .weekend {
-  color: #ff3030;
-}
-
-.dx-state-disabled.dx-calendar,
-.dx-calendar-cell:not(.dx-calendar-other-month),
-.weekend {
-  color: #ff8080;
-}
+//.dx-calendar-cell:not(.dx-calendar-other-month) .weekend {
+//  color: #ff3030;
+//}
+//
+//.dx-state-disabled.dx-calendar,
+//.dx-calendar-cell:not(.dx-calendar-other-month),
+//.weekend {
+//  color: #ff8080;
+//}
 
 .ms-datebox.disabled {
   .datebox-input {
