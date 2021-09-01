@@ -4,7 +4,7 @@
       class="misa-menu__item"
   >
     <div
-        :style="{backgroundImage: 'url(' + require(`@/assets/icon/${itemIcon}`) + ')'}"
+        :style="{backgroundImage: 'url(' + require(`@/assets/icon/${this.itemIcon}`) + ')'}"
         class="misa-menu__item-icon"
     />
     <div

@@ -1,19 +1,23 @@
 <template>
 <!--  :close-on-outside-click="true"-->
 <DxPopup
-    content-template="popup-content"
+    :content-template="popupContent"
     width="auto"
     height="auto"
     shading-color="rgba(0, 0, 0, 0.4)"
     :drag-enabled="true"
+    :showCloseButton="showClose"
     :focusStateEnabled="true"
     :show-title="true"
     :visible="popupVisible"
     :deferRendering="true"
     @hidden="hidePopup"
 >
-  <template #popup-content>
-    <slot name="popup-content"></slot>
+  <template #content-modal>
+    <slot name="popup-content-modal"></slot>
+  </template>
+  <template #content-message>
+    <slot name="popup-content-message"></slot>
   </template>
 </DxPopup>
 </template>
@@ -38,12 +42,22 @@ export default {
     isPopupVisible: {
       type: Boolean,
       default: false
+    },
+
+    popupContent: {
+      type: String
     }
   },
 
   watch: {
     isPopupVisible: function() {
       this.popupVisible = this.isPopupVisible === true;
+    }
+  },
+
+  computed: {
+    showClose: function() {
+      return this.popupContent === 'content-modal';
     }
   },
 
@@ -57,15 +71,7 @@ export default {
     hidePopup: function () {
       this.popupVisible = false;
       this.$emit('hidePopup');
-    },
-
-    /**
-     * Phương thức thông báo component cha là popup đã mở
-     * Author: NQMinh (30/08/2021)
-     */
-    // showPopup() {
-    //   this.$emit('onPopupShown');
-    // }
+    }
   }
 }
 </script>

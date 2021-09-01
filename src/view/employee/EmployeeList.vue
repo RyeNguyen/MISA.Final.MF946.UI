@@ -12,7 +12,9 @@
       <MisaTable
           :dataSource="formatedEmployees"
           :tableColumns="columns"
+          :pageSize="pageSize"
           @onEditMode="showPopupToEdit"
+          @onDeleteMode="showPopupToDelete"
       />
 
       <MisaContentFooter
@@ -23,14 +25,22 @@
 
       <MisaPopup
           :isPopupVisible="isPopupVisible"
+          :popupContent="popupContent"
           @hidePopup="hidePopup"
       >
         <EmployeeDetail
-            slot="popup-content"
+            slot="popup-content-modal"
             :isPopupVisible="isPopupVisible"
             :employeeData="employeeData"
             :wantToCreateNewEmployee="wantToCreateNewEmployee"
             @dataChanged="reloadData"
+        />
+        <MisaMessage
+          slot="popup-content-message"
+          popupIcon="misa-warning.svg"
+          :employeesToDelete="employeesToDelete"
+          @onMessageCancel="hidePopup"
+          @onMessageSubmit="reloadData"
         />
       </MisaPopup>
     </div>
@@ -86,7 +96,11 @@ export default {
       totalRecords: 0,
 
       //Tổng số trang
-      totalPages: 0
+      totalPages: 0,
+
+      popupContent: 'content-modal',
+
+      employeesToDelete: []
     };
   },
 
@@ -162,6 +176,7 @@ export default {
      * Author: NQMinh (30/08/2021)
      */
     showPopupToInsert(newCode) {
+      this.popupContent = 'content-modal';
       this.wantToCreateNewEmployee = true;
       this.employeeData = EmployeeModel.initData();
       this.employeeData['EmployeeCode'] = newCode;
@@ -174,10 +189,21 @@ export default {
      * Modified: NQMinh (30/08/2021)
      */
     showPopupToEdit(employeeIndex) {
+      this.popupContent = 'content-modal';
       this.wantToCreateNewEmployee = false;
       this.employeeData = this.employees[employeeIndex];
       //this.formatDate(this.employeeData, true);
       this.isPopupVisible = true;
+    },
+
+    /**
+     * Phương thức thay đổi trạng thái popup thành mở khi muốn xóa nhân viên
+     * Author: NQMinh (01/09/2021)
+     */
+    showPopupToDelete(employeeData) {
+      this.popupContent = 'content-message';
+      this.isPopupVisible = true;
+      this.employeesToDelete.push(employeeData);
     },
 
     /**
@@ -187,6 +213,7 @@ export default {
     hidePopup() {
       this.employeeData = EmployeeModel.initData();
       this.isPopupVisible = false;
+      this.employeesToDelete = [];
     },
 
     /**
@@ -201,12 +228,24 @@ export default {
     /**
      * Phương thức xử lý sự kiện khi có hành động phân trang
      * @param pageIndex
+     * @param pageSize
      * Author: NQMinh (31/08/2021)
      */
-    changePageData(pageIndex) {
+    changePageData(pageIndex, pageSize) {
       this.currentPage = pageIndex;
+      this.pageSize = pageSize;
       this.loadData();
     },
+
+    /**
+     * Phương thức xử lý sự kiện khi có hành động thay đổi số bản ghi/trang
+     * @param pageSize
+     * Author: NQMinh (01/09/2021)
+     */
+    // changePageSize(pageSize) {
+    //   this.pageSize = pageSize;
+    //   this.loadData();
+    // },
 
     /**
      * Phương thức tìm kiếm thông tin nhân viên

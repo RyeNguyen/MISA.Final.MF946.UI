@@ -12,12 +12,9 @@
         column-resizing-mode="widget"
         key-expr="EmployeeId"
     >
+      <DxPaging :enabled="false" />
       <DxSorting mode="none"/>
       <DxColumnFixing :enabled="true"/>
-      <DxPaging :page-size="30"/>
-      <DxPager
-          :visible="false"
-      />
       <DxColumn
           caption=""
           :fixed="true"
@@ -48,7 +45,10 @@
               class="misa-table__functional-cell--text"
               @click="editData(data)"
           >Sửa</div>
-          <MisaTableDropdown id="table-dropdown"/>
+          <MisaTableDropdown
+              :rowData="data"
+              @onRowTweaked="handleRowEvent"
+          />
         </div>
       </template>
       <template #checkboxCell>
@@ -63,7 +63,6 @@ import {
   DxColumn,
   DxColumnFixing,
   DxDataGrid,
-  DxPager,
   DxPaging,
   DxSorting
 } from 'devextreme-vue/data-grid';
@@ -87,6 +86,10 @@ export default {
     tableColumns: {
       type: Array,
       required: true
+    },
+
+    pageSize: {
+      type: Number
     }
   },
 
@@ -94,13 +97,12 @@ export default {
     DxDataGrid,
     DxColumn,
     DxColumnFixing,
-    DxPager,
     DxPaging,
     DxSorting,
     MisaTableDropdown
   },
 
-  emits: ['onEditMode'],
+  emits: ['onEditMode', 'onDeleteMode'],
 
   methods: {
     /**
@@ -110,6 +112,20 @@ export default {
      */
     editData(data) {
       this.$emit('onEditMode', data.rowIndex);
+    },
+
+    /**
+     * Phương thức xử lý sự kiện khi người dùng click nhân bản hoặc xóa
+     * @param action
+     * @param rowData
+     * Author: NQMinh (01/09/2021)
+     */
+    handleRowEvent(action, rowData) {
+      if (action === 1) {
+        console.log("Nhân bản thằng " + rowData);
+      } else if (action === 2) {
+        this.$emit('onDeleteMode', rowData);
+      }
     }
   }
 }
@@ -119,7 +135,7 @@ export default {
 .misa-table {
   font-family: "NotoSans-Regular", sans-serif !important;
   font-size: 13px !important;
-  height: calc(100vh - 240px);
+  max-height: calc(100vh - 240px);
 
   .dx-datagrid-table {
     border: none;
@@ -138,7 +154,7 @@ export default {
       td {
         height: 34px !important;
         border-left: none;
-        border-right: 1px solid var(--color-table-border) !important;
+        border-right: 0.5px solid var(--color-table-border) !important;
         border-bottom: 0.5px solid var(--color-table-border) !important;
         padding: 2px 10px 0 !important;
         text-transform: uppercase;
@@ -177,23 +193,22 @@ export default {
     }
   }
 
-  .dx-datagrid .dx-column-lines > td {
-    border-left: none;
-    border-right: 1px dotted var(--color-table-border);
+  .dx-datagrid .dx-column-lines {
+    & > td {
+      border-left: none;
+      border-right: 0.5px dotted var(--color-table-border);
+      border-bottom: 0.5px solid var(--color-table-border);
 
-    &:last-child {
-      border-right: none;
-      border-left: 1px dotted var(--color-table-border);
+      &:last-child {
+        border-right: none;
+        border-left: 0.5px dotted var(--color-table-border);
+      }
     }
   }
 
   .dx-datagrid .dx-row > td {
     padding: 15px 10px 5px;
     height: 47px;
-  }
-
-  .dx-datagrid .dx-row-lines > td {
-    border-bottom: 0.5px solid var(--color-table-border);
   }
 
   .dx-pointer-events-none {

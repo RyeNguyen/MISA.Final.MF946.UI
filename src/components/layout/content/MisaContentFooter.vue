@@ -8,66 +8,75 @@
       </span>
     </div>
     <div class="misa-content__footer--right">
-      <div class="misa-content__pagination">
-        <button
-            class="misa-content__pagination-button paging-previous"
-            :disabled="isInFirstPage"
-            @click="onClickPreviousPage"
-        >
-          Trước
-        </button>
+      <div class="misa-content__pagination-container">
+        <MisaDropdown
+            :dataSource="pagingData"
+            dataType="Paging"
+            @onValueChanged="changePageSize"
+        />
+        <div class="misa-content__pagination">
+          <button
+              :disabled="isInFirstPage"
+              class="misa-content__pagination-button paging-previous"
+              @click="onClickPreviousPage"
+          >
+            Trước
+          </button>
 
-        <button
-            class="misa-content__pagination-button paging-number"
-            :class="{ 'misa-content__pagination-button--active': currentPage === 1 }"
-            :disabled="isInFirstPage"
-            @click="onClickFirstPage"
-        >
-          1
-        </button>
+          <button
+              :class="{ 'misa-content__pagination-button--active': currentPage === 1 }"
+              :disabled="isInFirstPage"
+              class="misa-content__pagination-button paging-number"
+              @click="onClickFirstPage"
+          >
+            1
+          </button>
 
-        <span class="misa-content__pagination-expand" v-show="expandLeft">...</span>
+          <span v-show="expandLeft" class="misa-content__pagination-expand">...</span>
 
-        <button
-            v-for="(page, index) in footerPageNumbers"
-            :key="index"
-            class="misa-content__pagination-button paging-number"
-            :class="{ 'misa-content__pagination-button--active': currentPage === page }"
-            @click="onClickPage(page)"
-        >
-          {{ page }}
-        </button>
+          <button
+              v-for="(page, index) in footerPageNumbers"
+              :key="index"
+              :class="{ 'misa-content__pagination-button--active': currentPage === page }"
+              class="misa-content__pagination-button paging-number"
+              @click="onClickPage(page)"
+          >
+            {{ page }}
+          </button>
 
-        <span class="misa-content__pagination-expand" v-show="expandRight">...</span>
+          <span v-show="expandRight" class="misa-content__pagination-expand">...</span>
 
-        <button
-            v-show="totalPages >= 2"
-            class="misa-content__pagination-button paging-number"
-            :class="{ 'misa-content__pagination-button--active': currentPage === totalPages }"
-            :disabled="isInLastPage"
-            @click="onClickLastPage"
-        >
-          {{ totalPages }}
-        </button>
+          <button
+              v-show="totalPages >= 2"
+              :class="{ 'misa-content__pagination-button--active': currentPage === totalPages }"
+              :disabled="isInLastPage"
+              class="misa-content__pagination-button paging-number"
+              @click="onClickLastPage"
+          >
+            {{ totalPages }}
+          </button>
 
-        <button
-            class="misa-content__pagination-button paging-next"
-            :disabled="isInLastPage"
-            @click="onClickNextPage"
-        >
-          Sau
-        </button>
+          <button
+              :disabled="isInLastPage"
+              class="misa-content__pagination-button paging-next"
+              @click="onClickNextPage"
+          >
+            Sau
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import PagingModel from "@/models/PagingModel";
+
 export default {
   name: "MisaContentFooter",
 
   created() {
-    this.$emit('onPageChanged', 1);
+    this.$emit('onPageChanged', this.currentPage, 20);
     this.calculateFooterPages();
   },
 
@@ -75,7 +84,7 @@ export default {
     return {
       currentPage: 1,
 
-      pageSize: 30,
+      pageSize: 20,
 
       maxVisibleButtons: 5,
 
@@ -83,7 +92,9 @@ export default {
 
       expandRight: false,
 
-      footerPageNumbers: []
+      footerPageNumbers: [],
+
+      pagingData: PagingModel.initData()
     }
   },
 
@@ -100,7 +111,12 @@ export default {
   },
 
   watch: {
-    totalPages: function() {
+    pageSize: function() {
+      this.$emit('onPageChanged', 1, this.pageSize);
+    },
+
+    totalPages: function () {
+      this.currentPage = 1;
       this.calculateFooterPages();
     }
   },
@@ -123,7 +139,7 @@ export default {
     }
   },
 
-  emits: ['onPageChanged'],
+  emits: ['onPageChanged', 'onPageSizeChanged'],
 
   methods: {
     /**
@@ -139,8 +155,8 @@ export default {
       //Tổng số trang nhỏ hơn hoặc bằng số nút hiển thị thì tạo mảng 1 -> cuối
       else {
         //Tổng trang >= 3 => tạo list giữa
-        if(this.totalPages >= 3) {
-          this.footerPageNumbers = Array.from({ length: this.totalPages - 2 }, (_, i) => i + 2);
+        if (this.totalPages >= 3) {
+          this.footerPageNumbers = Array.from({length: this.totalPages - 2}, (_, i) => i + 2);
         } else {
           this.footerPageNumbers = [];
         }
@@ -203,7 +219,7 @@ export default {
     onClickPage(pageIndex) {
       this.currentPage = pageIndex;
       this.calculateFooterPages();
-      this.$emit("onPageChanged", pageIndex);
+      this.$emit("onPageChanged", pageIndex, this.pageSize);
     },
 
     /**
@@ -214,7 +230,7 @@ export default {
       if (this.currentPage !== 1) {
         this.currentPage = 1;
         this.calculateFooterPages();
-        this.$emit("onPageChanged", 1);
+        this.$emit("onPageChanged", 1, this.pageSize);
       }
     },
 
@@ -226,7 +242,7 @@ export default {
       if (this.currentPage > 1) {
         this.currentPage--;
         this.calculateFooterPages();
-        this.$emit("onPageChanged", this.currentPage);
+        this.$emit("onPageChanged", this.currentPage, this.pageSize);
       }
     },
 
@@ -238,7 +254,7 @@ export default {
       if (this.currentPage < this.totalPages) {
         this.currentPage++;
         this.calculateFooterPages();
-        this.$emit("onPageChanged", this.currentPage);
+        this.$emit("onPageChanged", this.currentPage, this.pageSize);
       }
     },
 
@@ -250,7 +266,7 @@ export default {
       if (this.currentPage !== this.totalPages) {
         this.currentPage = this.totalPages;
         this.calculateFooterPages();
-        this.$emit("onPageChanged", this.currentPage);
+        this.$emit("onPageChanged", this.currentPage, this.pageSize);
       }
     },
 
@@ -259,7 +275,8 @@ export default {
      * Author: NQMinh (31/08/2021)
      */
     changePageSize(pageSize) {
-      this.$emit('changePageSize', pageSize);
+      this.pageSize = pageSize;
+      this.$emit('onPageChanged', 1, pageSize);
     }
   }
 }
@@ -274,38 +291,46 @@ export default {
   justify-content: space-between;
 }
 
-.misa-content__pagination-button {
-  cursor: pointer;
-  font-family: 'NotoSans-Regular', sans-serif;
-  color: var(--color-content-text);
-  font-size: 13px;
+.misa-content__pagination {
+  &-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
 
-  &.paging {
-    &-previous,
-    &-next,
-    &-number {
-      outline: none;
-      border: none;
-      background-color: transparent;
+  &-button {
+    cursor: pointer;
+    font-family: 'NotoSans-Regular', sans-serif;
+    color: var(--color-content-text);
+    font-size: 13px;
+
+    &.paging {
+      &-previous,
+      &-next,
+      &-number {
+        outline: none;
+        border: none;
+        background-color: transparent;
+      }
     }
-  }
 
-  &.paging-previous {
-    margin-right: 13px;
-  }
+    &.paging-previous {
+      margin-right: 13px;
+    }
 
-  &.paging-next {
-    margin-left: 13px;
-  }
+    &.paging-next {
+      margin-left: 13px;
+    }
 
-  &.paging-number {
-    height: 20px;
-    padding: 0 6.5px;
-  }
+    &.paging-number {
+      height: 20px;
+      padding: 0 6.5px;
+    }
 
-  &--active {
-    border: 1px solid #E0E0E0 !important;
-    font-weight: bold;
+    &--active {
+      border: 1px solid #E0E0E0 !important;
+      font-weight: bold;
+    }
   }
 }
 </style>

@@ -1,0 +1,76 @@
+<template>
+<DxSelectBox
+    :data-source="dataSource"
+    :value-expr="optionValue"
+    :display-expr="optionDisplayName"
+    height="32px"
+    @value-changed="onValueChanged"
+>
+
+</DxSelectBox>
+</template>
+
+<script>
+import { DxSelectBox } from 'devextreme-vue/select-box';
+
+export default {
+  name: "MisaDropdown",
+
+  data() {
+    return {
+
+    }
+  },
+  
+  props: {
+    dataType: {
+      type: String
+    },
+
+    dataSource: {
+      type: Array
+    }
+  },
+
+  components: {
+    DxSelectBox
+  },
+
+  computed: {
+    /**
+     * Phương thức trả về ID của item
+     * @returns {`${String}Id`}
+     * Author: NQMinh (01/09/2021)
+     */
+    optionValue: function() {
+      return `${this.dataType}Id`;
+    },
+
+    /**
+     * Phương thức trả về tên của item
+     * @returns {`${String}Name`}
+     * Author: NQMinh (01/09/2021)
+     */
+    optionDisplayName: function() {
+      return `${this.dataType}Name`;
+    }
+  },
+
+  emits: ['onValueChanged'],
+
+  methods: {
+    /**
+     * Phương thức xử lý sự kiện khi lựa chọn thay đổi
+     * @param e
+     * Author: NQMinh (01/09/2021)
+     */
+    onValueChanged(e) {
+      this.$emit('onValueChanged', e.value);
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
