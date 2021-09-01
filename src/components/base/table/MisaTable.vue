@@ -8,6 +8,7 @@
         :show-column-lines="true"
         :show-row-lines="true"
         :hover-state-enabled="true"
+        noDataText="Không tìm thấy dữ liệu"
         class="misa-table"
         column-resizing-mode="widget"
         key-expr="EmployeeId"
@@ -29,6 +30,7 @@
           :data-field="column['ColField']"
           :fixed="column['ColFixed']"
           :width="column['ColWidth']"
+          :minWidth="column['ColWidth']"
           :alignment="column['ColAlignment']"
       />
       <DxColumn
@@ -112,6 +114,11 @@ export default {
      */
     editData(data) {
       this.$emit('onEditMode', data.rowIndex);
+    },
+
+    test() {
+      console.log('đúp 2 lần')
+
     },
 
     /**

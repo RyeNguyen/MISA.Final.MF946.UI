@@ -9,9 +9,10 @@
       </label>
     </div>
     <DxSelectBox
+        ref="modalCombobox"
         :search-enabled="true"
         :data-source="comboboxGroup"
-        :grouped="true"
+
         :search-timeout="0"
         search-mode="contains"
         height="32px"
@@ -23,6 +24,8 @@
         :display-expr="`${comboboxType}Name`"
         :value-expr="`${comboboxType}Id`"
         @value-changed="onValueChanged"
+        @onFocusOut="validateInput"
+        @input="removeError"
     >
       <template #group="{}">
         <MisaComboboxGroup/>
@@ -43,29 +46,30 @@
 
 <script>
 import { DxSelectBox } from 'devextreme-vue/select-box';
-import { locale } from 'devextreme/localization';
-import DataSource from 'devextreme/data/data_source';
+//import DataSource from 'devextreme/data/data_source';
 import MisaComboboxGroup from "@/components/base/combobox/MisaComboboxGroup";
 
 export default {
   name: "MisaCombobox",
 
   created () {
-    locale("vi-VN");
-    if (this.comboboxType === 'Department') {
-      this.comboboxOptions = [{
-        'Category': '',
-        'Items': this.$departmentData
-      }];
+    console.log(this.$refs.modalCombobox)
 
-      this.comboboxGroup = new DataSource({
-        store: this.comboboxOptions,
-        map: function(option) {
-          option.key = option.Category;
-          option.items = option.Items;
-          return option;
-        }
-      })
+    if (this.comboboxType === 'Department') {
+      // this.comboboxOptions = [{
+      //   'Group': 'Đơn vị',
+      //   'Items': this.$departmentData
+      // }];
+      this.comboboxGroup = this.$departmentData;
+
+      // this.comboboxGroup = new DataSource({
+      //   store: this.comboboxOptions,
+      //   map: function(option) {
+      //     option.key = option.Group;
+      //     option.items = option.Items;
+      //     return option;
+      //   }
+      // })
     }
   },
 
@@ -128,6 +132,35 @@ export default {
      */
     onValueChanged(e) {
       this.$emit('onComboboxChanged', this.comboboxName, e.value);
+    },
+
+    /**
+     * Phương thức kiểm tra tổng thể các trường
+     * Author: NQMinh (01/09/2021)
+     */
+    validateInput() {
+      console.log('không focus à? :((')
+      if (this.isRequired) {
+        this.validateRequired();
+      }
+    },
+
+    /**
+     * Phương thức kiểm tra các trường bắt buộc
+     * Author: NQMinh (01/09/2021)
+     */
+    validateRequired() {
+      if (this.inputData === '' || this.inputData === null) {
+        this.isValid = false;
+        this.$refs.modalInput.setAttribute('title', `${this.labelName} không được để trống.`);
+      } else {
+        this.isValid = true;
+        this.$refs.modalInput.setAttribute('title', '');
+      }
+    },
+
+    removeError() {
+      if (this.isRequired) this.isValid = true;
     }
   }
 }
@@ -214,7 +247,7 @@ export default {
 }
 
 .dx-dropdownlist-popup-wrapper.dx-popup-wrapper .dx-overlay-content {
-  top: 3px !important;
+  top: 5px !important;
   border-radius: 2px !important;
   border: 1px solid var(--color-hightlight) !important;
   box-shadow: var(--box-shadow-default) !important;

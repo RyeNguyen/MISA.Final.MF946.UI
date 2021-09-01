@@ -9,7 +9,9 @@
       </label>
     </div>
     <DxRadioGroup
-        :items="radioItems"
+        :display-expr="`${radioType}Name`"
+        :value-expr="`${radioType}Id`"
+        :data-source="radioItems"
         :value="inputValue"
         layout="horizontal"
         @valueChanged="changeItem"
@@ -22,12 +24,6 @@ import DxRadioGroup from 'devextreme-vue/radio-group';
 
 export default {
   name: "MisaRadioGroup",
-
-  data() {
-    return {
-      selectedItem: this.inputValue ? this.inputValue.toString() : null
-    }
-  },
 
   props: {
     radioItems: {
@@ -46,12 +42,18 @@ export default {
 
     inputValue: {
       type: Number
+    },
+
+    radioType: {
+      type: String
     }
   },
 
   components: {
     DxRadioGroup
   },
+
+  emits: ['onRadioChanged'],
 
   methods: {
     /**
@@ -60,7 +62,7 @@ export default {
      * Author: NQMinh (30/08/2021)
      */
     changeItem(e) {
-      this.selectedItem = e.value;
+      this.$emit('onRadioChanged', this.radioType, e.value);
     }
   }
 }

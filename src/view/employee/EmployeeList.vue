@@ -1,26 +1,27 @@
 <template>
   <div class="misa-content">
     <MisaContentHeader
-      @onInsertMode="showPopupToInsert"
+        @onInsertMode="showPopupToInsert"
     />
 
     <div class="misa-content__main">
       <MisaContentSearch
-        @onSearched="searchEmployee"
+          @onSearched="searchEmployee"
+          @onReload="loadData"
       />
 
       <MisaTable
           :dataSource="formatedEmployees"
-          :tableColumns="columns"
           :pageSize="pageSize"
-          @onEditMode="showPopupToEdit"
+          :tableColumns="columns"
           @onDeleteMode="showPopupToDelete"
+          @onEditMode="showPopupToEdit"
       />
 
       <MisaContentFooter
-        :totalRecords="totalRecords"
-        :totalPages="totalPages"
-        @onPageChanged="changePageData"
+          :totalPages="totalPages"
+          :totalRecords="totalRecords"
+          @onPageChanged="changePageData"
       />
 
       <MisaPopup
@@ -30,17 +31,19 @@
       >
         <EmployeeDetail
             slot="popup-content-modal"
-            :isPopupVisible="isPopupVisible"
             :employeeData="employeeData"
+            :isPopupVisible="isPopupVisible"
             :wantToCreateNewEmployee="wantToCreateNewEmployee"
             @dataChanged="reloadData"
+            @onHidingModal="hidePopup"
         />
         <MisaMessage
-          slot="popup-content-message"
-          popupIcon="misa-warning.svg"
-          :employeesToDelete="employeesToDelete"
-          @onMessageCancel="hidePopup"
-          @onMessageSubmit="reloadData"
+            slot="popup-content-message"
+            popupMessageName="delete"
+            :employeesToDelete="employeesToDelete"
+            popupIcon="misa-warning.svg"
+            @onMessageCancel="hidePopup"
+            @onMessageSubmit="reloadData"
         />
       </MisaPopup>
     </div>
@@ -48,8 +51,6 @@
 </template>
 
 <script>
-import MisaPopup from "@/components/base/MisaPopup";
-
 import EmployeeColsModel from "@/models/EmployeeColsModel";
 import EmployeeModel from "@/models/EmployeeModel";
 import DateFormatter from "@/utils/DateFormatter";
@@ -98,8 +99,10 @@ export default {
       //Tổng số trang
       totalPages: 0,
 
+      //Nội dung popup cần hiển thị
       popupContent: 'content-modal',
 
+      //Mảng chứa danh sách các nhân viên cần xóa
       employeesToDelete: []
     };
   },
@@ -108,8 +111,7 @@ export default {
     EmployeeDetail,
     MisaContentHeader,
     MisaContentSearch,
-    MisaContentFooter,
-    MisaPopup
+    MisaContentFooter
   },
 
   methods: {
@@ -119,23 +121,18 @@ export default {
      */
     loadData() {
       EmployeesAPI.paging(this.searchKeyword, this.currentPage, this.pageSize).then(res => {
-        if (res !== null) {
-          this.totalRecords = res.data['totalRecords'];
-          this.totalPages = res.data['totalPages'];
+        this.totalRecords = res.data['totalRecords'];
+        this.totalPages = res.data['totalPages'];
 
-          //Dữ liệu dùng để render lên modal
-          this.employees = res.data['data'];
+        //Dữ liệu dùng để render lên modal
+        this.employees = res.data['data'];
 
-          //Dữ liệu dùng để render lên table
-          this.formatedEmployees = JSON.parse(JSON.stringify(res.data['data']));
+        //Dữ liệu dùng để render lên table
+        this.formatedEmployees = JSON.parse(JSON.stringify(res.data['data']));
 
-          for(let i = 0; i < this.formatedEmployees.length; i++) {
-            this.identifyGender(this.formatedEmployees[i]);
-            this.formatDate(this.formatedEmployees[i], false);
-          }
-        } else {
-          this.totalRecords = 0;
-          this.totalPages = 0;
+        for (let i = 0; i < this.formatedEmployees.length; i++) {
+          this.identifyGender(this.formatedEmployees[i]);
+          this.formatDate(this.formatedEmployees[i], false);
         }
       }).catch(error => {
         console.log(error)
@@ -211,8 +208,8 @@ export default {
      * Author: NQMinh (29/08/2021)
      */
     hidePopup() {
-      this.employeeData = EmployeeModel.initData();
       this.isPopupVisible = false;
+      this.employeeData = EmployeeModel.initData();
       this.employeesToDelete = [];
     },
 

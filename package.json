@@ -12,7 +12,8 @@
     "devextreme": "21.1.5",
     "devextreme-vue": "21.1.5",
     "vue": "^2.6.11",
-    "vue-click-outside": "^1.1.0"
+    "vue-click-outside": "^1.1.0",
+    "vue-multiselect": "^2.1.6"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

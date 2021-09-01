@@ -4,7 +4,9 @@ import App from './App.vue'
 import 'devextreme/dist/css/dx.light.css';
 
 import GenderModel from "@/models/GenderModel";
+import Multiselect from "vue-multiselect";
 
+import MisaPopup from "@/components/base/MisaPopup";
 import MisaCheckbox from "@/components/base/MisaCheckbox";
 import MisaButton from "@/components/base/MisaButton";
 import MisaInput from "@/components/base/MisaInput";
@@ -15,6 +17,8 @@ import MisaMessage from "@/components/base/MisaMessage";
 import MisaTable from "@/components/base/table/MisaTable";
 import DepartmentAPI from "@/api/components/DepartmentAPI";
 
+Vue.component('MisaMultiSelect', Multiselect);
+Vue.component('MisaPopup', MisaPopup);
 Vue.component('MisaCheckbox', MisaCheckbox);
 Vue.component('MisaButton', MisaButton);
 Vue.component('MisaInput', MisaInput);

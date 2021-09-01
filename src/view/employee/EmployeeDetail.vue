@@ -71,10 +71,12 @@
                 :inputValue="employee['DateOfBirth']"
             />
             <MisaRadioGroup
-              :radioItems="['Nam', 'Nữ', 'Khác']"
+              :radioItems="genderData"
+              radioType="Gender"
               groupWidth="60%"
               labelName="Giới tính"
               :inputValue="employee['Gender']"
+              @onRadioChanged="bindingDataToModal"
             />
           </div>
 
@@ -195,6 +197,7 @@
         buttonId="button-cancel"
         buttonText="Hủy"
         buttonType="secondary"
+        @click.native="hideModal"
       />
 
       <div class="misa-button__group">
@@ -211,6 +214,20 @@
         />
       </div>
     </div>
+
+    <MisaPopup
+        :isPopupVisible="isInsidePopupVisible"
+        :popupContent="popupContent"
+        @hidePopup="hidePopup"
+    >
+      <MisaMessage
+          popupMessageName="info"
+          :popupMessageText="validationInfo"
+          slot="popup-content-message"
+          popupIcon="misa-error.svg"
+          @onMessageCancel="hidePopup"
+      />
+    </MisaPopup>
   </div>
 </template>
 
@@ -218,6 +235,7 @@
 import MisaRadioGroup from "@/components/base/MisaRadioGroup";
 import EmployeesAPI from "@/api/components/EmployeesAPI";
 import EmployeeModel from "@/models/EmployeeModel";
+import GenderModel from "@/models/GenderModel";
 
 export default {
   name: "EmployeeDetail",
@@ -231,7 +249,15 @@ export default {
 
   data() {
     return {
-      employee: this.employeeData
+      employee: this.employeeData,
+
+      isInsidePopupVisible: false,
+
+      popupContent: 'content-message',
+
+      validationInfo: '',
+
+      genderData: GenderModel.initData()
     }
   },
 
@@ -271,7 +297,7 @@ export default {
     }
   },
 
-  emits: ['dataChanged'],
+  emits: ['dataChanged', 'onHidingModal'],
 
   methods: {
     /**
@@ -280,11 +306,52 @@ export default {
      * Modified: NQMinh (31/08/2021)
      */
     submitData() {
-      if (this.wantToCreateNewEmployee === true) {
-        this.addEmployeeToDatabase();
-      } else {
-        this.updateEmployeeInformation();
+      let soFarSoGood = true;
+
+      //TODO: Validate dữ liệu
+      //Kiểm tra mã nv có trống hay không
+      if (soFarSoGood) {
+        soFarSoGood = this.validateRequired(this.employee['EmployeeCode'], 'Mã');
       }
+
+      //TODO: Check trùng mã
+
+      //Kiểm tra tên nv có trống hay không
+      if (soFarSoGood) {
+        soFarSoGood = this.validateRequired(this.employee['FullName'], 'Tên');
+      }
+
+      //Kiểm tra đơn vị có trống hay không
+      if (soFarSoGood) {
+        soFarSoGood = this.validateRequired(this.employee['DepartmentId'], 'Đơn vị');
+      }
+
+      if (soFarSoGood) {
+        switch (this.wantToCreateNewEmployee) {
+          case true: {
+            this.addEmployeeToDatabase();
+            break;
+          }
+          case false: {
+            this.updateEmployeeInformation();
+            break;
+          }
+        }
+      }
+    },
+
+    /**
+     * Phương thức kiểm tra dữ liệu bắt buộc nhập
+     * Author: NQMinh (01/09/2021)
+     */
+    validateRequired(inputFieldValue, inputFieldName) {
+      let isValid = true;
+      if (inputFieldValue === '' || inputFieldValue === null) {
+        this.validationInfo = `${inputFieldName} không được để trống.`
+        this.isInsidePopupVisible = true;
+        isValid = false;
+      }
+      return isValid;
     },
 
     /**
@@ -321,6 +388,22 @@ export default {
      */
     bindingDataToModal(inputType, inputData) {
       this.employee[inputType] = inputData;
+    },
+
+    /**
+     * Phương thức thay đổi trạng thái của popup thông báo thành đóng (không phải popup modal)
+     * Author: NQMinh (01/09/2021)
+     */
+    hidePopup() {
+      this.isInsidePopupVisible = false;
+    },
+
+    /**
+     * Phương thức thay đổi trạng thái của modal thành đóng
+     * Author: NQMinh (01/09/2021)
+     */
+    hideModal() {
+      this.$emit('onHidingModal');
     }
   }
 }

@@ -9,7 +9,7 @@
     :showCloseButton="showClose"
     :focusStateEnabled="true"
     :show-title="true"
-    :visible="popupVisible"
+    :visible="isPopupVisible"
     :deferRendering="true"
     @hidden="hidePopup"
 >
@@ -28,12 +28,6 @@ import { DxPopup } from 'devextreme-vue/popup';
 export default {
   name: "MisaPopup",
 
-  data () {
-    return {
-      popupVisible: false
-    }
-  },
-
   components: {
     DxPopup
   },
@@ -46,12 +40,6 @@ export default {
 
     popupContent: {
       type: String
-    }
-  },
-
-  watch: {
-    isPopupVisible: function() {
-      this.popupVisible = this.isPopupVisible === true;
     }
   },
 
@@ -69,7 +57,6 @@ export default {
      * Author: NQMinh (29/08/2021)
      */
     hidePopup: function () {
-      this.popupVisible = false;
       this.$emit('hidePopup');
     }
   }

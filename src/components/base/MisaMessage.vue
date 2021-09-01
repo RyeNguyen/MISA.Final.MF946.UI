@@ -1,7 +1,7 @@
 <template>
   <div class="misa-message">
     <div
-        v-if="employeesToDelete.length > 0"
+        v-if="popupCondition"
         class="misa-message__body"
     >
       <div
@@ -9,13 +9,16 @@
           :style="{backgroundImage: 'url(' + require(`@/assets/icon/${this.popupIcon}`) + ')'}"
       />
       <div class="misa-message__text">
-        Bạn có thực sự muốn xóa Nhân viên {{employeeCodeToDelete}} không?
+        {{ displayMessage }}
       </div>
     </div>
 
     <div class="misa-message__separator"/>
 
-    <div class="misa-message__footer">
+    <div
+        v-if="popupMessageName === 'delete'"
+        class="misa-message__footer"
+    >
       <MisaButton
           buttonId="button-cancel"
           buttonText="Không"
@@ -27,6 +30,17 @@
           buttonId="button-submit"
           buttonText="Có"
           @click.native="confirmRequest"
+      />
+    </div>
+
+    <div
+        v-else
+        class="misa-message__footer misa-message__footer--secondary"
+    >
+      <MisaButton
+          buttonId="button-submit"
+          buttonText="Đóng"
+          @click.native="cancelRequest"
       />
     </div>
   </div>
@@ -46,12 +60,41 @@ export default {
 
     employeesToDelete: {
       type: Array
+    },
+
+    popupMessageName: {
+      type: String,
+      required: true
+    },
+
+    popupMessageText: {
+      type: String
     }
   },
 
   computed: {
-    employeeCodeToDelete: function() {
-      return `<${this.employeesToDelete[0]['EmployeeCode']}>`;
+    /**
+     * Phương thức kiểm tra điều kiện của popup
+     * Author: NQMinh (01/09/2021)
+     */
+    popupCondition: function() {
+      //Nếu như đây là popup xóa thì phải kiểm tra danh sách xóa có rỗng không, rỗng => không hiện
+      if (this.popupMessageName === 'delete') {
+        return this.employeesToDelete.length > 0;
+      }
+      //Nếu đây không phải popup xóa, tức là popup cảnh báo thông thường thì hiện popup bình thường
+      return true;
+    },
+
+    /**
+     * Phương thức kiểm tra điều kiện của popup để hiển thị thông báo tương ứng
+     */
+    displayMessage: function() {
+      if (this.popupMessageName === 'delete') {
+        return `Bạn có thực sự muốn xóa Nhân viên <${this.employeesToDelete[0]['EmployeeCode']}> không?`;
+      } else {
+        return this.popupMessageText;
+      }
     }
   },
 
@@ -71,6 +114,7 @@ export default {
      * Author: NQMinh (01/09/2021)
      */
     confirmRequest() {
+      //API chỉ nhận mảng các ID nên phải tạo mảng clone trích xuất các ID từ mảng chính
       let deleteIdList = [];
 
       this.employeesToDelete.forEach(employee => {
@@ -90,7 +134,7 @@ export default {
 
 <style lang="scss">
 .misa-message {
-  width: 444px;
+  width: 444px !important;
   min-width: 444px;
   height: auto;
   background-color: var(--color-white);
@@ -100,7 +144,6 @@ export default {
     display: flex;
     align-items: flex-start;
     gap: 16px;
-    margin-bottom: 32px;
   }
 
   &__icon {
@@ -112,7 +155,7 @@ export default {
   }
 
   &__text {
-    margin-top: 12px;
+    margin: 12px 0 32px;
   }
 
   &__separator {
@@ -125,6 +168,10 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    &--secondary {
+      justify-content: center;
+    }
   }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div
-      :style="{width: inputWidth}"
+      :style="{width: this.inputWidth}"
       class="misa-input"
   >
     <div :class="{'misa-input__label': labelName !== null}">
@@ -9,11 +9,17 @@
       </label>
     </div>
     <input
+        ref="modalInput"
         :id="inputId"
-        :class="{'misa-input-icon': isSearchable === true}"
+        v-model="inputData"
+        :class="[
+            {'misa-input-icon': isSearchable === true},
+            {'misa-input--error': isValid !== true}
+            ]"
         :placeholder="inputPlaceholder"
         :type="inputType"
-        v-model="inputData"
+        @blur="validateInput"
+        @input="removeError"
     >
     <span v-if="this.isSearchable === true" class="misa-input__icon"/>
   </div>
@@ -23,54 +29,65 @@
 export default {
   name: "MisaInput",
 
-  mounted () {
+  mounted() {
     this.inputData = this.inputValue;
   },
 
-  data () {
+  data() {
     return {
-      inputData: this.inputValue
+      inputData: this.inputValue,
+
+      isValid: true
     }
   },
 
   props: {
+    //Tên của trường
     inputName: {
       type: String,
       required: true
     },
 
+    //ID của trường
     inputId: {
       type: String,
       required: true
     },
 
+    //Tên label
     labelName: {
       type: String,
       default: null
     },
 
+    //Độ rộng của trường
     inputWidth: {
       type: String,
       default: '240px'
     },
 
+    //Placholder của trường
     inputPlaceholder: {
       type: String
     },
 
+    //Kiểu của trường (text/email/tel/date)
     inputType: {
       type: String,
       default: "text"
     },
 
+    //Biến kiểm tra đây có phải là trường tìm kiếm nhân viên không
     isSearchable: {
       type: Boolean
     },
 
+    //Dữ liệu mặc định truyền vào
     inputValue: {
       default: null
     },
 
+    //Biến kiểm tra trường có bắt buộc nhập hay không
     isRequired: {
       type: Boolean,
       default: false
@@ -78,8 +95,38 @@ export default {
   },
 
   watch: {
-    inputData: function() {
+    inputData: function () {
       this.$emit('onInputTyping', this.inputName, this.inputData);
+    }
+  },
+
+  methods: {
+    /**
+     * Phương thức kiểm tra tổng thể các trường
+     * Author: NQMinh (01/09/2021)
+     */
+    validateInput() {
+      if (this.isRequired) {
+        this.validateRequired();
+      }
+    },
+
+    /**
+     * Phương thức kiểm tra các trường bắt buộc
+     * Author: NQMinh (01/09/2021)
+     */
+    validateRequired() {
+      if (this.inputData === '' || this.inputData === null) {
+        this.isValid = false;
+        this.$refs.modalInput.setAttribute('title', `${this.labelName} không được để trống.`);
+      } else {
+        this.isValid = true;
+        this.$refs.modalInput.setAttribute('title', '');
+      }
+    },
+
+    removeError() {
+      if (this.isRequired) this.isValid = true;
     }
   }
 }
@@ -87,7 +134,7 @@ export default {
 
 <style lang="scss">
 .misa-asterisk {
-  color: red;
+  color: var(--color-red);
 }
 
 .misa-input {
@@ -123,6 +170,10 @@ export default {
 
   &-icon {
     padding: 6px 28px 6px 10px !important;
+  }
+
+  &--error {
+    border-color: var(--color-red) !important;
   }
 
   &__icon {

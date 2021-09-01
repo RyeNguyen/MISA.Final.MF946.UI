@@ -8,7 +8,10 @@
         inputPlaceholder="Tìm theo mã, tên nhân viên"
         @onInputTyping="changeKeyword"
     />
-    <div class="misa-content__reload"></div>
+    <div class="misa-content__reload"
+      @click="reloadTable"
+    />
+    <div class="misa-content__export"/>
   </div>
 </template>
 
@@ -42,7 +45,7 @@ export default {
     }
   },
 
-  emits: ['onSearched'],
+  emits: ['onSearched', 'onReload'],
 
   methods: {
     /**
@@ -53,26 +56,54 @@ export default {
      */
     changeKeyword: function (inputName, inputValue) {
       this.searchKeyword = inputValue;
+    },
+
+    /**
+     * Phương thức xử lý sự kiện khi nhấn nút reload
+     * Author: NQMinh (01/09/2021)
+     */
+    reloadTable() {
+      this.$emit('onReload');
     }
   }
 }
 </script>
 
 <style lang="scss">
-.misa-content__search {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-bottom: 10px;
-}
+.misa-content {
+  &__search {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
 
-.misa-content__reload {
-  width: 24px;
-  height: 24px;
-  background-image: url('../../../assets/icon/misa-reload.svg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  margin-left: 16px;
+  &__reload,
+  &__export {
+    width: 24px;
+    height: 24px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-left: 16px;
+    cursor: pointer;
+    transition: var(--transition-value);
+  }
+
+  &__reload {
+    background-image: url('../../../assets/icon/misa-reload.svg');
+
+    &:hover {
+      background-image: url('../../../assets/icon/misa-reload-hover.svg');
+    }
+  }
+
+  &__export {
+    background-image: url('../../../assets/icon/misa-export.svg');
+
+    &:hover {
+      background-image: url('../../../assets/icon/misa-export-hover.svg');
+    }
+  }
 }
 </style>
