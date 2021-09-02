@@ -13,7 +13,7 @@
 <script>
 import Content from "@/components/layout/content/TheContent";
 import Header from "@/components/layout/TheHeader";
-import Menu from "@/components/layout/TheMenu";
+import Menu from "@/components/layout/menu/TheMenu";
 
 export default {
   name: 'App',

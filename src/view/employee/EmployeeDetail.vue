@@ -216,12 +216,13 @@
             buttonId="button-save"
             buttonText="Cất"
             buttonType="secondary"
-            @click.native="submitData"
+            @click.native="submitDataAndClose"
         />
 
         <MisaButton
             buttonId="button-save-add"
             buttonText="Cất và thêm"
+            @click.native="submitDataAndAdd"
         />
       </div>
     </div>
@@ -314,15 +315,23 @@ export default {
     }
   },
 
-  emits: ['dataChanged', 'onHidingModal'],
+  emits: ['dataChangedAndClose', 'dataChangedAndAdd', 'onHidingModal'],
 
   methods: {
+    submitDataAndClose() {
+      this.submitData(false);
+    },
+
+    submitDataAndAdd() {
+      this.submitData(true);
+    },
+
     /**
      * Phương thức xử lý sự kiện khi nhấn submit button
      * Author: NQMinh (31/08/2021)
      * Modified: NQMinh (31/08/2021)
      */
-    submitData() {
+    submitData(wantToAddMore) {
       this.isSubmitting = true;
       let soFarSoGood = true;
 
@@ -347,11 +356,11 @@ export default {
       if (soFarSoGood) {
         switch (this.wantToCreateNewEmployee) {
           case true: {
-            this.addEmployeeToDatabase();
+            this.addEmployeeToDatabase(wantToAddMore);
             break;
           }
           case false: {
-            this.updateEmployeeInformation();
+            this.updateEmployeeInformation(wantToAddMore);
             break;
           }
         }
@@ -378,10 +387,14 @@ export default {
      * Phương thức call API thêm nhân viên vào database
      * Author: NQMinh (31/08/2021)
      */
-    addEmployeeToDatabase() {
+    addEmployeeToDatabase(wantToAddMore) {
       EmployeesAPI.add(this.employee).then(res => {
         console.log(res);
-        this.$emit('dataChanged');
+        if (wantToAddMore) {
+          this.$emit('dataChangedAndAdd');
+        } else {
+          this.$emit('dataChangedAndClose');
+        }
       }).catch(error => {
         console.log(error);
       })
@@ -391,10 +404,14 @@ export default {
      * Phương thức call API chỉnh sửa thông tin nhân viên
      * Author: NQMinh (31/08/2021)
      */
-    updateEmployeeInformation() {
+    updateEmployeeInformation(wantToAddMore) {
       EmployeesAPI.update(this.employee['EmployeeId'], this.employee).then(res => {
         console.log(res);
-        this.$emit('dataChanged');
+        if (wantToAddMore) {
+          this.$emit('dataChangedAndAdd');
+        } else {
+          this.$emit('dataChangedAndClose');
+        }
       }).catch(error => {
         console.log(error);
       })

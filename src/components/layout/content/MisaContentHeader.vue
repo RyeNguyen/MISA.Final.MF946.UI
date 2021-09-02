@@ -11,8 +11,6 @@
 </template>
 
 <script>
-import EmployeesAPI from "@/api/components/EmployeesAPI";
-
 export default {
   name: "MisaContentHeader",
 
@@ -30,13 +28,7 @@ export default {
      * Author: NQMinh (30/08/2021)
      */
     clickAddButton() {
-      EmployeesAPI.getNewCode().then(res => {
-        this.newCode = res.data;
-        this.$emit('onInsertMode', this.newCode);
-      }).catch(error => {
-        console.log(error);
-        this.$emit('onInsertMode', "");
-      })
+      this.$emit('onInsertMode');
     }
   }
 }

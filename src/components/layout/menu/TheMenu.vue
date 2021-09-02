@@ -24,7 +24,7 @@
 <script>
 import MenuModel from "@/models/MenuModel";
 
-import MisaMenuItem from "@/components/base/MisaMenuItem";
+import MisaMenuItem from "@/components/layout/menu/MisaMenuItem";
 
 export default {
   name: "TheMenu",
@@ -82,7 +82,7 @@ export default {
   &__button {
     width: 24px;
     height: 24px;
-    background-image: url('../../assets/icon/misa-menu-btn.svg');
+    background-image: url('../../../assets/icon/misa-menu-btn.svg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -91,7 +91,7 @@ export default {
   &__logo {
     width: 96px;
     height: 32px;
-    background-image: url('../../assets/logo.svg');
+    background-image: url('../../../assets/logo.svg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

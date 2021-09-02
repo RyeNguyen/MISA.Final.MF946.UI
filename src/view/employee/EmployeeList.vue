@@ -38,7 +38,8 @@
             :employeeData="employeeData"
             :isPopupVisible="isPopupVisible"
             :wantToCreateNewEmployee="wantToCreateNewEmployee"
-            @dataChanged="reloadData"
+            @dataChangedAndClose="reloadData"
+            @dataChangedAndAdd="reloadAndInsert"
             @onHidingModal="hidePopup"
         />
         <MisaMessage
@@ -141,7 +142,7 @@ export default {
 
         for (let i = 0; i < this.formatedEmployees.length; i++) {
           this.identifyGender(this.formatedEmployees[i]);
-          this.formatDate(this.formatedEmployees[i], false);
+          this.formatDate(this.formatedEmployees[i]);
         }
 
         setTimeout(() => {
@@ -171,26 +172,42 @@ export default {
     /**
      * Phương thức định dạng lại dữ liệu ngày tháng trước khi render table
      * @param employee
-     * @param onModal
      * Author: NQMinh (28/08/2021)
      */
-    formatDate(employee, onModal) {
-      employee['DateOfBirth'] = DateFormatter.format(employee['DateOfBirth'], onModal);
-      employee['IdentityDate'] = DateFormatter.format(employee['IdentityDate'], onModal);
-      employee['CreatedDate'] = DateFormatter.format(employee['CreatedDate'], onModal);
-      employee['ModifiedDate'] = DateFormatter.format(employee['ModifiedDate'], onModal);
+    formatDate(employee) {
+      employee['DateOfBirth'] = DateFormatter.format(employee['DateOfBirth']);
+      employee['IdentityDate'] = DateFormatter.format(employee['IdentityDate']);
+      employee['CreatedDate'] = DateFormatter.format(employee['CreatedDate']);
+      employee['ModifiedDate'] = DateFormatter.format(employee['ModifiedDate']);
+    },
+
+    /**
+     * Phương thức xử lý sự kiện khi người dùng nhấn Cất & Thêm
+     * Author: NQMinh (02/09/2021)
+     */
+    reloadAndInsert() {
+      this.reloadData();
+      this.showPopupToInsert();
     },
 
     /**
      * Phương thức thay đổi trạng thái popup thành mở khi thêm thông tin nhân viên
      * Author: NQMinh (30/08/2021)
      */
-    showPopupToInsert(newCode) {
+    showPopupToInsert() {
       this.popupContent = 'content-modal';
       this.wantToCreateNewEmployee = true;
       this.employeeData = EmployeeModel.initData();
-      this.employeeData['EmployeeCode'] = newCode;
-      this.isPopupVisible = true;
+
+      //Sinh mã mới
+      EmployeesAPI.getNewCode().then(res => {
+        this.employeeData['EmployeeCode'] = res.data;
+        this.isPopupVisible = true;
+      }).catch(error => {
+        console.log(error);
+        this.employeeData['EmployeeCode'] = '';
+        this.isPopupVisible = true;
+      })
     },
 
     /**

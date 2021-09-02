@@ -9,9 +9,13 @@
       </label>
     </div>
     <DxDateBox
+        picker-type="calendar"
+        type="date"
+        placeholder="DD/MM/YYYY"
+        display-format="dd/MM/yyyy"
+        :dateOutOfRangeMessage="displayDateMessage"
         :use-mask-behavior="true"
         :value="inputValue"
-        type="date"
         :max="currentDate"
         @value-changed="onValueChanged"
     >
@@ -63,8 +67,16 @@ export default {
       type: String
     },
 
-    inputValue: {
-      type: String
+    inputValue: {}
+  },
+
+  computed: {
+    /**
+     * Phương thức render thông báo lỗi khi ngày nhập sai
+     * Author: NQMinh (02/09/2021)
+     */
+    displayDateMessage: function() {
+      return `${this.labelName} không được vượt quá ngày hiện tại.`
     }
   },
 
