@@ -18,6 +18,10 @@
           @click.native="activeItem(index)"
       />
     </div>
+    <MisaToast
+      :showToast="showToast"
+      @onToastHidden="hideToast"
+    />
   </div>
 </template>
 
@@ -36,7 +40,8 @@ export default {
   data() {
     return {
       menuItems: [],
-      currentIndex: -1
+      currentIndex: -1,
+      showToast: false
     }
   },
 
@@ -58,7 +63,12 @@ export default {
 
   methods: {
     activeItem(index) {
+      this.showToast = true;
       this.currentIndex = index;
+    },
+
+    hideToast() {
+      this.showToast = false;
     }
   }
 }

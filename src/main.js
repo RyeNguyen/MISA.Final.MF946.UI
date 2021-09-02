@@ -13,6 +13,7 @@ import MisaInput from "@/components/base/MisaInput";
 import MisaDateBox from "@/components/base/MisaDateBox";
 import MisaCombobox from "@/components/base/combobox/MisaCombobox";
 import MisaDropdown from "@/components/base/MisaDropdown";
+import MisaToast from "@/components/base/MisaToast";
 import MisaMessage from "@/components/base/MisaMessage";
 import MisaTable from "@/components/base/table/MisaTable";
 import DepartmentAPI from "@/api/components/DepartmentAPI";
@@ -25,6 +26,7 @@ Vue.component('MisaInput', MisaInput);
 Vue.component('MisaDateBox', MisaDateBox);
 Vue.component('MisaCombobox', MisaCombobox);
 Vue.component('MisaDropdown', MisaDropdown);
+Vue.component('MisaToast', MisaToast);
 Vue.component('MisaMessage', MisaMessage);
 Vue.component('MisaTable', MisaTable);
 
