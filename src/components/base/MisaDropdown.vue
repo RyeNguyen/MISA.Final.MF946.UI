@@ -77,17 +77,34 @@ export default {
 </script>
 
 <style lang="scss">
-.dx-texteditor.dx-editor-outlined {
-  border: 1px solid var(--color-hightlight);
-  border-radius: 2px;
-}
+.dx-texteditor {
+  font-family: "NotoSans-Regular", sans-serif !important;
+  font-size: 13px !important;
+  color: var(--color-content-text);
 
-.dx-texteditor.dx-state-focused.dx-editor-outlined {
-  border: 1px solid var(--color-primary);
+  &.dx-editor-outlined {
+    border: 1px solid var(--color-hightlight);
+    border-radius: 2px;
+  }
+
+  &.dx-state-focused.dx-editor-outlined {
+    border: 1px solid var(--color-primary);
+  }
+
+  &.dx-state-active.dx-editor-outlined {
+    border: 1px solid var(--color-primary);
+  }
 }
 
 .dx-item.dx-list-item.dx-state-hover {
   background-color: var(--color-primary) !important;
   color: var(--color-white) !important;
+}
+
+.dx-overlay-content {
+  & .dx-item-content.dx-list-item-content {
+    font-family: "NotoSans-Regular", sans-serif;
+    font-size: 13px;
+  }
 }
 </style>

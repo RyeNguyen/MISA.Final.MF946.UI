@@ -24,6 +24,7 @@
                 ref="inputCode"
                 :inputValue="employee['EmployeeCode']"
                 :isRequired="true"
+                :isSubmitting="isSubmitting"
                 inputId="input-code"
                 inputName="EmployeeCode"
                 inputPlaceholder="NV-1234"
@@ -35,6 +36,7 @@
             <MisaInput
                 :inputValue="employee['FullName']"
                 :isRequired="true"
+                :isSubmitting="isSubmitting"
                 inputId="input-name"
                 inputName="FullName"
                 inputPlaceholder="Nguyễn Quang Minh"
@@ -46,6 +48,7 @@
           <MisaCombobox
               :comboboxValue="employee['DepartmentId']"
               :isRequired="true"
+              :isSubmitting="isSubmitting"
               comboboxName="DepartmentId"
               comboboxPlaceholder="Chọn đơn vị..."
               comboboxType="Department"
@@ -71,8 +74,10 @@
             <MisaDateBox
                 :inputValue="employee['DateOfBirth']"
                 dateboxId="input-dob"
+                dateboxName="DateOfBirth"
                 dateboxWidth="40%"
                 labelName="Ngày sinh"
+                @onDateboxChanged="bindingDataToModal"
             />
             <MisaRadioGroup
                 :inputValue="employee['Gender']"
@@ -97,8 +102,10 @@
             <MisaDateBox
                 :inputValue="employee['IdentityDate']"
                 dateboxId="input-identity-date"
+                dateboxName="IdentityDate"
                 dateboxWidth="40%"
                 labelName="Ngày cấp"
+                @onDateboxChanged="bindingDataToModal"
             />
           </div>
 

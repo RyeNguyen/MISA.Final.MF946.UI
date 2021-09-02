@@ -20,6 +20,7 @@
           :tableColumns="columns"
           @onDeleteMode="showPopupToDelete"
           @onEditMode="showPopupToEdit"
+          @onCloneMode="showPopupToClone"
       />
 
       <MisaContentFooter
@@ -201,8 +202,35 @@ export default {
       this.popupContent = 'content-modal';
       this.wantToCreateNewEmployee = false;
       this.employeeData = this.employees[employeeIndex];
-      //this.formatDate(this.employeeData, true);
       this.isPopupVisible = true;
+    },
+
+    /**
+     * Phương thức thay đổi trạng thái popup thành mở khi nhân bản thông tin nhân viên
+     * Author: NQMinh (02/09/2021)
+     */
+    showPopupToClone(employeeData) {
+      this.popupContent = 'content-modal';
+      this.wantToCreateNewEmployee = true;
+
+      //Vì hiện tại employeeData đang là dữ liệu đã được render cho table nên sẽ không tương thích để áp lên modal
+      //Cần tìm trong dữ liệu gốc nhân viên giống với employeeData
+      for (let i = 0; i < this.employees.length; i++) {
+        if (this.employees[i]['EmployeeId'] === employeeData['EmployeeId']) {
+          this.employeeData = this.employees[i];
+          break;
+        }
+      }
+
+      //Sinh mã mới
+      EmployeesAPI.getNewCode().then(res => {
+        this.employeeData['EmployeeCode'] = res.data;
+        this.isPopupVisible = true;
+      }).catch(error => {
+        console.log(error);
+        this.employeeData['EmployeeCode'] = null;
+        this.isPopupVisible = true;
+      })
     },
 
     /**

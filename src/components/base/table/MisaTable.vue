@@ -112,7 +112,7 @@ export default {
     MisaTableDropdown
   },
 
-  emits: ['onEditMode', 'onDeleteMode'],
+  emits: ['onEditMode', 'onDeleteMode', 'onCloneMode'],
 
   methods: {
     /**
@@ -132,7 +132,7 @@ export default {
      */
     handleRowEvent(action, rowData) {
       if (action === 1) {
-        console.log("Nhân bản thằng " + rowData);
+        this.$emit('onCloneMode', rowData);
       } else if (action === 2) {
         this.$emit('onDeleteMode', rowData);
       }

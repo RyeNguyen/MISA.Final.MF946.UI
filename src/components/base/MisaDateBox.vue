@@ -13,6 +13,7 @@
         :value="inputValue"
         type="date"
         :max="currentDate"
+        @value-changed="onValueChanged"
     >
       <DxCalendarOptions min-zoom-level="decade"></DxCalendarOptions>
     </DxDateBox>
@@ -58,8 +59,25 @@ export default {
       type: String
     },
 
-    inputValue: {
+    dateboxName: {
+      type: String
+    },
 
+    inputValue: {
+      type: String
+    }
+  },
+
+  emits: ['onDateboxChanged'],
+
+  methods: {
+    /**
+     * Xử lý sự kiện khi ngày tháng lựa chọn thay đổi
+     * @param e
+     * Author: NQMinh (02/09/2021)
+     */
+    onValueChanged(e) {
+      this.$emit('onDateboxChanged', this.dateboxName, e.value);
     }
   }
 }
@@ -184,19 +202,19 @@ export default {
 //  }
 //}
 //
-//// Style màu cho calendar
-//.dx-calendar-navigator,
-//.dx-calendar-caption-button.dx-button,
-//.dx-button-content {
-//  color: var(--color-primary) !important;
-//}
+// Style màu cho calendar
+.dx-calendar-navigator,
+.dx-calendar-caption-button.dx-button,
+.dx-button-content {
+  color: var(--color-primary) !important;
+}
 //
-//.dx-calendar-navigator-previous-month.dx-button .dx-icon,
-//.dx-calendar-navigator-previous-view.dx-button .dx-icon,
-//.dx-calendar-navigator-next-month.dx-button .dx-icon,
-//.dx-calendar-navigator-next-view.dx-button .dx-icon {
-//  color: var(--color-primary) !important;
-//}
+.dx-calendar-navigator-previous-month.dx-button .dx-icon,
+.dx-calendar-navigator-previous-view.dx-button .dx-icon,
+.dx-calendar-navigator-next-month.dx-button .dx-icon,
+.dx-calendar-navigator-next-view.dx-button .dx-icon {
+  color: var(--color-primary) !important;
+}
 //
 //.dx-calendar-cell.dx-calendar-selected-date.dx-calendar-contoured-date {
 //  box-shadow: inset 0 0 0 1px var(--date-picker-active-bg),
