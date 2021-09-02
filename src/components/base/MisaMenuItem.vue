@@ -6,9 +6,11 @@
     <div
         :style="{backgroundImage: 'url(' + require(`@/assets/icon/${this.itemIcon}`) + ')'}"
         class="misa-menu__item-icon"
+        :class="displayIcon"
     />
     <div
         class="misa-menu__item-text"
+        :class="displayText"
     >
       {{ itemText }}
     </div>
@@ -43,6 +45,16 @@ export default {
     menuToggled: {
       type: Boolean
     }
+  },
+
+  computed: {
+    displayIcon: function() {
+      return this.menuToggled === true ? 'misa-menu__item-icon--shrink' : '';
+    },
+
+    displayText: function() {
+      return this.menuToggled === true ? 'misa-hidden' : 'misa-show';
+    }
   }
 }
 </script>
@@ -60,10 +72,6 @@ export default {
   cursor: pointer;
   transition: 0.2s all ease-in-out;
   border-left: 6px solid transparent;
-
-  &--shrink {
-    justify-content: space-evenly;
-  }
 
   &:hover {
     background-color: var(--color-tertiary-hover);

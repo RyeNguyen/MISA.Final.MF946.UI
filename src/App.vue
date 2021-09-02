@@ -1,10 +1,10 @@
 <template>
   <div id="app" class="misa-app">
-    <div class="misa-app--left">
-      <Menu/>
+    <div :class="leftSide">
+      <Menu :menuToggled="menuToggled"/>
     </div>
-    <div class="misa-app--right">
-      <Header/>
+    <div :class="rightSide">
+      <Header @onMenuToggled="toggleMenu"/>
       <Content></Content>
     </div>
   </div>
@@ -18,10 +18,36 @@ import Menu from "@/components/layout/TheMenu";
 export default {
   name: 'App',
 
+  data() {
+    return {
+      menuToggled: false
+    }
+  },
+
   components: {
     Content,
     Header,
     Menu
+  },
+
+  computed: {
+    leftSide: function() {
+      return this.menuToggled ? 'misa-app--left-shrink' : 'misa-app--left';
+    },
+
+    rightSide: function() {
+      return this.menuToggled ? 'misa-app--right-expand' : 'misa-app--right';
+    }
+  },
+
+  methods: {
+    /**
+     * Phương thức thay đổi trạng thái của menu thành thu gọn
+     * Author: NQMinh (02/09/2021)
+     */
+    toggleMenu() {
+      this.menuToggled = !this.menuToggled;
+    }
   }
 }
 </script>
@@ -37,10 +63,18 @@ export default {
 
   &--left {
     width: 178px;
+
+    &-shrink {
+      width: 52px;
+    }
   }
 
   &--right {
     width: calc(100vw - 178px);
+
+    &-expand {
+      width: calc(100vw - 52px);
+    }
   }
 }
 </style>

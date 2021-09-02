@@ -3,8 +3,8 @@
     class="misa-menu"
   >
     <div class="misa-menu__header">
-      <div class="misa-menu__button"></div>
-      <div class="misa-menu__logo"></div>
+      <div class="misa-menu__button" :class="elementShrink"/>
+      <div class="misa-menu__logo" :class="elementShrink"/>
     </div>
     <div class="misa-menu__item-container">
       <MisaMenuItem
@@ -14,6 +14,7 @@
           :itemText="item['menuItemText']"
           :itemPath="item['menuItemPath']"
           :activeClass="{'misa-menu__item--active': currentIndex === index}"
+          :menuToggled="menuToggled"
           @click.native="activeItem(index)"
       />
     </div>
@@ -39,8 +40,20 @@ export default {
     }
   },
 
+  props: {
+    menuToggled: {
+      type: Boolean
+    }
+  },
+
   components: {
     MisaMenuItem
+  },
+
+  computed: {
+    elementShrink: function() {
+      return this.menuToggled === true ? 'misa-hidden' : 'misa-show';
+    }
   },
 
   methods: {
@@ -56,7 +69,6 @@ export default {
   width: 100%;
   height: calc(100vh);
   background-color: var(--color-tertiary);
-  transition: var(--transition-value);
 
   &__header {
     width: 100%;
@@ -101,10 +113,6 @@ export default {
     &::-webkit-scrollbar-thumb {
       background: var(--color-scroll-thumb);
     }
-  }
-
-  &--shrink {
-    width: 64px;
   }
 }
 </style>

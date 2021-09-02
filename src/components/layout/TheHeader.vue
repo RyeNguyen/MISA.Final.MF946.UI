@@ -1,7 +1,11 @@
 <template>
   <div class="misa-header">
     <div class="misa-header--left">
-      <div class="misa-header__toggle"></div>
+      <div
+          class="misa-header__toggle"
+          :class="buttonActivated"
+        @click="toggleMenu"
+      />
       <div class="misa-header__branch">công ty tnhh sản xuất - thương mại - dịch vụ quy phúc</div>
     </div>
     <div class="misa-header--right">
@@ -18,7 +22,44 @@
 
 <script>
 export default {
-  name: "TheHeader"
+  name: "TheHeader",
+
+  created() {
+    const isAlreadyToggled = localStorage.getItem('menuToggled');
+    if (isAlreadyToggled === 'toggled') {
+      this.$emit('onMenuToggled');
+    }
+  },
+
+  data() {
+    return {
+      isToggled: localStorage.getItem('menuToggled') === 'toggled'
+    }
+  },
+
+  emits: ['onMenuToggled'],
+
+  computed: {
+    buttonActivated: function() {
+      return this.isToggled === true ? 'misa-header__toggle--activated' : '';
+    }
+  },
+
+  methods: {
+    /**
+     * Phương thức kích hoạt chế độ thu gọn của menu
+     * Author: NQMinh (02/09/2021)
+     */
+    toggleMenu: function() {
+      this.isToggled = !this.isToggled;
+      if (this.isToggled === true) {
+        localStorage.setItem('menuToggled', 'toggled');
+      } else {
+        localStorage.setItem('menuToggled', 'untouched');
+      }
+      this.$emit('onMenuToggled');
+    }
+  }
 }
 </script>
 
@@ -51,6 +92,12 @@ export default {
     background-position: center;
     background-size: cover;
     cursor: pointer;
+
+    &--activated {
+      background-image: url('../../assets/icon/misa-menu-toggled.svg');
+      position: absolute;
+      left: 14px;
+    }
   }
 
   &__branch {
