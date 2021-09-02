@@ -91,14 +91,27 @@ export default {
     isRequired: {
       type: Boolean,
       default: false
+    },
+
+    isSubmitting: {
+      type: Boolean,
+      default: false
     }
   },
 
   watch: {
     inputData: function () {
       this.$emit('onInputTyping', this.inputName, this.inputData);
+    },
+
+    isSubmitting: function() {
+      if (this.isSubmitting === true) {
+        this.validateInput();
+      }
     }
   },
+
+  emits: ['onInputTyping'],
 
   methods: {
     /**
@@ -109,6 +122,7 @@ export default {
       if (this.isRequired) {
         this.validateRequired();
       }
+      this.$emit('onValidated');
     },
 
     /**

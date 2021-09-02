@@ -4,6 +4,7 @@
     :value-expr="optionValue"
     :display-expr="optionDisplayName"
     height="32px"
+    :value="defaultValue"
     @value-changed="onValueChanged"
 >
 
@@ -29,6 +30,10 @@ export default {
 
     dataSource: {
       type: Array
+    },
+
+    defaultValue: {
+
     }
   },
 
@@ -71,6 +76,18 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+.dx-texteditor.dx-editor-outlined {
+  border: 1px solid var(--color-hightlight);
+  border-radius: 2px;
+}
 
+.dx-texteditor.dx-state-focused.dx-editor-outlined {
+  border: 1px solid var(--color-primary);
+}
+
+.dx-item.dx-list-item.dx-state-hover {
+  background-color: var(--color-primary) !important;
+  color: var(--color-white) !important;
+}
 </style>

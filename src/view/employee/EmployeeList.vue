@@ -10,6 +10,10 @@
           @onReload="loadData"
       />
 
+      <MisaLoader
+          v-if="isLoading"
+      />
+
       <MisaTable
           :dataSource="formatedEmployees"
           :pageSize="pageSize"
@@ -27,7 +31,6 @@
       <MisaPopup
           :isPopupVisible="isPopupVisible"
           :popupContent="popupContent"
-          @hidePopup="hidePopup"
       >
         <EmployeeDetail
             slot="popup-content-modal"
@@ -39,9 +42,8 @@
         />
         <MisaMessage
             slot="popup-content-message"
-            popupMessageName="delete"
+            popupMessageName="warning"
             :employeesToDelete="employeesToDelete"
-            popupIcon="misa-warning.svg"
             @onMessageCancel="hidePopup"
             @onMessageSubmit="reloadData"
         />
@@ -59,6 +61,7 @@ import EmployeeDetail from "@/view/employee/EmployeeDetail";
 import MisaContentHeader from '@/components/layout/content/MisaContentHeader';
 import MisaContentSearch from "@/components/layout/content/MisaContentSearchSection";
 import MisaContentFooter from "@/components/layout/content/MisaContentFooter";
+import MisaLoader from "@/components/base/MisaLoader";
 import EmployeesAPI from "@/api/components/EmployeesAPI";
 
 export default {
@@ -103,7 +106,10 @@ export default {
       popupContent: 'content-modal',
 
       //Mảng chứa danh sách các nhân viên cần xóa
-      employeesToDelete: []
+      employeesToDelete: [],
+
+      //Biến lưu trạng thái của loader, hiện ra khi dữ liệu chưa được load xong
+      isLoading: true
     };
   },
 
@@ -111,7 +117,8 @@ export default {
     EmployeeDetail,
     MisaContentHeader,
     MisaContentSearch,
-    MisaContentFooter
+    MisaContentFooter,
+    MisaLoader
   },
 
   methods: {
@@ -120,6 +127,7 @@ export default {
      * Author: NQMinh (28/08/2021)
      */
     loadData() {
+      this.isLoading = true;
       EmployeesAPI.paging(this.searchKeyword, this.currentPage, this.pageSize).then(res => {
         this.totalRecords = res.data['totalRecords'];
         this.totalPages = res.data['totalPages'];
@@ -134,6 +142,10 @@ export default {
           this.identifyGender(this.formatedEmployees[i]);
           this.formatDate(this.formatedEmployees[i], false);
         }
+
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1000);
       }).catch(error => {
         console.log(error)
       })

@@ -1,5 +1,5 @@
 <template>
-  <div class="misa-modal" v-if="isPopupVisible">
+  <div v-if="isPopupVisible" class="misa-modal">
     <div class="misa-modal__header">
       <h1>Thông tin nhân viên</h1>
       <div class="misa-modal__checkbox">
@@ -10,6 +10,10 @@
         <MisaCheckbox/>
         <div>Là nhà cung cấp</div>
       </div>
+      <div class="misa-modal__widget-buttons">
+        <div class="misa-modal__ask"/>
+        <div class="misa-modal__close" @click="hideModal"/>
+      </div>
     </div>
 
     <div class="misa-modal__body">
@@ -18,46 +22,46 @@
           <div class="misa-modal__body-part">
             <MisaInput
                 ref="inputCode"
-                inputId="input-code"
-                labelName="Mã"
-                inputName="EmployeeCode"
-                inputWidth="40%"
-                inputPlaceholder="NV-1234"
-                :isRequired="true"
                 :inputValue="employee['EmployeeCode']"
+                :isRequired="true"
+                inputId="input-code"
+                inputName="EmployeeCode"
+                inputPlaceholder="NV-1234"
+                inputWidth="40%"
+                labelName="Mã"
                 @onInputTyping="bindingDataToModal"
             />
 
             <MisaInput
-                inputId="input-name"
-                labelName="Tên"
-                inputName="FullName"
-                inputWidth="60%"
-                inputPlaceholder="Nguyễn Quang Minh"
-                :isRequired="true"
                 :inputValue="employee['FullName']"
+                :isRequired="true"
+                inputId="input-name"
+                inputName="FullName"
+                inputPlaceholder="Nguyễn Quang Minh"
+                inputWidth="60%"
+                labelName="Tên"
                 @onInputTyping="bindingDataToModal"
             />
           </div>
           <MisaCombobox
-              inputId="input-department"
-              labelName="Đơn vị"
-              inputWidth="100%"
               :comboboxValue="employee['DepartmentId']"
               :isRequired="true"
-              comboboxType="Department"
               comboboxName="DepartmentId"
               comboboxPlaceholder="Chọn đơn vị..."
+              comboboxType="Department"
+              inputId="input-department"
+              inputWidth="100%"
+              labelName="Đơn vị"
               @onComboboxChanged="bindingDataToModal"
           />
 
           <MisaInput
-              inputId="input-position"
-              labelName="Chức danh"
-              inputName="PositionName"
-              inputWidth="100%"
-              inputPlaceholder="Kỹ sư phần mềm"
               :inputValue="employee['PositionName']"
+              inputId="input-position"
+              inputName="PositionName"
+              inputPlaceholder="Kỹ sư phần mềm"
+              inputWidth="100%"
+              labelName="Chức danh"
               @onInputTyping="bindingDataToModal"
           />
         </div>
@@ -65,46 +69,46 @@
         <div class="misa-modal__body--half">
           <div class="misa-modal__body-part" style="gap: 16px">
             <MisaDateBox
-                dateboxId="input-dob"
-                labelName="Ngày sinh"
-                dateboxWidth="40%"
                 :inputValue="employee['DateOfBirth']"
+                dateboxId="input-dob"
+                dateboxWidth="40%"
+                labelName="Ngày sinh"
             />
             <MisaRadioGroup
-              :radioItems="genderData"
-              radioType="Gender"
-              groupWidth="60%"
-              labelName="Giới tính"
-              :inputValue="employee['Gender']"
-              @onRadioChanged="bindingDataToModal"
+                :inputValue="employee['Gender']"
+                :radioItems="genderData"
+                groupWidth="60%"
+                labelName="Giới tính"
+                radioType="Gender"
+                @onRadioChanged="bindingDataToModal"
             />
           </div>
 
           <div class="misa-modal__body-part">
             <MisaInput
-                inputId="input-identity-num"
-                labelName="Số CMND"
-                inputName="IdentityNumber"
-                inputWidth="60%"
-                inputPlaceholder="01320008866"
                 :inputValue="employee['IdentityNumber']"
+                inputId="input-identity-num"
+                inputName="IdentityNumber"
+                inputPlaceholder="01320008866"
+                inputWidth="60%"
+                labelName="Số CMND"
                 @onInputTyping="bindingDataToModal"
             />
             <MisaDateBox
-                dateboxId="input-identity-date"
-                labelName="Ngày cấp"
-                dateboxWidth="40%"
                 :inputValue="employee['IdentityDate']"
+                dateboxId="input-identity-date"
+                dateboxWidth="40%"
+                labelName="Ngày cấp"
             />
           </div>
 
           <MisaInput
-              inputId="input-identity-place"
-              labelName="Nơi cấp"
-              inputName="IdentityPlace"
-              inputWidth="100%"
-              inputPlaceholder="Bộ Công an Hà Nội"
               :inputValue="employee['IdentityPlace']"
+              inputId="input-identity-place"
+              inputName="IdentityPlace"
+              inputPlaceholder="Bộ Công an Hà Nội"
+              inputWidth="100%"
+              labelName="Nơi cấp"
               @onInputTyping="bindingDataToModal"
           />
         </div>
@@ -112,78 +116,78 @@
 
       <div class="misa-modal__body--bottom">
         <MisaInput
-            inputId="input-address"
-            labelName="Địa chỉ"
-            inputName="Address"
-            inputWidth="100%"
-            inputPlaceholder="146 Phạm Văn Chiêu"
             :inputValue="employee['Address']"
+            inputId="input-address"
+            inputName="Address"
+            inputPlaceholder="146 Phạm Văn Chiêu"
+            inputWidth="100%"
+            labelName="Địa chỉ"
             @onInputTyping="bindingDataToModal"
         />
 
         <div class="misa-modal__body-part">
           <MisaInput
-              inputId="input-mobile-phone"
-              labelName="ĐT di động"
-              inputName="MobilePhoneNumber"
-              inputWidth="24%"
-              inputType="tel"
-              inputPlaceholder="0963579744"
               :inputValue="employee['MobilePhoneNumber']"
-              @onInputTyping="bindingDataToModal"
-          />
-
-          <MisaInput
-              inputId="input-telephone"
-              labelName="ĐT cố định"
-              inputName="TelephoneNumber"
-              inputWidth="24%"
+              inputId="input-mobile-phone"
+              inputName="MobilePhoneNumber"
+              inputPlaceholder="0963579744"
               inputType="tel"
-              inputPlaceholder="(764) 749-6748"
-              :inputValue="employee['TelephoneNumber']"
+              inputWidth="24%"
+              labelName="ĐT di động"
               @onInputTyping="bindingDataToModal"
           />
 
           <MisaInput
-              inputId="input-email"
-              labelName="Email"
-              inputName="Email"
+              :inputValue="employee['TelephoneNumber']"
+              inputId="input-telephone"
+              inputName="TelephoneNumber"
+              inputPlaceholder="(764) 749-6748"
+              inputType="tel"
               inputWidth="24%"
-              inputType="email"
-              inputPlaceholder="procuon856@example.com"
+              labelName="ĐT cố định"
+              @onInputTyping="bindingDataToModal"
+          />
+
+          <MisaInput
               :inputValue="employee['Email']"
+              inputId="input-email"
+              inputName="Email"
+              inputPlaceholder="procuon856@example.com"
+              inputType="email"
+              inputWidth="24%"
+              labelName="Email"
               @onInputTyping="bindingDataToModal"
           />
         </div>
 
         <div class="misa-modal__body-part">
           <MisaInput
-              inputId="input-bank-account"
-              labelName="Tài khoản ngân hàng"
-              inputName="BankAccount"
-              inputWidth="24%"
-              inputPlaceholder="944147"
               :inputValue="employee['BankAccount']"
+              inputId="input-bank-account"
+              inputName="BankAccount"
+              inputPlaceholder="944147"
+              inputWidth="24%"
+              labelName="Tài khoản ngân hàng"
               @onInputTyping="bindingDataToModal"
           />
 
           <MisaInput
-              inputId="input-bank-name"
-              labelName="Tên ngân hàng"
-              inputName="BankName"
-              inputWidth="24%"
-              inputPlaceholder="Ngân hàng Vietcombank"
               :inputValue="employee['BankName']"
+              inputId="input-bank-name"
+              inputName="BankName"
+              inputPlaceholder="Ngân hàng Vietcombank"
+              inputWidth="24%"
+              labelName="Tên ngân hàng"
               @onInputTyping="bindingDataToModal"
           />
 
           <MisaInput
-              inputId="input-bank-branch"
-              labelName="Chi nhánh"
-              inputName="BankBranch"
-              inputWidth="24%"
-              inputPlaceholder="Chi nhánh 6"
               :inputValue="employee['BankBranch']"
+              inputId="input-bank-branch"
+              inputName="BankBranch"
+              inputPlaceholder="Chi nhánh 6"
+              inputWidth="24%"
+              labelName="Chi nhánh"
               @onInputTyping="bindingDataToModal"
           />
         </div>
@@ -194,10 +198,10 @@
 
     <div class="misa-modal__footer">
       <MisaButton
-        buttonId="button-cancel"
-        buttonText="Hủy"
-        buttonType="secondary"
-        @click.native="hideModal"
+          buttonId="button-cancel"
+          buttonText="Hủy"
+          buttonType="secondary"
+          @click.native="hideModal"
       />
 
       <div class="misa-button__group">
@@ -221,11 +225,12 @@
         @hidePopup="hidePopup"
     >
       <MisaMessage
-          popupMessageName="info"
-          :popupMessageText="validationInfo"
           slot="popup-content-message"
-          popupIcon="misa-error.svg"
+          :popupMessageName="popupMessageName"
+          :popupMessageText="validationInfo"
           @onMessageCancel="hidePopup"
+          @onMessageDestroyed="hideAll"
+          @onMessageSubmit="submitData"
       />
     </MisaPopup>
   </div>
@@ -240,16 +245,17 @@ import GenderModel from "@/models/GenderModel";
 export default {
   name: "EmployeeDetail",
 
-  mounted() {
-    this.employee = this.employeeData;
-    this.$nextTick(() => {
+  created() {
+    this.employee = JSON.parse(JSON.stringify(this.employeeData));
+    //Autofocus vào mã nhân viên khi vừa khởi tạo form
+    setTimeout(() => {
       this.$refs.inputCode.$el.lastElementChild.focus();
-    })
+    }, 600);
   },
 
   data() {
     return {
-      employee: this.employeeData,
+      employee: {},
 
       isInsidePopupVisible: false,
 
@@ -257,7 +263,11 @@ export default {
 
       validationInfo: '',
 
-      genderData: GenderModel.initData()
+      genderData: GenderModel.initData(),
+
+      popupMessageName: '',
+
+      isSubmitting: false
     }
   },
 
@@ -285,9 +295,9 @@ export default {
      * Phương thức kiểm tra trạng thái mở của modal để autofocus vào trường mã nhân viên
      * Author: NQMinh (30/08/2021)
      */
-    isPopupVisible: function() {
-      this.employee = this.employeeData;
-      if(this.isPopupVisible === true) {
+    isPopupVisible: function () {
+      this.employee = JSON.parse(JSON.stringify(this.employeeData));
+      if (this.isPopupVisible === true) {
         setTimeout(() => {
           this.$refs.inputCode.$el.lastElementChild.focus();
         }, 600);
@@ -306,6 +316,7 @@ export default {
      * Modified: NQMinh (31/08/2021)
      */
     submitData() {
+      this.isSubmitting = true;
       let soFarSoGood = true;
 
       //TODO: Validate dữ liệu
@@ -337,6 +348,7 @@ export default {
             break;
           }
         }
+        this.isInsidePopupVisible = false;
       }
     },
 
@@ -347,6 +359,7 @@ export default {
     validateRequired(inputFieldValue, inputFieldName) {
       let isValid = true;
       if (inputFieldValue === '' || inputFieldValue === null) {
+        this.popupMessageName = 'error';
         this.validationInfo = `${inputFieldName} không được để trống.`
         this.isInsidePopupVisible = true;
         isValid = false;
@@ -381,6 +394,25 @@ export default {
     },
 
     /**
+     * Phương thức kiểm tra dữ liệu có bị thay đổi so với ban đầu không
+     * Author: NQMinh (02/09/2021)
+     */
+    isDataChanged() {
+      for (let prop in this.employee) {
+        if (this.employee[prop] != null) {
+          if (this.employee[prop].toString().length === 0) {
+            if (this.employeeData[prop]) {
+              return true;
+            }
+          } else if (this.employee[prop] !== this.employeeData[prop]) {
+            return true;
+          }
+        }
+      }
+      return false;
+    },
+
+    /**
      * Phương thức binding dữ liệu lên modal
      * @param inputType
      * @param inputData
@@ -403,6 +435,21 @@ export default {
      * Author: NQMinh (01/09/2021)
      */
     hideModal() {
+      if (this.isDataChanged()) {
+        this.popupMessageName = 'verify';
+        this.validationInfo = 'Dữ liệu đã bị thay đổi. Bạn có muốn cất không?';
+        this.isInsidePopupVisible = true;
+      } else {
+        this.$emit('onHidingModal');
+      }
+    },
+
+    /**
+     * Phương thức thay đổi trạng thái của cả popup trong modal và modal thành đóng
+     * Author: NQMinh (01/09/2021)
+     */
+    hideAll() {
+      this.isInsidePopupVisible = false;
       this.$emit('onHidingModal');
     }
   }
@@ -429,6 +476,33 @@ export default {
     align-items: center;
     justify-content: flex-start;
     margin-bottom: 20px;
+    position: relative;
+  }
+
+  &__widget-buttons {
+    position: absolute;
+    top: -8px;
+    right: -20px;
+    display: flex;
+    gap: 6px;
+  }
+
+  &__ask,
+  &__close {
+    width: 24px;
+    height: 24px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+  }
+
+  &__ask {
+    background-image: url('../../assets/icon/misa-ask.svg');
+  }
+
+  &__close {
+    background-image: url('../../assets/icon/misa-close.svg');
   }
 
   &__checkbox {

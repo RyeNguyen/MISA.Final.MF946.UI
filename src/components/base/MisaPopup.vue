@@ -6,12 +6,11 @@
     height="auto"
     shading-color="rgba(0, 0, 0, 0.4)"
     :drag-enabled="true"
-    :showCloseButton="showClose"
+    :showCloseButton="false"
     :focusStateEnabled="true"
     :show-title="true"
     :visible="isPopupVisible"
     :deferRendering="true"
-    @hidden="hidePopup"
 >
   <template #content-modal>
     <slot name="popup-content-modal"></slot>
@@ -40,12 +39,6 @@ export default {
 
     popupContent: {
       type: String
-    }
-  },
-
-  computed: {
-    showClose: function() {
-      return this.popupContent === 'content-modal';
     }
   },
 
@@ -80,7 +73,7 @@ export default {
 
 .dx-popup-draggable .dx-popup-title {
   cursor: grab !important;
-  //height: 100%;
+  height: 60%;
 }
 
 .dx-popup-title {

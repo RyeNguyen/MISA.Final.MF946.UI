@@ -11,6 +11,7 @@
       <div class="misa-content__pagination-container">
         <MisaDropdown
             :dataSource="pagingData"
+            :defaultValue="pageSize"
             dataType="Paging"
             @onValueChanged="changePageSize"
         />
@@ -76,8 +77,18 @@ export default {
   name: "MisaContentFooter",
 
   created() {
-    this.$emit('onPageChanged', this.currentPage, 20);
-    this.calculateFooterPages();
+    if (localStorage.getItem('pageSize') !== null) {
+      this.firstLoad = true;
+      this.pageSize = parseInt(localStorage.getItem('pageSize'));
+      this.$emit('onPageChanged', this.currentPage, this.pageSize);
+      this.calculateFooterPages();
+      setTimeout(() => {
+        this.firstLoad = false;
+      }, 1000)
+    } else {
+      this.$emit('onPageChanged', this.currentPage, this.pageSize);
+      this.calculateFooterPages();
+    }
   },
 
   data() {
@@ -94,7 +105,9 @@ export default {
 
       footerPageNumbers: [],
 
-      pagingData: PagingModel.initData()
+      pagingData: PagingModel.initData(),
+
+      firstLoad: false
     }
   },
 
@@ -112,7 +125,7 @@ export default {
 
   watch: {
     pageSize: function() {
-      this.$emit('onPageChanged', 1, this.pageSize);
+      localStorage.setItem('pageSize', this.pageSize);
     },
 
     totalPages: function () {

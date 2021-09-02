@@ -16,6 +16,12 @@
       <DxPaging :enabled="false" />
       <DxSorting mode="none"/>
       <DxColumnFixing :enabled="true"/>
+      <DxScrolling
+          :scroll-by-content="true"
+          :scroll-by-thumb="true"
+          showScrollbar="always"
+          mode="virtual"
+      />
       <DxColumn
           caption=""
           :fixed="true"
@@ -66,7 +72,8 @@ import {
   DxColumnFixing,
   DxDataGrid,
   DxPaging,
-  DxSorting
+  DxSorting,
+  DxScrolling
 } from 'devextreme-vue/data-grid';
 
 import MisaTableDropdown from "@/components/base/table/MisaTableDropdown";
@@ -101,6 +108,7 @@ export default {
     DxColumnFixing,
     DxPaging,
     DxSorting,
+    DxScrolling,
     MisaTableDropdown
   },
 
@@ -114,11 +122,6 @@ export default {
      */
     editData(data) {
       this.$emit('onEditMode', data.rowIndex);
-    },
-
-    test() {
-      console.log('đúp 2 lần')
-
     },
 
     /**

@@ -17,6 +17,7 @@ export default {
 <style lang="scss">
 .misa-content {
   padding: 24px 30px 0 20px;
+  position: relative;
 
   &__main {
     background-color: var(--color-white);

@@ -15,8 +15,9 @@
 
     <div class="misa-message__separator"/>
 
+    <!-- Footer của popup có 2 nút -->
     <div
-        v-if="popupMessageName === 'delete'"
+        v-if="popupMessageName === 'warning'"
         class="misa-message__footer"
     >
       <MisaButton
@@ -33,8 +34,9 @@
       />
     </div>
 
+    <!-- Footer của popup có 1 nút -->
     <div
-        v-else
+        v-else-if="popupMessageName === 'error'"
         class="misa-message__footer misa-message__footer--secondary"
     >
       <MisaButton
@@ -42,6 +44,34 @@
           buttonText="Đóng"
           @click.native="cancelRequest"
       />
+    </div>
+
+    <!-- Footer của popup có 3 nút -->
+    <div
+        v-else-if="popupMessageName === 'verify'"
+        class="misa-message__footer"
+    >
+      <MisaButton
+          buttonId="button-cancel"
+          buttonText="Hủy"
+          buttonType="secondary"
+          @click.native="cancelRequest"
+      />
+
+      <div class="misa-message__footer-buttons">
+        <MisaButton
+            buttonId="button-submit"
+            buttonText="Không"
+            buttonType="secondary"
+            @click.native="destroyRequest"
+        />
+
+        <MisaButton
+            buttonId="button-submit"
+            buttonText="Có"
+            @click.native="confirmRequest"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -52,12 +82,17 @@ import EmployeesAPI from "@/api/components/EmployeesAPI";
 export default {
   name: "MisaPopupMessage",
 
-  props: {
-    popupIcon: {
-      type: String,
-      required: true
-    },
+  mounted (){
+    this.popupIcon = `misa-${this.popupMessageName}.svg`;
+  },
 
+  data() {
+    return {
+      popupIcon: 'misa-info.svg'
+    }
+  },
+
+  props: {
     employeesToDelete: {
       type: Array
     },
@@ -72,6 +107,12 @@ export default {
     }
   },
 
+  watch: {
+    popupMessageName: function() {
+      this.popupIcon = `misa-${this.popupMessageName}.svg`;
+    }
+  },
+
   computed: {
     /**
      * Phương thức kiểm tra điều kiện của popup
@@ -79,7 +120,7 @@ export default {
      */
     popupCondition: function() {
       //Nếu như đây là popup xóa thì phải kiểm tra danh sách xóa có rỗng không, rỗng => không hiện
-      if (this.popupMessageName === 'delete') {
+      if (this.popupMessageName === 'warning') {
         return this.employeesToDelete.length > 0;
       }
       //Nếu đây không phải popup xóa, tức là popup cảnh báo thông thường thì hiện popup bình thường
@@ -90,7 +131,7 @@ export default {
      * Phương thức kiểm tra điều kiện của popup để hiển thị thông báo tương ứng
      */
     displayMessage: function() {
-      if (this.popupMessageName === 'delete') {
+      if (this.popupMessageName === 'warning') {
         return `Bạn có thực sự muốn xóa Nhân viên <${this.employeesToDelete[0]['EmployeeCode']}> không?`;
       } else {
         return this.popupMessageText;
@@ -98,7 +139,7 @@ export default {
     }
   },
 
-  emits: ['onMessageCancel', 'onMessageSubmit'],
+  emits: ['onMessageCancel', 'onMessageDestroyed', 'onMessageSubmit'],
 
   methods: {
     /**
@@ -110,23 +151,38 @@ export default {
     },
 
     /**
+     * Phương thức xử lý sự kiến khi click vào nút Đóng
+     * Author: NQMinh (01/09/2021)
+     */
+    destroyRequest() {
+      this.$emit('onMessageDestroyed');
+    },
+
+    /**
      * Phương thức xử lý sự kiện khi click vào nút Đồng ý
      * Author: NQMinh (01/09/2021)
      */
     confirmRequest() {
-      //API chỉ nhận mảng các ID nên phải tạo mảng clone trích xuất các ID từ mảng chính
-      let deleteIdList = [];
+      //Nhấn submit khi ở popup xóa thì sẽ thực hiện xóa
+      if (this.employeesToDelete) {
+        //API chỉ nhận mảng các ID nên phải tạo mảng clone trích xuất các ID từ mảng chính
+        let deleteIdList = [];
 
-      this.employeesToDelete.forEach(employee => {
-        deleteIdList.push(employee['EmployeeId']);
-      })
+        this.employeesToDelete.forEach(employee => {
+          deleteIdList.push(employee['EmployeeId']);
+        })
 
-      EmployeesAPI.delete(deleteIdList).then(res => {
-        console.log(res);
+        EmployeesAPI.delete(deleteIdList).then(res => {
+          console.log(res);
+          this.$emit('onMessageSubmit');
+        }).catch(error => {
+          console.log(error);
+        })
+      }
+      //Nếu không phải popup xóa thì sẽ truyền event lên để component cha xử lý
+      else {
         this.$emit('onMessageSubmit');
-      }).catch(error => {
-        console.log(error);
-      })
+      }
     }
   }
 }
@@ -168,6 +224,11 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    &-buttons {
+      display: flex;
+      gap: 8px;
+    }
 
     &--secondary {
       justify-content: center;
