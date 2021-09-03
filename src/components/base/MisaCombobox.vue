@@ -133,7 +133,6 @@ export default {
       if (this.comboboxValue !== null) {
         for (let i = 0; i < this.$departmentData.length; i++) {
           if (this.$departmentData[i]['DepartmentId'] === this.comboboxValue) {
-            console.log(this.$departmentData[i])
             return this.$departmentData[i];
           }
         }

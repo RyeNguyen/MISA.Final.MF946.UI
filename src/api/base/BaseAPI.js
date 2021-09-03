@@ -62,29 +62,6 @@ export default class BaseAPI {
     }
 
     /**
-     * Hàm lấy dữ liệu phân trang
-     * createdBy: NQMinh(28/08/2021)
-     * @param filter
-     * @param pageIndex
-     * @param pageSize
-     */
-    paging(filter, pageIndex, pageSize) {
-        return BaseAPIConfig.get(`${this.controller}/paging?employeeFilter=${filter}&pageIndex=${pageIndex}&pageSize=${pageSize}`);
-    }
-
-    /**
-     * Hàm xuất khẩu dữ liệu ra file excel
-     * @param filter
-     * @param pageIndex
-     * @param pageSize
-     * @returns {Promise<AxiosResponse<any>>}
-     * Author: NQMinh (03/09/2021)
-     */
-    export(filter, pageIndex, pageSize) {
-        return BaseAPIConfig.get(`${this.controller}/export?employeeFilter=${filter}&pageIndex=${pageIndex}&pageSize=${pageSize}`);
-    }
-
-    /**
      * Hàm cập nhật dữ liệu
      * @param {*} id
      * @param {*} body

@@ -379,6 +379,7 @@ export default {
       }
 
       if (soFarSoGood) {
+        this.isSubmitting = false;
         switch (this.wantToCreateNewEmployee) {
           case true: {
             this.addEmployeeToDatabase(wantToAddMore);
