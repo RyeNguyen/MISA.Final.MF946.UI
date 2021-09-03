@@ -50,6 +50,13 @@
             @onMessageSubmit="reloadData"
         />
       </MisaPopup>
+
+      <MisaToast
+          :showToast="showToast"
+          :toastMessage="toastMessage"
+          :toastType="toastType"
+          @onToastHidden="showToast = false"
+      />
     </div>
   </div>
 </template>
@@ -111,7 +118,13 @@ export default {
       employeesToDelete: [],
 
       //Biến lưu trạng thái của loader, hiện ra khi dữ liệu chưa được load xong
-      isLoading: true
+      isLoading: true,
+
+      showToast: false,
+
+      toastMessage: "",
+
+      toastType: "default"
     };
   },
 
@@ -147,9 +160,15 @@ export default {
 
         setTimeout(() => {
           this.isLoading = false;
+          this.toastMessage = 'Tải dữ liệu thành công.';
+          this.toastType = 'info';
+          this.showToast = true;
         }, 1000);
       }).catch(error => {
-        console.log(error)
+        console.log(error);
+        this.toastMessage = 'Tải dữ liệu thất bại.';
+        this.toastType = 'errror';
+        this.showToast = true;
       })
     },
 
@@ -203,8 +222,14 @@ export default {
       EmployeesAPI.getNewCode().then(res => {
         this.employeeData['EmployeeCode'] = res.data;
         this.isPopupVisible = true;
+        this.toastMessage = 'Sinh mã mới tự động thành công.';
+        this.toastType = 'info';
+        this.showToast = true;
       }).catch(error => {
         console.log(error);
+        this.toastMessage = 'Sinh mã mới tự động thất bại. Vui lòng nhập mã mới.';
+        this.toastType = 'error';
+        this.showToast = true;
         this.employeeData['EmployeeCode'] = '';
         this.isPopupVisible = true;
       })
@@ -243,10 +268,16 @@ export default {
       EmployeesAPI.getNewCode().then(res => {
         this.employeeData['EmployeeCode'] = res.data;
         this.isPopupVisible = true;
+        this.toastMessage = 'Sinh mã mới tự động thành công.';
+        this.toastType = 'info';
+        this.showToast = true;
       }).catch(error => {
         console.log(error);
         this.employeeData['EmployeeCode'] = null;
         this.isPopupVisible = true;
+        this.toastMessage = 'Sinh mã mới tự động thất bại. Vui lòng nhập mã mới.';
+        this.toastType = 'error';
+        this.showToast = true;
       })
     },
 

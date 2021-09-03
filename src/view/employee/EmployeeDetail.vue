@@ -24,6 +24,7 @@
                 ref="inputCode"
                 :inputValue="employee['EmployeeCode']"
                 :isRequired="true"
+                :isUnique="true"
                 :isSubmitting="isSubmitting"
                 inputId="input-code"
                 inputName="EmployeeCode"
@@ -34,6 +35,7 @@
             />
 
             <MisaInput
+                ref="inputName"
                 :inputValue="employee['FullName']"
                 :isRequired="true"
                 :isSubmitting="isSubmitting"
@@ -241,6 +243,13 @@
           @onMessageSubmit="submitData"
       />
     </MisaPopup>
+
+    <MisaToast
+      :showToast="showToast"
+      :toastMessage="toastMessage"
+      :toastType="toastType"
+      @onToastHidden="showToast = false"
+    />
   </div>
 </template>
 
@@ -259,6 +268,12 @@ export default {
     setTimeout(() => {
       this.$refs.inputCode.$el.lastElementChild.focus();
     }, 600);
+
+    // EmployeesAPI.getAllCode().then(res => {
+    //   this.codeList = res.data;
+    // }).catch(error => {
+    //   console.log(error);
+    // })
   },
 
   data() {
@@ -275,7 +290,13 @@ export default {
 
       popupMessageName: '',
 
-      isSubmitting: false
+      isSubmitting: false,
+
+      showToast: false,
+
+      toastMessage: '',
+
+      toastType: 'default'
     }
   },
 
@@ -341,7 +362,10 @@ export default {
         soFarSoGood = this.validateRequired(this.employee['EmployeeCode'], 'Mã');
       }
 
-      //TODO: Check trùng mã
+      //Kiểm tra mã nv có trùng hay không
+      if (this.wantToCreateNewEmployee && soFarSoGood) {
+        soFarSoGood = this.validateDuplicatedCode();
+      }
 
       //Kiểm tra tên nv có trống hay không
       if (soFarSoGood) {
@@ -384,6 +408,41 @@ export default {
     },
 
     /**
+     * Phương thức kiểm tra mã trùng
+     * Author: NQMinh (02/09/2021)
+     */
+    // validateDuplicateCode() {
+    //   for (let i = 0; i < this.codeList.length; i++) {
+    //     if (this.codeList[i] === this.employee['EmployeeCode']) {
+    //       this.popupMessageName = 'error';
+    //       this.validationInfo = `Nhân viên <${this.employee['EmployeeCode']}> đã tồn tại.`;
+    //       this.isInsidePopupVisible = true;
+    //       return false;
+    //     }
+    //   }
+    //   return true;
+    // },
+
+    /**
+     * Phương thức kiểm tra mã trùng
+     * Author: NQMinh (03/09/2021)
+     */
+    async validateDuplicatedCode() {
+      try {
+        const response = await EmployeesAPI.checkDuplicatedCode(`"${this.employee['EmployeeCode']}"`);
+        if (response.data === true) {
+          this.popupMessageName = 'error';
+          this.validationInfo = `Nhân viên <${this.employee['EmployeeCode']}> đã tồn tại.`;
+          this.isInsidePopupVisible = true;
+          return response.data;
+        }
+        return response.data;
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    /**
      * Phương thức call API thêm nhân viên vào database
      * Author: NQMinh (31/08/2021)
      */
@@ -395,8 +454,14 @@ export default {
         } else {
           this.$emit('dataChangedAndClose');
         }
+        this.toastMessage = 'Cất thông tin nhân viên thành công.';
+        this.toastType = 'success';
+        this.showToast = true;
       }).catch(error => {
         console.log(error);
+        this.toastMessage = 'Cất thông tin nhân viên thất bại.';
+        this.toastType = 'error';
+        this.showToast = true;
       })
     },
 
@@ -412,8 +477,14 @@ export default {
         } else {
           this.$emit('dataChangedAndClose');
         }
+        this.toastMessage = 'Cất thông tin nhân viên thành công.';
+        this.toastType = 'success';
+        this.showToast = true;
       }).catch(error => {
         console.log(error);
+        this.toastMessage = 'Cất thông tin nhân viên thất bại.';
+        this.toastType = 'error';
+        this.showToast = true;
       })
     },
 

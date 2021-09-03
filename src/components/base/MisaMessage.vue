@@ -73,6 +73,13 @@
         />
       </div>
     </div>
+
+    <MisaToast
+        :showToast="showToast"
+        :toastMessage="toastMessage"
+        :toastType="toastType"
+        @onToastHidden="showToast = false"
+    />
   </div>
 </template>
 
@@ -88,7 +95,13 @@ export default {
 
   data() {
     return {
-      popupIcon: 'misa-info.svg'
+      popupIcon: 'misa-info.svg',
+
+      showToast: false,
+
+      toastMessage: '',
+
+      toastType: 'default'
     }
   },
 
@@ -175,8 +188,14 @@ export default {
         EmployeesAPI.delete(deleteIdList).then(res => {
           console.log(res);
           this.$emit('onMessageSubmit');
+          this.toastMessage = 'Xóa dữ liệu nhân viên thành công.';
+          this.toastType = 'success';
+          this.showToast = true;
         }).catch(error => {
           console.log(error);
+          this.toastMessage = 'Xóa dữ liệu nhân viên thất bại.';
+          this.toastType = 'error';
+          this.showToast = true;
         })
       }
       //Nếu không phải popup xóa thì sẽ truyền event lên để component cha xử lý

@@ -20,6 +20,8 @@
     </div>
     <MisaToast
       :showToast="showToast"
+      toastType="warning"
+      toastMessage="Từ Menu"
       @onToastHidden="hideToast"
     />
   </div>

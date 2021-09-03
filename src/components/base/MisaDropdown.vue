@@ -1,13 +1,18 @@
 <template>
 <DxSelectBox
+    height="32px"
     :data-source="dataSource"
     :value-expr="optionValue"
     :display-expr="optionDisplayName"
-    height="32px"
     :value="defaultValue"
+    item-template="dropdownItem"
     @value-changed="onValueChanged"
 >
-
+  <template #dropdownItem="{data: dataSource}">
+    <div class="misa-dropdown__item">
+      {{ dataSource[`PagingName`] }}
+    </div>
+  </template>
 </DxSelectBox>
 </template>
 
@@ -105,6 +110,41 @@ export default {
   & .dx-item-content.dx-list-item-content {
     font-family: "NotoSans-Regular", sans-serif;
     font-size: 13px;
+  }
+}
+
+.dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item {
+  &.dx-list-item-selected {
+    & .misa-dropdown__item {
+      background-color: var(--color-primary);
+      color: var(--color-white);
+    }
+
+
+    &.dx-state-hover:not(.dx-state-focus) {
+      & .misa-dropdown__item {
+        background-color: var(--color-primary) !important;
+        color: var(--color-white) !important;
+      }
+    }
+  }
+
+  &.dx-state-focused.dx-list-item-selected {
+    & .misa-dropdown__item {
+      background-color: var(--color-primary);
+      color: var(--color-white);
+    }
+  }
+}
+
+.misa-dropdown__item {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px 0 10px !important;
+
+  &:hover {
+
   }
 }
 </style>

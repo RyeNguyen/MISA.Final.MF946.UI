@@ -22,13 +22,19 @@
           showScrollbar="always"
           mode="virtual"
       />
+
       <DxColumn
           caption=""
           :fixed="true"
           width="40"
           alignment="center"
           cell-template="checkboxCell"
-      ></DxColumn>
+      >
+        <template>
+          <MisaCheckbox/>
+        </template>
+      </DxColumn>
+
       <DxColumn
           v-for="column in tableColumns"
           :key="column['ColId']"
@@ -39,6 +45,7 @@
           :minWidth="column['ColWidth']"
           :alignment="column['ColAlignment']"
       />
+
       <DxColumn
           caption="Chức năng"
           :fixed="true"
@@ -47,6 +54,7 @@
           alignment="center"
           cell-template="functionCell"
       ></DxColumn>
+
       <template #functionCell="{data}">
         <div class="misa-table__functional-cell">
           <div
@@ -59,6 +67,7 @@
           />
         </div>
       </template>
+
       <template #checkboxCell>
         <MisaCheckbox/>
       </template>

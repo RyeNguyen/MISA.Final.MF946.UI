@@ -139,7 +139,6 @@ export default {
      * Author: NQMinh (01/09/2021)
      */
     validateInput() {
-      console.log('không focus à? :((')
       if (this.isRequired) {
         this.validateRequired();
       }

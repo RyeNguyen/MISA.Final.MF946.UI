@@ -18,7 +18,7 @@
             ]"
         :placeholder="inputPlaceholder"
         :type="inputType"
-        @blur="validateInput"
+        @blur="validateRequired"
         @input="removeError"
     >
     <span v-if="this.isSearchable === true" class="misa-input__icon"/>
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import EmployeesAPI from "@/api/components/EmployeesAPI";
+
 export default {
   name: "MisaInput",
 
@@ -93,6 +95,13 @@ export default {
       default: false
     },
 
+    //Biến kiểm tra trường có được trùng hay không
+    isUnique: {
+      type: Boolean,
+      default: false
+    },
+
+    //Biến kiểm tra người dùng có đang nhân Cất hay không để validate tổng thể
     isSubmitting: {
       type: Boolean,
       default: false
@@ -119,10 +128,9 @@ export default {
      * Author: NQMinh (01/09/2021)
      */
     validateInput() {
-      if (this.isRequired) {
         this.validateRequired();
-      }
-      this.$emit('onValidated');
+        this.validateUnique();
+        this.$emit('onValidated');
     },
 
     /**
@@ -130,15 +138,39 @@ export default {
      * Author: NQMinh (01/09/2021)
      */
     validateRequired() {
-      if (this.inputData === '' || this.inputData === null) {
-        this.isValid = false;
-        this.$refs.modalInput.setAttribute('title', `${this.labelName} không được để trống.`);
-      } else {
-        this.isValid = true;
-        this.$refs.modalInput.setAttribute('title', '');
+      if (this.isRequired) {
+        if (this.inputData === '' || this.inputData === null) {
+          this.isValid = false;
+          this.$refs.modalInput.setAttribute('title', `${this.labelName} không được để trống.`);
+        } else {
+          this.isValid = true;
+          this.$refs.modalInput.setAttribute('title', '');
+        }
       }
     },
 
+    /**
+     * Phương thức kiểm tra các trường không trùng
+     * Author: NQMinh (03/09/2021)
+     */
+    validateUnique() {
+      if (this.isUnique) {
+        EmployeesAPI.checkDuplicatedCode(`"${this.inputData}"`).then(res => {
+          if (res.data === true) {
+            this.isValid = false;
+            this.$refs.modalInput.setAttribute('title', `${this.labelName} đã tồn tại trong hệ thống.`);
+          } else {
+            this.isValid = true;
+            this.$refs.modalInput.setAttribute('title', '');
+          }
+        })
+      }
+    },
+
+    /**
+     * Phương thức thay đổi input thành hợp lệ khi trường đó bắt buộc và được nhập
+     * Author: NQMinh (01/09/2021)
+     */
     removeError() {
       if (this.isRequired) this.isValid = true;
     }

@@ -14,6 +14,25 @@ export default class BaseAPI {
     }
 
     /**
+     * Hàm lấy danh sách mã
+     * @returns {Promise<AxiosResponse<any>>}
+     * Author: NQMinh (02/09/2021)
+     */
+    getAllCode() {
+        return BaseAPIConfig.get(`${this.controller}/code`);
+    }
+
+    /**
+     * Hàm kiểm tra mã trùng
+     * @param checkedCode
+     * @returns {Promise<AxiosResponse<any>>}
+     * Author: NQMinh (03/09/2021)
+     */
+    checkDuplicatedCode(checkedCode) {
+        return BaseAPIConfig.post(`${this.controller}/duplicatedCode`, checkedCode);
+    }
+
+    /**
      * Hàm lấy dữ liệu bằng id
      * @param id
      * @returns {Promise<AxiosResponse<any>>}
