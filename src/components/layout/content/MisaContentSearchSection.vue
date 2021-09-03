@@ -11,7 +11,9 @@
     <div class="misa-content__reload"
       @click="reloadTable"
     />
-    <div class="misa-content__export"/>
+    <div class="misa-content__export"
+      @click="exportData"
+    />
   </div>
 </template>
 
@@ -45,7 +47,7 @@ export default {
     }
   },
 
-  emits: ['onSearched', 'onReload'],
+  emits: ['onSearched', 'onReload', 'onExport'],
 
   methods: {
     /**
@@ -64,6 +66,10 @@ export default {
      */
     reloadTable() {
       this.$emit('onReload');
+    },
+
+    exportData() {
+      this.$emit('onExport');
     }
   }
 }

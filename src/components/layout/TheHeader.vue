@@ -7,6 +7,7 @@
         @click="toggleMenu"
       />
       <div class="misa-header__branch">công ty tnhh sản xuất - thương mại - dịch vụ quy phúc</div>
+      <div class="misa-header__arrow"></div>
     </div>
     <div class="misa-header--right">
       <div
@@ -15,6 +16,7 @@
       <div class="misa-header__user">
         <div class="misa-header__user-profile"></div>
         <div class="misa-header__user-name">Nguyễn Quang Minh</div>
+        <div class="misa-header__arrow"></div>
       </div>
     </div>
   </div>
@@ -100,6 +102,14 @@ export default {
     }
   }
 
+  &__arrow {
+    width: 16px;
+    height: 16px;
+    background-image: url('../../assets/icon/misa-arrow-bottom-dark-2.svg');
+    background-size: cover;
+    background-position: center;
+  }
+
   &__branch {
     font-size: 14px;
     text-transform: uppercase;
@@ -140,6 +150,12 @@ export default {
       padding: 5px 0;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    & .misa-header__arrow {
+      width: 14px;
+      height: 14px;
+      margin-left: 16px;
     }
   }
 }

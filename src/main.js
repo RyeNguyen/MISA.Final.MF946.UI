@@ -7,6 +7,7 @@ import GenderModel from "@/models/GenderModel";
 import Multiselect from "vue-multiselect";
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-default.css';
+import VTooltip from "v-tooltip";
 
 import MisaPopup from "@/components/base/MisaPopup";
 import MisaCheckbox from "@/components/base/MisaCheckbox";
@@ -43,6 +44,7 @@ DepartmentAPI.getAll().then(res => {
 Vue.config.productionTip = false
 
 Vue.use(VueToast);
+Vue.use(VTooltip);
 
 new Vue({
   render: h => h(App),

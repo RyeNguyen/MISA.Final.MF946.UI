@@ -8,13 +8,20 @@
       <MisaContentSearch
           @onSearched="searchEmployee"
           @onReload="loadData"
+          @onExport="exportData"
       />
 
       <MisaLoader
           v-if="isLoading"
       />
 
+      <div v-if="formatedEmployees.length === 0" class="misa-table__placeholder">
+        <img class="misa-table__placeholder-img" src="../../assets/icon/misa-no-data.svg" alt="no-data">
+        <div class="misa-table__placeholder-text">Không có dữ liệu</div>
+      </div>
+
       <MisaTable
+          v-if="formatedEmployees.length > 0"
           :dataSource="formatedEmployees"
           :pageSize="pageSize"
           :tableColumns="columns"
@@ -160,9 +167,9 @@ export default {
 
         setTimeout(() => {
           this.isLoading = false;
+          this.showToast = true;
           this.toastMessage = 'Tải dữ liệu thành công.';
           this.toastType = 'info';
-          this.showToast = true;
         }, 1000);
       }).catch(error => {
         console.log(error);
@@ -340,11 +347,45 @@ export default {
     searchEmployee(keyword) {
       this.searchKeyword = keyword;
       this.loadData();
+    },
+
+    /**
+     * Phương thức call API xuất khẩu dữ liệu
+     * Author: NQMinh (03/09/2021)
+     */
+    exportData() {
+      EmployeesAPI.export(this.searchKeyword, this.currentPage, this.pageSize).then(res => {
+        if (res) {
+          const blob = new Blob([res.data], {
+            type:
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          });
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = "Danh sách nhân viên";
+          link.click();
+          URL.revokeObjectURL(link.href);
+        }
+      }).catch(error => {
+        console.log(error);
+      })
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+.misa-table__placeholder {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 13px;
 
+  &-img {
+    width: 132px;
+    height: 74px;
+    margin: 50px 50px 30px;
+  }
+}
 </style>

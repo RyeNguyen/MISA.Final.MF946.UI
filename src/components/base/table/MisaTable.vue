@@ -29,11 +29,8 @@
           width="40"
           alignment="center"
           cell-template="checkboxCell"
-      >
-        <template>
-          <MisaCheckbox/>
-        </template>
-      </DxColumn>
+          header-cell-template="checkboxHeader"
+      />
 
       <DxColumn
           v-for="column in tableColumns"
@@ -69,6 +66,10 @@
       </template>
 
       <template #checkboxCell>
+        <MisaCheckbox/>
+      </template>
+
+      <template #checkboxHeader>
         <MisaCheckbox/>
       </template>
     </DxDataGrid>

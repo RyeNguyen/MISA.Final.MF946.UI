@@ -47,18 +47,7 @@
                 @onInputTyping="bindingDataToModal"
             />
           </div>
-<!--          <MisaCombobox-->
-<!--              :comboboxValue="employee['DepartmentId']"-->
-<!--              :isRequired="true"-->
-<!--              :isSubmitting="isSubmitting"-->
-<!--              comboboxName="DepartmentId"-->
-<!--              comboboxPlaceholder="Chọn đơn vị..."-->
-<!--              comboboxType="Department"-->
-<!--              inputId="input-department"-->
-<!--              inputWidth="100%"-->
-<!--              labelName="Đơn vị"-->
-<!--              @onComboboxChanged="bindingDataToModal"-->
-<!--          />-->
+
           <MisaCombobox
             :isRequired="true"
             :comboboxValue="employee['DepartmentId']"
@@ -461,14 +450,14 @@ export default {
     addEmployeeToDatabase(wantToAddMore) {
       EmployeesAPI.add(this.employee).then(res => {
         console.log(res);
+        this.toastMessage = 'Cất thông tin nhân viên thành công.';
+        this.toastType = 'success';
+        this.showToast = true;
         if (wantToAddMore) {
           this.$emit('dataChangedAndAdd');
         } else {
           this.$emit('dataChangedAndClose');
         }
-        this.toastMessage = 'Cất thông tin nhân viên thành công.';
-        this.toastType = 'success';
-        this.showToast = true;
       }).catch(error => {
         console.log(error);
         this.toastMessage = 'Cất thông tin nhân viên thất bại.';

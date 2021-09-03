@@ -169,7 +169,6 @@ export default {
      * Author: NQMinh (03/09/2021)
      */
     onComboboxTyping(searchQuery) {
-      console.log(this.$refs.modalInput.$refs.search)
       if (this.isRequired) {
         if ((searchQuery === '' || searchQuery === null) &&
             (this.comboboxItem === '' || this.comboboxItem === null)) {

@@ -73,6 +73,18 @@ export default class BaseAPI {
     }
 
     /**
+     * Hàm xuất khẩu dữ liệu ra file excel
+     * @param filter
+     * @param pageIndex
+     * @param pageSize
+     * @returns {Promise<AxiosResponse<any>>}
+     * Author: NQMinh (03/09/2021)
+     */
+    export(filter, pageIndex, pageSize) {
+        return BaseAPIConfig.get(`${this.controller}/export?employeeFilter=${filter}&pageIndex=${pageIndex}&pageSize=${pageSize}`);
+    }
+
+    /**
      * Hàm cập nhật dữ liệu
      * @param {*} id
      * @param {*} body
