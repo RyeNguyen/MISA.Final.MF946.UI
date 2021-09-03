@@ -47,17 +47,29 @@
                 @onInputTyping="bindingDataToModal"
             />
           </div>
+<!--          <MisaCombobox-->
+<!--              :comboboxValue="employee['DepartmentId']"-->
+<!--              :isRequired="true"-->
+<!--              :isSubmitting="isSubmitting"-->
+<!--              comboboxName="DepartmentId"-->
+<!--              comboboxPlaceholder="Chọn đơn vị..."-->
+<!--              comboboxType="Department"-->
+<!--              inputId="input-department"-->
+<!--              inputWidth="100%"-->
+<!--              labelName="Đơn vị"-->
+<!--              @onComboboxChanged="bindingDataToModal"-->
+<!--          />-->
           <MisaCombobox
-              :comboboxValue="employee['DepartmentId']"
-              :isRequired="true"
-              :isSubmitting="isSubmitting"
-              comboboxName="DepartmentId"
-              comboboxPlaceholder="Chọn đơn vị..."
-              comboboxType="Department"
-              inputId="input-department"
-              inputWidth="100%"
-              labelName="Đơn vị"
-              @onComboboxChanged="bindingDataToModal"
+            :isRequired="true"
+            :comboboxValue="employee['DepartmentId']"
+            :isSubmitting="isSubmitting"
+            comboboxName="DepartmentId"
+            comboboxType="Department"
+            comboboxPlaceholder="Chọn đơn vị..."
+            inputId="input-department"
+            inputWidth="100%"
+            labelName="Đơn vị"
+            @onComboboxChanged="bindingDataToModal"
           />
 
           <MisaInput
@@ -522,6 +534,7 @@ export default {
      * Author: NQMinh (01/09/2021)
      */
     hidePopup() {
+      this.isSubmitting = false;
       this.isInsidePopupVisible = false;
     },
 
@@ -560,10 +573,6 @@ export default {
   .misa-input,
   .misa-datebox {
     margin-bottom: 12px;
-
-    input::placeholder {
-      font-style: normal !important;
-    }
   }
 
   &__header {

@@ -12,7 +12,7 @@
         ref="modalCombobox"
         :search-enabled="true"
         :data-source="comboboxGroup"
-
+        :grouped="true"
         :search-timeout="0"
         search-mode="contains"
         height="32px"
@@ -24,9 +24,15 @@
         :display-expr="`${comboboxType}Name`"
         :value-expr="`${comboboxType}Id`"
         @value-changed="onValueChanged"
-        @onFocusOut="validateInput"
-        @input="removeError"
+        @on-focus-in="validateInput"
+        @on-focus-out="validateInput"
+        @blur="validateInput"
     >
+      <DxItem>
+        <template #default>
+          <h1>Available items</h1>
+        </template>
+      </DxItem>
       <template #group="{}">
         <MisaComboboxGroup/>
       </template>
@@ -46,30 +52,29 @@
 
 <script>
 import { DxSelectBox } from 'devextreme-vue/select-box';
-//import DataSource from 'devextreme/data/data_source';
+import DataSource from 'devextreme/data/data_source';
 import MisaComboboxGroup from "@/components/base/combobox/MisaComboboxGroup";
+import {DxItem} from 'devextreme-vue/list';
 
 export default {
   name: "MisaCombobox",
 
   created () {
-    console.log(this.$refs.modalCombobox)
-
     if (this.comboboxType === 'Department') {
-      // this.comboboxOptions = [{
-      //   'Group': 'Đơn vị',
-      //   'Items': this.$departmentData
-      // }];
-      this.comboboxGroup = this.$departmentData;
+      this.comboboxOptions = [{
+        'Group': 'Đơn vị',
+        'Items': this.$departmentData
+      }];
+      //this.comboboxGroup = this.$departmentData;
 
-      // this.comboboxGroup = new DataSource({
-      //   store: this.comboboxOptions,
-      //   map: function(option) {
-      //     option.key = option.Group;
-      //     option.items = option.Items;
-      //     return option;
-      //   }
-      // })
+      this.comboboxGroup = new DataSource({
+        store: this.comboboxOptions,
+        map: function(option) {
+          option.key = option.Group;
+          option.items = option.Items;
+          return option;
+        }
+      })
     }
   },
 
@@ -121,6 +126,7 @@ export default {
 
   components: {
     DxSelectBox,
+    DxItem,
     MisaComboboxGroup
   },
 
@@ -138,7 +144,8 @@ export default {
      * Phương thức kiểm tra tổng thể các trường
      * Author: NQMinh (01/09/2021)
      */
-    validateInput() {
+    validateInput(e) {
+      console.log(e.value);
       if (this.isRequired) {
         this.validateRequired();
       }

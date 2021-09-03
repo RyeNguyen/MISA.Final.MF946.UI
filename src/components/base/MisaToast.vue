@@ -65,7 +65,7 @@ export default {
 
     &--info {
       border: 1px solid var(--color-secondary);
-      background-color: #edffea;
+      background-color: #e0f3fa;
 
       & .v-toast__icon {
         background-image: url('../../assets/icon/misa-info.svg');

@@ -317,6 +317,10 @@ export default {
     color: var(--color-content-text);
     font-size: 13px;
 
+    &:disabled {
+      color: #9E9E9E;
+    }
+
     &.paging {
       &-previous,
       &-next,

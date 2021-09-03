@@ -13,7 +13,7 @@ import MisaCheckbox from "@/components/base/MisaCheckbox";
 import MisaButton from "@/components/base/MisaButton";
 import MisaInput from "@/components/base/MisaInput";
 import MisaDateBox from "@/components/base/MisaDateBox";
-import MisaCombobox from "@/components/base/combobox/MisaCombobox";
+import MisaCombobox from "@/components/base/MisaCombobox";
 import MisaDropdown from "@/components/base/MisaDropdown";
 import MisaToast from "@/components/base/MisaToast";
 import MisaMessage from "@/components/base/MisaMessage";

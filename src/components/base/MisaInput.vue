@@ -9,8 +9,8 @@
       </label>
     </div>
     <input
-        ref="modalInput"
         :id="inputId"
+        ref="modalInput"
         v-model="inputData"
         :class="[
             {'misa-input-icon': isSearchable === true},
@@ -113,7 +113,7 @@ export default {
       this.$emit('onInputTyping', this.inputName, this.inputData);
     },
 
-    isSubmitting: function() {
+    isSubmitting: function () {
       if (this.isSubmitting === true) {
         this.validateInput();
       }
@@ -128,9 +128,13 @@ export default {
      * Author: NQMinh (01/09/2021)
      */
     validateInput() {
+      if (this.isRequired) {
         this.validateRequired();
+      }
+      if (this.isUnique) {
         this.validateUnique();
-        this.$emit('onValidated');
+      }
+      this.$emit('onValidated');
     },
 
     /**
@@ -153,17 +157,14 @@ export default {
      * Phương thức kiểm tra các trường không trùng
      * Author: NQMinh (03/09/2021)
      */
-    validateUnique() {
-      if (this.isUnique) {
-        EmployeesAPI.checkDuplicatedCode(`"${this.inputData}"`).then(res => {
-          if (res.data === true) {
-            this.isValid = false;
-            this.$refs.modalInput.setAttribute('title', `${this.labelName} đã tồn tại trong hệ thống.`);
-          } else {
-            this.isValid = true;
-            this.$refs.modalInput.setAttribute('title', '');
-          }
-        })
+    async validateUnique() {
+      const isDuplicated = await EmployeesAPI.checkDuplicatedCode(`"${this.inputData}"`);
+      if (isDuplicated.data === true) {
+        this.isValid = false;
+        this.$refs.modalInput.setAttribute('title', `${this.labelName} đã tồn tại trong hệ thống.`);
+      } else {
+        this.isValid = true;
+        this.$refs.modalInput.setAttribute('title', '');
       }
     },
 

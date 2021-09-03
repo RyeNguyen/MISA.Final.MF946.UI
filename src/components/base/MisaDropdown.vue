@@ -142,9 +142,94 @@ export default {
   display: flex;
   align-items: center;
   padding: 0 14px 0 10px !important;
+}
 
-  &:hover {
+.dx-dropdowneditor-button.dx-state-active .dx-dropdowneditor-icon, .dx-dropdowneditor.dx-dropdowneditor-active .dx-dropdowneditor-icon {
+  background-color: transparent !important;
+}
 
+.dx-dropdowneditor.dx-dropdowneditor-field-clickable, .dx-dropdowneditor.dx-dropdowneditor-field-clickable .dx-texteditor-input {
+  cursor: auto;
+}
+
+.misa-combobox__item {
+  font-family: 'NotoSans-Regular', sans-serif !important;
+  display: flex;
+
+  &-code {
+    width: 30%;
   }
+
+  &-name {
+    width: 70%;
+  }
+}
+
+.dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item {
+  &.dx-list-item-selected {
+    background-color: var(--color-white);
+    color: var(--color-content-text);
+  }
+
+  &.dx-state-hover {
+    background-color: var(--color-border) !important;
+    color: var(--color-primary) !important;
+
+    &:not(.dx-state-focused) {
+      background-color: var(--color-border);
+      color: var(--color-primary);
+    }
+  }
+
+  &.dx-state-focused {
+    background-color: var(--color-border);
+    color: var(--color-primary);
+
+    &.dx-list-item-selected {
+      background-color: var(--color-border);
+      color: var(--color-primary);
+    }
+  }
+}
+
+.dx-selectbox .dx-texteditor-input {
+  &::placeholder {
+    font-size: 12px;
+    font-family: "NotoSans-Regular", sans-serif;
+    color: #A9A9A9 !important;
+  }
+}
+
+.dx-item.dx-list-item.dx-state-active {
+  background-color: var(--color-border) !important;
+  color: var(--color-primary) !important;
+}
+
+.dx-dropdownlist-popup-wrapper.dx-popup-wrapper .dx-overlay-content {
+  top: 5px !important;
+  border-radius: 2px !important;
+  border: 1px solid var(--color-hightlight) !important;
+  box-shadow: var(--box-shadow-default) !important;
+
+  & .dx-popup-content {
+    height: 158px;
+  }
+}
+
+.dx-list-group-header {
+  height: 32px;
+  padding: 0 10px;
+  background-color: var(--color-background);
+  border-bottom: none;
+  font-family: 'NotoSans-Semibold', sans-serif;
+  color: var(--color-content-text);
+}
+
+.dx-list-group-body {
+  padding: 2px 1px;
+}
+
+.dx-dropdownlist-popup-wrapper .dx-empty-message, .dx-dropdownlist-popup-wrapper .dx-list-item {
+  height: 32px;
 }
 </style>
