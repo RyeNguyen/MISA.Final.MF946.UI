@@ -15,11 +15,6 @@
           v-if="isLoading"
       />
 
-      <div v-if="formatedEmployees.length === 0" class="misa-table__placeholder">
-        <img class="misa-table__placeholder-img" src="../../assets/icon/misa-no-data.svg" alt="no-data">
-        <div class="misa-table__placeholder-text">Không có dữ liệu</div>
-      </div>
-
       <MisaTable
           v-if="formatedEmployees.length > 0"
           :dataSource="formatedEmployees"
@@ -29,6 +24,11 @@
           @onEditMode="showPopupToEdit"
           @onCloneMode="showPopupToClone"
       />
+
+      <div v-if="formatedEmployees.length === 0" class="misa-table__placeholder">
+        <img class="misa-table__placeholder-img" src="../../assets/icon/misa-no-data.svg" alt="no-data">
+        <div class="misa-table__placeholder-text">Không có dữ liệu</div>
+      </div>
 
       <MisaContentFooter
           :totalPages="totalPages"
@@ -167,15 +167,11 @@ export default {
 
         setTimeout(() => {
           this.isLoading = false;
-          this.showToast = true;
-          this.toastMessage = 'Tải dữ liệu thành công.';
-          this.toastType = 'info';
+          const toastMessage = this.$responseData.MsgSuccessLoad;
+          this.handleSuccess(toastMessage, 'info');
         }, 1000);
       }).catch(error => {
-        console.log(error);
-        this.toastMessage = 'Tải dữ liệu thất bại.';
-        this.toastType = 'errror';
-        this.showToast = true;
+        this.handleError(error);
       })
     },
 
@@ -229,14 +225,10 @@ export default {
       EmployeesAPI.getNewCode().then(res => {
         this.employeeData['EmployeeCode'] = res.data;
         this.isPopupVisible = true;
-        this.toastMessage = 'Sinh mã mới tự động thành công.';
-        this.toastType = 'info';
-        this.showToast = true;
+        const toastMessage = this.$responseData.MsgSuccessNewCode;
+        this.handleSuccess(toastMessage, 'info');
       }).catch(error => {
-        console.log(error);
-        this.toastMessage = 'Sinh mã mới tự động thất bại. Vui lòng nhập mã mới.';
-        this.toastType = 'error';
-        this.showToast = true;
+        this.handleError(error);
         this.employeeData['EmployeeCode'] = '';
         this.isPopupVisible = true;
       })
@@ -275,16 +267,12 @@ export default {
       EmployeesAPI.getNewCode().then(res => {
         this.employeeData['EmployeeCode'] = res.data;
         this.isPopupVisible = true;
-        this.toastMessage = 'Sinh mã mới tự động thành công.';
-        this.toastType = 'info';
-        this.showToast = true;
+        const toastMessage = this.$responseData.MsgSuccessNewCode;
+        this.handleSuccess(toastMessage, 'info');
       }).catch(error => {
-        console.log(error);
         this.employeeData['EmployeeCode'] = null;
         this.isPopupVisible = true;
-        this.toastMessage = 'Sinh mã mới tự động thất bại. Vui lòng nhập mã mới.';
-        this.toastType = 'error';
-        this.showToast = true;
+        this.handleError(error);
       })
     },
 
@@ -306,6 +294,37 @@ export default {
       this.isPopupVisible = false;
       this.employeeData = EmployeeModel.initData();
       this.employeesToDelete = [];
+    },
+
+    /**
+     * Phương thức xử lý phản hồi thành công
+     * @param toastMessage
+     * @param toastType
+     * Author: NQMinh (03/09/2021)
+     */
+    handleSuccess(toastMessage, toastType) {
+      this.toastType = toastType;
+      this.toastMessage = toastMessage;
+      this.showToast = true;
+    },
+
+    /**
+     * Phương thức xử lý các phản hồi lỗi
+     * @param response
+     * Author: NQMinh (03/09/2021)
+     */
+    handleError(response) {
+      const statusCode = response.response.status;
+
+      if (statusCode >= 500) {
+        this.toastMessage = this.$responseData.MsgErrorServer;
+        this.toastType = 'error';
+      } else if (statusCode >= 400 && statusCode < 500) {
+        this.toastMessage = response.response.data['userMsg'];
+        this.toastType = 'error';
+      }
+
+      this.showToast = true;
     },
 
     /**
@@ -366,8 +385,10 @@ export default {
           link.click();
           URL.revokeObjectURL(link.href);
         }
+        const toastMessage = this.$responseData.MsgSuccessExport;
+        this.handleSuccess(toastMessage);
       }).catch(error => {
-        console.log(error);
+        this.handleError(error);
       })
     }
   }

@@ -52,8 +52,8 @@ export default {
   & input {
     position: absolute;
     opacity: 0;
-    width: 18px;
-    height: 18px;
+    width: 17px;
+    height: 17px;
     margin: 0;
     top: 0;
     left: 0;
@@ -71,8 +71,8 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    height: 20px;
-    width: 20px;
+    height: 17px;
+    width: 17px;
 
     &:after {
       content: "";

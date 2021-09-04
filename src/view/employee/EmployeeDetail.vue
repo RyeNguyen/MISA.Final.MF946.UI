@@ -269,12 +269,6 @@ export default {
     setTimeout(() => {
       this.$refs.inputCode.$el.lastElementChild.focus();
     }, 600);
-
-    // EmployeesAPI.getAllCode().then(res => {
-    //   this.codeList = res.data;
-    // }).catch(error => {
-    //   console.log(error);
-    // })
   },
 
   data() {
@@ -411,22 +405,6 @@ export default {
 
     /**
      * Phương thức kiểm tra mã trùng
-     * Author: NQMinh (02/09/2021)
-     */
-    // validateDuplicateCode() {
-    //   for (let i = 0; i < this.codeList.length; i++) {
-    //     if (this.codeList[i] === this.employee['EmployeeCode']) {
-    //       this.popupMessageName = 'error';
-    //       this.validationInfo = `Nhân viên <${this.employee['EmployeeCode']}> đã tồn tại.`;
-    //       this.isInsidePopupVisible = true;
-    //       return false;
-    //     }
-    //   }
-    //   return true;
-    // },
-
-    /**
-     * Phương thức kiểm tra mã trùng
      * Author: NQMinh (03/09/2021)
      */
     async validateDuplicatedCode() {
@@ -449,21 +427,16 @@ export default {
      * Author: NQMinh (31/08/2021)
      */
     addEmployeeToDatabase(wantToAddMore) {
-      EmployeesAPI.add(this.employee).then(res => {
-        console.log(res);
-        this.toastMessage = 'Cất thông tin nhân viên thành công.';
-        this.toastType = 'success';
-        this.showToast = true;
+      EmployeesAPI.add(this.employee).then(() => {
+        const toastMessage = this.$responseData.MsgSuccessSaveEmployee;
+        this.handleSuccess(toastMessage);
         if (wantToAddMore) {
           this.$emit('dataChangedAndAdd');
         } else {
           this.$emit('dataChangedAndClose');
         }
       }).catch(error => {
-        console.log(error);
-        this.toastMessage = 'Cất thông tin nhân viên thất bại.';
-        this.toastType = 'error';
-        this.showToast = true;
+        this.handleError(error);
       })
     },
 
@@ -472,21 +445,16 @@ export default {
      * Author: NQMinh (31/08/2021)
      */
     updateEmployeeInformation(wantToAddMore) {
-      EmployeesAPI.update(this.employee['EmployeeId'], this.employee).then(res => {
-        console.log(res);
+      EmployeesAPI.update(this.employee['EmployeeId'], this.employee).then(() => {
         if (wantToAddMore) {
           this.$emit('dataChangedAndAdd');
         } else {
           this.$emit('dataChangedAndClose');
         }
-        this.toastMessage = 'Cất thông tin nhân viên thành công.';
-        this.toastType = 'success';
-        this.showToast = true;
+        const toastMessage = this.$responseData.MsgSuccessSaveEmployee;
+        this.handleSuccess(toastMessage);
       }).catch(error => {
-        console.log(error);
-        this.toastMessage = 'Cất thông tin nhân viên thất bại.';
-        this.toastType = 'error';
-        this.showToast = true;
+        this.handleError(error);
       })
     },
 
@@ -549,7 +517,37 @@ export default {
     hideAll() {
       this.isInsidePopupVisible = false;
       this.$emit('onHidingModal');
-    }
+    },
+
+    /**
+     * Phương thức xử lý phản hồi thành công
+     * @param toastMessage
+     * Author: NQMinh (03/09/2021)
+     */
+    handleSuccess(toastMessage) {
+      this.toastMessage = toastMessage;
+      this.toastType = 'success';
+      this.showToast = true;
+    },
+
+    /**
+     * Phương thức xử lý các phản hồi lỗi
+     * @param response
+     * Author: NQMinh (03/09/2021)
+     */
+    handleError(response) {
+      const statusCode = response.response.status;
+
+      if (statusCode >= 500) {
+        this.toastMessage = this.$responseData.MsgErrorServer;
+        this.toastType = 'error';
+      } else if (statusCode >= 400 && statusCode < 500) {
+        this.toastMessage = response.response.data['userMsg'];
+        this.toastType = 'error';
+      }
+
+      this.showToast = true;
+    },
   }
 }
 </script>

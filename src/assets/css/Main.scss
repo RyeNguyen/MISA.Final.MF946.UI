@@ -28,6 +28,7 @@ input {
   font-family: "NotoSans-Regular", sans-serif !important;
 
   &::placeholder {
+    font-size: 12px !important;
     font-style: italic !important;
   }
 }

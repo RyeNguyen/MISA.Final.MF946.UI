@@ -142,6 +142,7 @@ export default {
 
     /**
      * Phương thức kiểm tra điều kiện của popup để hiển thị thông báo tương ứng
+     * Author: NQMinh (31/08/2021)
      */
     displayMessage: function() {
       if (this.popupMessageName === 'warning') {
@@ -185,23 +186,48 @@ export default {
           deleteIdList.push(employee['EmployeeId']);
         })
 
-        EmployeesAPI.delete(deleteIdList).then(res => {
-          console.log(res);
+        EmployeesAPI.delete(deleteIdList).then(() => {
           this.$emit('onMessageSubmit');
-          this.toastMessage = 'Xóa dữ liệu nhân viên thành công.';
-          this.toastType = 'success';
-          this.showToast = true;
+          const toastMessage = this.$responseData.MsgSuccessDeleteEmployee;
+          this.handleSuccess(toastMessage);
         }).catch(error => {
-          console.log(error);
-          this.toastMessage = 'Xóa dữ liệu nhân viên thất bại.';
-          this.toastType = 'error';
-          this.showToast = true;
+          this.handleError(error);
         })
       }
       //Nếu không phải popup xóa thì sẽ truyền event lên để component cha xử lý
       else {
         this.$emit('onMessageSubmit');
       }
+    },
+
+    /**
+     * Phương thức xử lý phản hồi thành công
+     * @param toastMessage
+     * Author: NQMinh (03/09/2021)
+     */
+    handleSuccess(toastMessage) {
+      this.toastMessage = toastMessage;
+      this.toastType = 'success';
+      this.showToast = true;
+    },
+
+    /**
+     * Phương thức xử lý phản hồi lỗi
+     * @param response
+     * Author: NQMinh (03/09/2021)
+     */
+    handleError(response) {
+      const statusCode = response.response.status;
+
+      if (statusCode >= 500) {
+        this.toastMessage = this.$responseData.MsgErrorServer;
+        this.toastType = 'error';
+      } else if (statusCode >= 400 && statusCode < 500) {
+        this.toastMessage = response.response.data['userMsg'];
+        this.toastType = 'error';
+      }
+
+      this.showToast = true;
     }
   }
 }

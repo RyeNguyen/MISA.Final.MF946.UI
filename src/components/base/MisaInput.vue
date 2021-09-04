@@ -145,7 +145,7 @@ export default {
       if (this.isRequired) {
         if (this.inputData === '' || this.inputData === null) {
           this.isValid = false;
-          this.$refs.modalInput.setAttribute('title', `${this.labelName} không được để trống.`);
+          this.$refs.modalInput.setAttribute('title', `${this.labelName}` + this.$responseData.MsgErrorRequired);
         } else {
           this.isValid = true;
           this.$refs.modalInput.setAttribute('title', '');
@@ -161,7 +161,7 @@ export default {
       const isDuplicated = await EmployeesAPI.checkDuplicatedCode(`"${this.inputData}"`);
       if (isDuplicated.data === true) {
         this.isValid = false;
-        this.$refs.modalInput.setAttribute('title', `${this.labelName} đã tồn tại trong hệ thống.`);
+        this.$refs.modalInput.setAttribute('title', `${this.labelName}` + this.$responseData.MsgErrorDuplicated);
       } else {
         this.isValid = true;
         this.$refs.modalInput.setAttribute('title', '');

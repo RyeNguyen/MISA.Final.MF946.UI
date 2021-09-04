@@ -8,7 +8,7 @@
         :show-column-lines="true"
         :show-row-lines="true"
         :hover-state-enabled="true"
-        noDataText="Không tìm thấy dữ liệu"
+        noDataText=""
         class="misa-table"
         column-resizing-mode="widget"
         key-expr="EmployeeId"
@@ -27,7 +27,6 @@
           caption=""
           :fixed="true"
           width="40"
-          alignment="center"
           cell-template="checkboxCell"
           header-cell-template="checkboxHeader"
       />
@@ -188,7 +187,7 @@ export default {
         }
 
         .dx-datagrid-text-content {
-          margin-top: 9px;
+          margin-top: 7px;
         }
       }
     }
@@ -248,6 +247,17 @@ export default {
       font-family: "NotoSans-Semibold", sans-serif !important;
       cursor: pointer;
     }
+  }
+}
+
+.dx-datagrid-content .dx-datagrid-table .dx-row > td:first-child, .dx-datagrid-content .dx-datagrid-table .dx-row >
+tr > td:first-child {
+  & .dx-datagrid-text-content {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 </style>

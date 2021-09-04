@@ -123,8 +123,18 @@ export default {
   }
 }
 
+.dx-placeholder {
+    font-size: 12px !important;
+    font-style: italic !important;
+}
+
 .dx-calendar-cell {
   color: var(--color-text-content);
+}
+
+.dx-calendar-cell.dx-calendar-selected-date.dx-calendar-contoured-date,
+.dx-calendar-cell.dx-calendar-selected-date.dx-calendar-today.dx-calendar-contoured-date {
+  box-shadow: inset 0 0 0 1px #bebebe, inset 0 0 0 1000px var(--color-primary);
 }
 
 //.dx-calendar-cell.dx-calendar-other-view:not(.dx-calendar-selected-date) {

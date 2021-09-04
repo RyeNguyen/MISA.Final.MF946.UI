@@ -172,7 +172,7 @@ export default {
         if ((searchQuery === '' || searchQuery === null) &&
             (this.comboboxItem === '' || this.comboboxItem === null)) {
           this.isInvalid = true;
-          this.$refs.modalInput.$refs.search.setAttribute('title', `${this.labelName} không được để trống.`);
+          this.$refs.modalInput.$refs.search.setAttribute('title', `${this.labelName}` + this.$responseData.MsgErrorRequired);
         } else {
           this.isInvalid = false;
           this.$refs.modalInput.$refs.search.setAttribute('title', '');

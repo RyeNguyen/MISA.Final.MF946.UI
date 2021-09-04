@@ -5,6 +5,7 @@ import 'devextreme/dist/css/dx.light.css';
 
 import GenderModel from "@/models/GenderModel";
 import Multiselect from "vue-multiselect";
+import ResponseModel from "@/models/ResponseModel";
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-default.css';
 import VTooltip from "v-tooltip";
@@ -34,6 +35,8 @@ Vue.component('MisaMessage', MisaMessage);
 Vue.component('MisaTable', MisaTable);
 
 Vue.prototype.$genderData = GenderModel.initData();
+
+Vue.prototype.$responseData = ResponseModel.initData();
 
 DepartmentAPI.getAll().then(res => {
   Vue.prototype.$departmentData = res.data;
