@@ -87,3 +87,17 @@ input {
     transition: none;
   }
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--color-scroll);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-scroll-thumb);
+}

@@ -16,9 +16,25 @@
 export default {
   name: "MisaCheckbox",
 
+  created() {
+    console.log(this.testData);
+  },
+
   data() {
     return {
       isActive: false
+    }
+  },
+
+  props: {
+    testData: {
+      default: null
+    }
+  },
+
+  watch: {
+    testData: function(){
+      console.log(this.testData)
     }
   },
 

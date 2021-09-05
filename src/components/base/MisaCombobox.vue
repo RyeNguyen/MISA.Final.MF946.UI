@@ -311,6 +311,12 @@ export default {
   }
 }
 
+.multiselect__placeholder {
+  font-size: 12px;
+  font-style: italic;
+  color: #8E8E8E;
+}
+
 .multiselect__element {
   height: 32px;
   padding: 0 10px;

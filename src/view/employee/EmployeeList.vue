@@ -386,7 +386,7 @@ export default {
           URL.revokeObjectURL(link.href);
         }
         const toastMessage = this.$responseData.MsgSuccessExport;
-        this.handleSuccess(toastMessage);
+        this.handleSuccess(toastMessage, 'success');
       }).catch(error => {
         this.handleError(error);
       })

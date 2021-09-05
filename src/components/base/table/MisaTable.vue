@@ -8,10 +8,13 @@
         :show-column-lines="true"
         :show-row-lines="true"
         :hover-state-enabled="true"
+        :selected-row-keys="selectedEmployees"
         noDataText=""
         class="misa-table"
         column-resizing-mode="widget"
         key-expr="EmployeeId"
+        @rowClick="test"
+        @rowDblClick="editData"
     >
       <DxPaging :enabled="false" />
       <DxSorting mode="none"/>
@@ -24,6 +27,7 @@
           :scroll-by-content="true"
           :scroll-by-thumb="true"
           showScrollbar="always"
+          :use-native="false"
           mode="virtual"
       />
 
@@ -68,8 +72,10 @@
         </div>
       </template>
 
-      <template #checkboxCell>
-        <MisaCheckbox/>
+      <template #checkboxCell={data}>
+        <MisaCheckbox
+          :testData="data"
+        />
       </template>
 
       <template #checkboxHeader>
@@ -97,7 +103,8 @@ export default {
 
   data () {
     return {
-      isPopupVisible: false
+      isPopupVisible: false,
+      selectedEmployees: []
     }
   },
 
@@ -137,6 +144,15 @@ export default {
      */
     editData(data) {
       this.$emit('onEditMode', data.rowIndex);
+    },
+
+    test(e) {
+      const employeeToDeselect = this.selectedEmployees.find(employeeId => employeeId === e.key);
+      if (employeeToDeselect) {
+        this.selectedEmployees = this.selectedEmployees.filter(employeeId => employeeId !== employeeToDeselect);
+      } else {
+        this.selectedEmployees.push(e.key);
+      }
     },
 
     /**

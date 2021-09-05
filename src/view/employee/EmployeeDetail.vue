@@ -49,6 +49,7 @@
           </div>
 
           <MisaCombobox
+              ref="inputDepartment"
             :isRequired="true"
             :comboboxValue="employee['DepartmentId']"
             :isSubmitting="isSubmitting"
@@ -437,17 +438,17 @@ export default {
      * Author: NQMinh (31/08/2021)
      */
     addEmployeeToDatabase(wantToAddMore) {
-      EmployeesAPI.add(this.employee).then(() => {
-        const toastMessage = this.$responseData.MsgSuccessSaveEmployee;
-        this.handleSuccess(toastMessage);
-        if (wantToAddMore) {
-          this.$emit('dataChangedAndAdd');
-        } else {
-          this.$emit('dataChangedAndClose');
-        }
-      }).catch(error => {
-        this.handleError(error);
-      })
+        EmployeesAPI.add(this.employee).then(() => {
+          const toastMessage = this.$responseData.MsgSuccessSaveEmployee;
+          this.handleSuccess(toastMessage);
+          if (wantToAddMore) {
+            this.$emit('dataChangedAndAdd');
+          } else {
+            this.$emit('dataChangedAndClose');
+          }
+        }).catch(error => {
+          this.handleError(error);
+        })
     },
 
     /**
@@ -455,17 +456,28 @@ export default {
      * Author: NQMinh (31/08/2021)
      */
     updateEmployeeInformation(wantToAddMore) {
-      EmployeesAPI.update(this.employee['EmployeeId'], this.employee).then(() => {
+      //Kiểm tra xem dữ liệu có bị thay đổi không mới gọi API
+      if (this.isDataChanged()) {
+        EmployeesAPI.update(this.employee['EmployeeId'], this.employee).then(() => {
+          if (wantToAddMore) {
+            this.$emit('dataChangedAndAdd');
+          } else {
+            this.$emit('dataChangedAndClose');
+          }
+          const toastMessage = this.$responseData.MsgSuccessSaveEmployee;
+          this.handleSuccess(toastMessage);
+        }).catch(error => {
+          this.handleError(error);
+        })
+      }
+      //Nếu dữ liệu không thay đổi thì vẫn reload lại trang bình thường
+      else {
         if (wantToAddMore) {
           this.$emit('dataChangedAndAdd');
         } else {
           this.$emit('dataChangedAndClose');
         }
-        const toastMessage = this.$responseData.MsgSuccessSaveEmployee;
-        this.handleSuccess(toastMessage);
-      }).catch(error => {
-        this.handleError(error);
-      })
+      }
     },
 
     /**

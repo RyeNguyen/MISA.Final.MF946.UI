@@ -1,28 +1,27 @@
 <template>
-<!--  :close-on-outside-click="true"-->
-<DxPopup
-    :content-template="popupContent"
-    width="auto"
-    height="auto"
-    shading-color="rgba(0, 0, 0, 0.4)"
-    :drag-enabled="true"
-    :showCloseButton="false"
-    :focusStateEnabled="true"
-    :show-title="true"
-    :visible="isPopupVisible"
-    :deferRendering="true"
->
-  <template #content-modal>
-    <slot name="popup-content-modal"></slot>
-  </template>
-  <template #content-message>
-    <slot name="popup-content-message"></slot>
-  </template>
-</DxPopup>
+  <DxPopup
+      :content-template="popupContent"
+      :deferRendering="true"
+      :drag-enabled="true"
+      :focusStateEnabled="true"
+      :show-title="true"
+      :showCloseButton="false"
+      :visible="isPopupVisible"
+      height="auto"
+      shading-color="rgba(0, 0, 0, 0.4)"
+      width="auto"
+  >
+    <template #content-modal>
+      <slot name="popup-content-modal"></slot>
+    </template>
+    <template #content-message>
+      <slot name="popup-content-message"></slot>
+    </template>
+  </DxPopup>
 </template>
 
 <script>
-import { DxPopup } from 'devextreme-vue/popup';
+import {DxPopup} from 'devextreme-vue/popup';
 
 export default {
   name: "MisaPopup",
