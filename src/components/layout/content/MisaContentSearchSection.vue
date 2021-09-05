@@ -9,9 +9,11 @@
         @onInputTyping="changeKeyword"
     />
     <div class="misa-content__reload"
+         v-tooltip.bottom="reloadTooltip"
       @click="reloadTable"
     />
     <div class="misa-content__export"
+         v-tooltip.bottom="exportTooltip"
       @click="exportData"
     />
   </div>
@@ -29,8 +31,10 @@ export default {
 
   data() {
     return {
-      searchKeyword: "",
-      timeoutValue: null
+      searchKeyword: '',
+      timeoutValue: null,
+      reloadTooltip: 'Lấy lại dữ liệu',
+      exportTooltip: 'Xuất ra Excel'
     }
   },
 

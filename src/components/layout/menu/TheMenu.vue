@@ -23,7 +23,6 @@
 
 <script>
 import MenuModel from "@/models/MenuModel";
-
 import MisaMenuItem from "@/components/layout/menu/MisaMenuItem";
 
 export default {
@@ -36,7 +35,8 @@ export default {
   data() {
     return {
       menuItems: [],
-      currentIndex: -1
+      currentIndex: -1,
+      hello: 'Hello'
     }
   },
 

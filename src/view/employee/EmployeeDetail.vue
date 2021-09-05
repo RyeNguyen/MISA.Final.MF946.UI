@@ -11,8 +11,8 @@
         <div>Là nhà cung cấp</div>
       </div>
       <div class="misa-modal__widget-buttons">
-        <div class="misa-modal__ask"/>
-        <div class="misa-modal__close" @click="hideModal"/>
+        <div v-tooltip.bottom="helpTooltip" class="misa-modal__ask"/>
+        <div v-tooltip.bottom="closeTooltip" class="misa-modal__close" @click="hideModal"/>
       </div>
     </div>
 
@@ -216,6 +216,7 @@
 
       <div class="misa-button__group">
         <MisaButton
+            v-tooltip.auto="saveTooltip"
             buttonId="button-save"
             buttonText="Cất"
             buttonType="secondary"
@@ -223,6 +224,7 @@
         />
 
         <MisaButton
+            v-tooltip.auto="saveAddTooltip"
             buttonId="button-save-add"
             buttonText="Cất và thêm"
             @click.native="submitDataAndAdd"
@@ -291,7 +293,15 @@ export default {
 
       toastMessage: '',
 
-      toastType: 'default'
+      toastType: 'default',
+
+      helpTooltip: 'Giúp (F1)',
+
+      closeTooltip: 'Đóng (ESC)',
+
+      saveTooltip: 'Cất (Ctrl + S)',
+
+      saveAddTooltip: 'Cất và thêm (Ctrl + Shift + S)'
     }
   },
 

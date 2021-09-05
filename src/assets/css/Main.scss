@@ -40,3 +40,50 @@ input {
 .misa-hidden {
   display: none;
 }
+
+.tooltip {
+  display: block !important;
+  z-index: 10000;
+
+  .tooltip-inner {
+    background: var(--color-tertiary);
+    color: var(--color-white);
+    font-size: 12px;
+    border-radius: 2px;
+    padding: 5px 10px 5px;
+  }
+
+  .tooltip-arrow {
+    display: none;
+  }
+
+  &[x-placement^="top"] {
+    margin-bottom: 5px;
+  }
+
+  &[x-placement^="bottom"] {
+    margin-top: 5px;
+  }
+
+  &[x-placement^="right"] {
+    margin-left: 100px;
+  }
+
+  &[x-placement^="left"] {
+    margin-right: 20px;
+  }
+
+  &[aria-hidden='true'] {
+    visibility: hidden;
+    opacity: 0;
+    //transition: opacity .15s, visibility .15s;
+    transition: none;
+  }
+
+  &[aria-hidden='false'] {
+    visibility: visible;
+    opacity: 1;
+    //transition: opacity .15s;
+    transition: none;
+  }
+}

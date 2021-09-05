@@ -8,7 +8,7 @@ import Multiselect from "vue-multiselect";
 import ResponseModel from "@/models/ResponseModel";
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-default.css';
-import VTooltip from "v-tooltip";
+import { VTooltip, VPopover, VClosePopover } from 'v-tooltip'
 
 import MisaPopup from "@/components/base/MisaPopup";
 import MisaCheckbox from "@/components/base/MisaCheckbox";
@@ -34,6 +34,10 @@ Vue.component('MisaToast', MisaToast);
 Vue.component('MisaMessage', MisaMessage);
 Vue.component('MisaTable', MisaTable);
 
+Vue.directive('tooltip', VTooltip)
+Vue.directive('close-popover', VClosePopover)
+Vue.component('v-popover', VPopover)
+
 Vue.prototype.$genderData = GenderModel.initData();
 
 Vue.prototype.$responseData = ResponseModel.initData();
@@ -47,7 +51,7 @@ DepartmentAPI.getAll().then(res => {
 Vue.config.productionTip = false
 
 Vue.use(VueToast);
-Vue.use(VTooltip);
+Vue.use(VTooltip)
 
 new Vue({
   render: h => h(App),

@@ -15,6 +15,10 @@
     >
       <DxPaging :enabled="false" />
       <DxSorting mode="none"/>
+      <DxSelection
+          show-check-boxes-mode="none"
+          mode="multiple"
+      />
       <DxColumnFixing :enabled="true"/>
       <DxScrolling
           :scroll-by-content="true"
@@ -82,6 +86,7 @@ import {
   DxDataGrid,
   DxPaging,
   DxSorting,
+  DxSelection,
   DxScrolling
 } from 'devextreme-vue/data-grid';
 
@@ -117,6 +122,7 @@ export default {
     DxColumnFixing,
     DxPaging,
     DxSorting,
+    DxSelection,
     DxScrolling,
     MisaTableDropdown
   },
@@ -258,6 +264,23 @@ tr > td:first-child {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+}
+
+.dx-datagrid-rowsview .dx-selection.dx-row:not(.dx-row-focused) > td, .dx-datagrid-rowsview
+.dx-selection.dx-row:not(.dx-row-focused) > tr > td, .dx-datagrid-rowsview
+.dx-selection.dx-row:not(.dx-row-focused):hover > td, .dx-datagrid-rowsview
+.dx-selection.dx-row:not(.dx-row-focused):hover > tr > td {
+  background-color: var(--color-table-active);
+  color: var(--color-content-text);
+  border-bottom-color: var(--color-hightlight) !important;
+}
+
+.dx-datagrid-columns-separator {
+  background-color: transparent;
+
+  &-transparent {
+    background-color: transparent;
   }
 }
 </style>
