@@ -17,7 +17,6 @@ export default {
   name: "MisaCheckbox",
 
   created() {
-    console.log(this.testData);
   },
 
   data() {
@@ -34,7 +33,6 @@ export default {
 
   watch: {
     testData: function(){
-      console.log(this.testData)
     }
   },
 

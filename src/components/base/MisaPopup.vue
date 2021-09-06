@@ -1,5 +1,6 @@
 <template>
   <DxPopup
+      class="misa-popup"
       :content-template="popupContent"
       :deferRendering="true"
       :drag-enabled="true"

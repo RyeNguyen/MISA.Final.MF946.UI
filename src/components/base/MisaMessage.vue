@@ -1,7 +1,6 @@
 <template>
   <div class="misa-message">
     <div
-        v-if="popupCondition"
         class="misa-message__body"
     >
       <div
@@ -146,7 +145,11 @@ export default {
      */
     displayMessage: function() {
       if (this.popupMessageName === 'warning') {
-        return `Bạn có thực sự muốn xóa Nhân viên <${this.employeesToDelete[0]['EmployeeCode']}> không?`;
+        if (this.employeesToDelete.length > 0) {
+          return `Bạn có thực sự muốn xóa Nhân viên <${this.employeesToDelete[0]['EmployeeCode']}> không?`;
+        } else {
+          return 'Nhân viên này không tồn tại trong hệ thống. Bạn có muốn tải lại dữ liệu?'
+        }
       } else {
         return this.popupMessageText;
       }
@@ -178,7 +181,7 @@ export default {
      */
     confirmRequest() {
       //Nhấn submit khi ở popup xóa thì sẽ thực hiện xóa
-      if (this.employeesToDelete) {
+      if (this.employeesToDelete.length > 0) {
         //API chỉ nhận mảng các ID nên phải tạo mảng clone trích xuất các ID từ mảng chính
         let deleteIdList = [];
 
@@ -186,18 +189,26 @@ export default {
           deleteIdList.push(employee['EmployeeId']);
         })
 
-        EmployeesAPI.delete(deleteIdList).then(() => {
-          this.$emit('onMessageSubmit');
-          const toastMessage = this.$responseData.MsgSuccessDeleteEmployee;
-          this.handleSuccess(toastMessage);
-        }).catch(error => {
-          this.handleError(error);
-        })
+        this.deleteEntity(deleteIdList);
       }
       //Nếu không phải popup xóa thì sẽ truyền event lên để component cha xử lý
       else {
         this.$emit('onMessageSubmit');
       }
+    },
+
+    /**
+     * Phương thức xóa thông tin khỏi DB
+     * Author: NQMinh (01/09/2021)
+     */
+    deleteEntity(deleteIdList) {
+      EmployeesAPI.delete(deleteIdList).then(() => {
+        this.$emit('onMessageSubmit');
+        const toastMessage = this.$responseData.MsgSuccessDeleteEmployee;
+        this.handleSuccess(toastMessage);
+      }).catch(error => {
+        this.handleError(error);
+      })
     },
 
     /**
@@ -240,6 +251,7 @@ export default {
   height: auto;
   background-color: var(--color-white);
   padding: 32px;
+  border-radius: 3px;
 
   &__body {
     display: flex;

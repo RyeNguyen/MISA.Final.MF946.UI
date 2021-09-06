@@ -13,14 +13,13 @@
         class="misa-table"
         column-resizing-mode="widget"
         key-expr="EmployeeId"
-        @rowClick="test"
         @rowDblClick="editData"
     >
       <DxPaging :enabled="false" />
       <DxSorting mode="none"/>
       <DxSelection
           show-check-boxes-mode="none"
-          mode="multiple"
+          mode="none"
       />
       <DxColumnFixing :enabled="true"/>
       <DxScrolling
@@ -72,10 +71,8 @@
         </div>
       </template>
 
-      <template #checkboxCell={data}>
-        <MisaCheckbox
-          :testData="data"
-        />
+      <template #checkboxCell>
+        <MisaCheckbox/>
       </template>
 
       <template #checkboxHeader>
@@ -146,14 +143,14 @@ export default {
       this.$emit('onEditMode', data.rowIndex);
     },
 
-    test(e) {
-      const employeeToDeselect = this.selectedEmployees.find(employeeId => employeeId === e.key);
-      if (employeeToDeselect) {
-        this.selectedEmployees = this.selectedEmployees.filter(employeeId => employeeId !== employeeToDeselect);
-      } else {
-        this.selectedEmployees.push(e.key);
-      }
-    },
+    // test(e) {
+    //   const employeeToDeselect = this.selectedEmployees.find(employeeId => employeeId === e.key);
+    //   if (employeeToDeselect) {
+    //     this.selectedEmployees = this.selectedEmployees.filter(employeeId => employeeId !== employeeToDeselect);
+    //   } else {
+    //     this.selectedEmployees.push(e.key);
+    //   }
+    // },
 
     /**
      * Phương thức xử lý sự kiện khi người dùng click nhân bản hoặc xóa

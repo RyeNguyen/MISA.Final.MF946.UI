@@ -213,6 +213,16 @@ export default {
     },
 
     /**
+     * Phương thức lấy dữ liệu nhân viên bằng ID
+     * @param employeeId
+     * Author: NQMinh (02/09/2021)
+     */
+    async getEmployeeById(employeeId) {
+      const employeeData = await EmployeesAPI.getById(employeeId);
+      return employeeData['data'];
+    },
+
+    /**
      * Phương thức thay đổi trạng thái popup thành mở khi thêm thông tin nhân viên
      * Author: NQMinh (30/08/2021)
      */
@@ -242,8 +252,19 @@ export default {
     showPopupToEdit(employeeIndex) {
       this.popupContent = 'content-modal';
       this.wantToCreateNewEmployee = false;
-      this.employeeData = this.employees[employeeIndex];
-      this.isPopupVisible = true;
+
+      EmployeesAPI.getById(this.employees[employeeIndex]['EmployeeId']).then(res => {
+        if (res.data === '') {
+          this.employeesToDelete = [];
+          this.popupContent = 'content-message';
+          this.isPopupVisible = true;
+        } else {
+          this.employeeData = res.data;
+          this.isPopupVisible = true;
+          this.toastMessage = this.$responseData.MsgSuccessGetEmployee;
+          this.handleSuccess(this.toastMessage, 'info');
+        }
+      })
     },
 
     /**
@@ -281,9 +302,18 @@ export default {
      * Author: NQMinh (01/09/2021)
      */
     showPopupToDelete(employeeData) {
-      this.popupContent = 'content-message';
-      this.isPopupVisible = true;
-      this.employeesToDelete.push(employeeData);
+      //Kiểm tra nhân viên có còn tồn tại không
+      EmployeesAPI.getById(employeeData['EmployeeId']).then(res => {
+        if (res.data === '') {
+          this.employeesToDelete = [];
+          this.popupContent = 'content-message';
+          this.isPopupVisible = true;
+        } else {
+          this.employeesToDelete.push(employeeData);
+          this.popupContent = 'content-message';
+          this.isPopupVisible = true;
+        }
+      })
     },
 
     /**
@@ -315,7 +345,6 @@ export default {
      */
     handleError(response) {
       const statusCode = response.response.status;
-
       if (statusCode >= 500) {
         this.toastMessage = this.$responseData.MsgErrorServer;
         this.toastType = 'error';
@@ -323,7 +352,6 @@ export default {
         this.toastMessage = response.response.data['userMsg'];
         this.toastType = 'error';
       }
-
       this.showToast = true;
     },
 
@@ -347,16 +375,6 @@ export default {
       this.pageSize = pageSize;
       this.loadData();
     },
-
-    /**
-     * Phương thức xử lý sự kiện khi có hành động thay đổi số bản ghi/trang
-     * @param pageSize
-     * Author: NQMinh (01/09/2021)
-     */
-    // changePageSize(pageSize) {
-    //   this.pageSize = pageSize;
-    //   this.loadData();
-    // },
 
     /**
      * Phương thức tìm kiếm thông tin nhân viên

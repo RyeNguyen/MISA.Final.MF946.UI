@@ -24,8 +24,8 @@
                 ref="inputCode"
                 :inputValue="employee['EmployeeCode']"
                 :isRequired="true"
-                :isUnique="true"
                 :isSubmitting="isSubmitting"
+                :isUnique="true"
                 inputId="input-code"
                 inputName="EmployeeCode"
                 inputPlaceholder="NV-1234"
@@ -50,16 +50,16 @@
 
           <MisaCombobox
               ref="inputDepartment"
-            :isRequired="true"
-            :comboboxValue="employee['DepartmentId']"
-            :isSubmitting="isSubmitting"
-            comboboxName="DepartmentId"
-            comboboxType="Department"
-            comboboxPlaceholder="Chọn đơn vị..."
-            inputId="input-department"
-            inputWidth="100%"
-            labelName="Đơn vị"
-            @onComboboxChanged="bindingDataToModal"
+              :comboboxValue="employee['DepartmentId']"
+              :isRequired="true"
+              :isSubmitting="isSubmitting"
+              comboboxName="DepartmentId"
+              comboboxPlaceholder="Chọn đơn vị..."
+              comboboxType="Department"
+              inputId="input-department"
+              inputWidth="100%"
+              labelName="Đơn vị"
+              @onComboboxChanged="bindingDataToModal"
           />
 
           <MisaInput
@@ -249,10 +249,10 @@
     </MisaPopup>
 
     <MisaToast
-      :showToast="showToast"
-      :toastMessage="toastMessage"
-      :toastType="toastType"
-      @onToastHidden="showToast = false"
+        :showToast="showToast"
+        :toastMessage="toastMessage"
+        :toastType="toastType"
+        @onToastHidden="showToast = false"
     />
   </div>
 </template>
@@ -438,17 +438,17 @@ export default {
      * Author: NQMinh (31/08/2021)
      */
     addEmployeeToDatabase(wantToAddMore) {
-        EmployeesAPI.add(this.employee).then(() => {
-          const toastMessage = this.$responseData.MsgSuccessSaveEmployee;
-          this.handleSuccess(toastMessage);
-          if (wantToAddMore) {
-            this.$emit('dataChangedAndAdd');
-          } else {
-            this.$emit('dataChangedAndClose');
-          }
-        }).catch(error => {
-          this.handleError(error);
-        })
+      EmployeesAPI.add(this.employee).then(() => {
+        const toastMessage = this.$responseData.MsgSuccessSaveEmployee;
+        this.handleSuccess(toastMessage);
+        if (wantToAddMore) {
+          this.$emit('dataChangedAndAdd');
+        } else {
+          this.$emit('dataChangedAndClose');
+        }
+      }).catch(error => {
+        this.handleError(error);
+      })
     },
 
     /**
@@ -559,7 +559,6 @@ export default {
      */
     handleError(response) {
       const statusCode = response.response.status;
-
       if (statusCode >= 500) {
         this.toastMessage = this.$responseData.MsgErrorServer;
         this.toastType = 'error';
@@ -567,7 +566,6 @@ export default {
         this.toastMessage = response.response.data['userMsg'];
         this.toastType = 'error';
       }
-
       this.showToast = true;
     },
   }
@@ -579,6 +577,7 @@ export default {
   width: 900px !important;
   min-width: 900px;
   padding: 20px 32px;
+  border-radius: 3px;
 
   .misa-input,
   .misa-datebox {

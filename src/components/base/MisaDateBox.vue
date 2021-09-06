@@ -13,6 +13,7 @@
         type="date"
         placeholder="DD/MM/YYYY"
         display-format="dd/MM/yyyy"
+        dateSerializationFormat="yyyy-MM-dd"
         :dateOutOfRangeMessage="displayDateMessage"
         :use-mask-behavior="true"
         :value="inputValue"

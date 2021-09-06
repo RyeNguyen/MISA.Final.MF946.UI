@@ -1,6 +1,5 @@
 <template>
   <div
-      v-tooltip.auto="itemText"
       :class="[activeClass, {'misa-menu__item--shrink': menuToggled}]"
       class="misa-menu__item"
   >
